@@ -1,0 +1,77 @@
+<div id="contenerdorCentrador">
+    <div class="">
+        <img src="../../../../assets/image/liverpool.jpg" alt="Logo Liverpool">
+    </div>
+</div>
+
+<div class="container">
+    
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid" style="background-color: #712FA5; padding: 1%;">
+      <a class="navbar-brand" style="color: white;">Usuario: 11451873</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white;">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="busqueda.html" style="color: white; font-size: 150%;"><u></u></a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search" method="GET" action="/ViajeroHome">
+          <button class="btn btn-lg" type="submit" style="background-color: #FF7A00; color: white;" title="regresar">Regresar</button>
+        </form>
+      </div>
+    </div>
+  </nav> 
+
+</div>
+
+<div class="text-center">
+  <h3 style="color: black;">Búsqueda por fecha de inicio</h3>
+</div>
+
+<div class="container" style="padding-top: 3%;">
+  <form class="row g-3" action="" method="GET">
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label" style="color: black;">Fecha:</label>
+      <input type="date" name="number_viaje" class="form-control card border-dark mb-3" id="inputPassword4" required>
+    </div>
+    <div class="col-md-2">
+      <label for="inputPassword4" class="form-label" style="color: black;"></label>
+       <input type="submit" name="find" class="form-control btn btn-primary" id="inputPassword4" value="Buscar">
+    </div>
+  </form>
+
+
+</div>
+
+<div class="container" id="cards" style="padding-bottom: 5%;">
+  <hr>
+
+  <h4 style="color: black;">Listado de todos los viajes en la fecha correspondiente.</h4>
+    <br>
+
+    <div class="container" id="cards" style="padding-bottom: 5%;">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="col">
+            <div class="card">
+              <img src="../../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
+              <div class="card-body">
+                <h5 class="card-title">Tijuana</h5>
+                <hr>
+                <p class="card-text">Número de viaje: 2000001827</p>
+                <p class="card-text">Número de empleado: 16136996</p>
+                <p class="card-text">Fecha de salida: 12/12/2021</p>
+                <p class="card-text">Hora de salida: 12:00:00 am</p>
+                <hr>
+                <p class="card-text card border-secondary mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
+                <a [routerLink]="('/MostrarViaje')" style="text-decoration: none;">
+                <button class="btn btn-outline-primary">Visualizar</button>
+              </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      

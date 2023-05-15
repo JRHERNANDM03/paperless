@@ -1,0 +1,105 @@
+<div id="contenerdorCentrador">
+    <div class="">
+        <img src="../../../assets/image/liverpool.jpg" alt="Logo Liverpool">
+    </div>
+</div>
+
+<div class="container">
+    
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid" style="background-color: #712FA5; padding: 1%;">
+      <a class="navbar-brand" style="color: white;">Usuario: 16136996</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white;">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="" style="color: white;"></a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search" method="GET" action="/MostrarViaje">
+          <button class="btn btn-lg" type="submit" style="background-color: #FF7A00; color: white;" title="regresar">Regresar</button>
+        </form>
+      </div>
+    </div>
+  </nav> 
+
+<div class="text-center" style="padding-top: 5%;">
+    <h3 style="color: black;">REGISTRO DE GASTOS DE VIAJE</h3>
+</div>
+
+<div class="container" style="padding-top: 3%;">
+    <h5 style="color: black;">Detalles de viaje: #2000001826</h5>
+
+    <div id="contenerdorCentrador" style="justify-content: space-between; padding-top: 3%;">
+        <a [routerLink]="('/RegistrarGasto')" class="btn btn-success" title="Mostrar gastos">REGISTRAR NUEVO GASTO</a>
+    </div>
+</div>
+
+
+
+<div class="container" style="padding-top: 4%; padding-bottom: 5%;">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card border-primary mb-3">
+            <div class="card-body">
+            <div class="card-header bg-transparent border-primary">
+              <h5 class="card-title">ALIE ALIMENTO P/EMPLEADO</h5>
+            </div>  
+              <p class="card-text" style="padding-top: 3%;">Importe: 500.00</p>
+              <p class="card-text">Moneda: MXP</p>
+              <p class="card-text">Fecha de gasto: 30/05/2023</p>
+              <p class="card-text">Estado: PENDIENTE</p>
+              <div class="card-footer bg-transparent border-primary">
+              <div id="contenerdorCentrador" style="justify-content: space-between;">
+                <a [routerLink]="('/DetallesGasto')" style="text-decoration: none; color: #295bd9;" title="Visualizar gasto"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                  </svg></a>
+                <a [routerLink]="('/EditarGasto')" style="text-decoration: none; color: #D9CE29;" title="Editar gasto"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                </svg></a>
+                <a (click)="delete()" style="text-decoration: none; color: #D92929;" title="Eliminar gasto"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg></a>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card border-primary mb-3">
+            <div class="card-body">
+            <div class="card-header bg-transparent border-primary">
+              <h5 class="card-title">TASE TAXI S/COMP P/EMPLEADO</h5>
+              </div>
+              <p class="card-text" style="padding-top: 3%;">Importe: 150.00</p>
+              <p class="card-text">Moneda: MXP</p>
+              <p class="card-text">Fecha de gasto: 30/05/2023</p>
+              <p class="card-text">Estado: APROBADO</p>
+              <div class="card-footer bg-transparent border-primary">
+              <div id="contenerdorCentrador" style="justify-content: space-between;">
+              <a [routerLink]="('/DetallesGasto')" style="text-decoration: none; color: #295bd9;" title="Visualizar gasto"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+              </svg></a>
+              <a style="text-decoration: none; color: #5e5e5689;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+              </svg></a>
+              <a style="text-decoration: none; color: #5e5e5689;"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+              </svg></a>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+

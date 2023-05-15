@@ -1,0 +1,39 @@
+#contenerdorCentrador
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction:row;
+
+    padding-top: 10px;
+}
+
+#div1
+{
+    padding-top: 15px;
+    background-color: #6e0f6a;
+}
+
+#div2
+{
+    padding-top: 15px;
+    background-color: #e86513;
+}
+
+#button {
+    font-family: 'Overpass', sans-serif;
+    font-size: 110%;
+    color:#000000;
+    border: 0;
+    border-radius: 5%;
+    
+    background-color: #ffffff;
+    
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#button:hover {
+    background-color: #e86513;
+    color:#ffffff;
+}
