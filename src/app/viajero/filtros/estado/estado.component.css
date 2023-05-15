@@ -6,26 +6,32 @@
     flex-direction:row;
 
     padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#logo
+{
+    width: 25%;
+    height: 5%;
 }
 
 #div1
 {
     padding-top: 15px;
-    background-color: #6e0f6a;
+    background-color: #73246D;
 }
 
 #div2
 {
     padding-top: 15px;
-    background-color: #e86513;
+    background-color: #F25F29;
 }
-
 #button {
     font-family: 'Overpass', sans-serif;
     font-size: 110%;
     color:#000000;
     border: 0;
-    border-radius: 5%;
+    border-radius: 5%;  
     
     background-color: #ffffff;
     
