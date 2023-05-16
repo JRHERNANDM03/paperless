@@ -10,18 +10,25 @@ import { EditarGastoComponent } from './viajero/editar-gasto/editar-gasto.compon
 import { NumeroViajeComponent } from './viajero/filtros/numero-viaje/numero-viaje.component';
 import { FechaComponent } from './viajero/filtros/fecha/fecha.component';
 import { EstadoComponent } from './viajero/filtros/estado/estado.component';
+import { HomeDirectorComponent } from './director/home-director/home-director.component';
+import { MostrarViajeDirectorComponent } from './director/mostrar-viaje-director/mostrar-viaje-director.component';
+import { MostrarGastosDirectorComponent } from './director/mostrar-gastos-director/mostrar-gastos-director.component';
 
 const routes: Routes = [
   { path:'', component:IndexComponent},
-  { path:'ViajeroHome', component:HomeComponent},
-  { path:'MostrarViaje', component:MostrarViajeComponent},
-  { path:'MostrarGastos', component:MostrarGastoComponent},
-  { path:'DetallesGasto', component:DetallesGastoComponent},
-  { path:'RegistrarGasto', component:RegistrarGastoComponent},
-  { path:'EditarGasto', component:EditarGastoComponent},
-  { path:'Filtro_NumeroViaje', component:NumeroViajeComponent},
-  { path:'Filtro_Fecha', component:FechaComponent},
-  { path:'Filtro_Estado', component:EstadoComponent}
+  { path:'Viajero/Home', component:HomeComponent},
+  { path:'Viajero/Viaje', component:MostrarViajeComponent},
+  { path:'Viajero/Gastos', component:MostrarGastoComponent},
+  { path:'Viajero/Detalles/Gasto', component:DetallesGastoComponent},
+  { path:'Viajero/Registrar/Gasto', component:RegistrarGastoComponent},
+  { path:'Viajero/Editar/Gasto', component:EditarGastoComponent},
+  { path:'Viajero/Filtro/NumeroViaje', component:NumeroViajeComponent},
+  { path:'Viajero/Filtro/Fecha', component:FechaComponent},
+  { path:'Viajero/Filtro/Estado', component:EstadoComponent},
+  { path:'Director/Home', component:HomeDirectorComponent},
+  { path:'Director/Viaje', component:MostrarViajeDirectorComponent},
+  { path:'Director/Gastos', component:MostrarGastosDirectorComponent},
+
 ];
 
 @NgModule({
