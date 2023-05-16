@@ -13,6 +13,11 @@ import { EstadoComponent } from './viajero/filtros/estado/estado.component';
 import { HomeDirectorComponent } from './director/home-director/home-director.component';
 import { MostrarViajeDirectorComponent } from './director/mostrar-viaje-director/mostrar-viaje-director.component';
 import { MostrarGastosDirectorComponent } from './director/mostrar-gastos-director/mostrar-gastos-director.component';
+import { MostrarDetallesGastosDirectorComponent } from './director/mostrar-detalles-gastos-director/mostrar-detalles-gastos-director.component';
+import { DNumeroEmpleadoComponent } from './director/filtros/d-numero-empleado/d-numero-empleado.component';
+import { DNumeroViajeComponent } from './director/filtros/d-numero-viaje/d-numero-viaje.component';
+import { DFechaComponent } from './director/filtros/d-fecha/d-fecha.component';
+import { DEstadoComponent } from './director/filtros/d-estado/d-estado.component';
 
 const routes: Routes = [
   { path:'', component:IndexComponent},
@@ -28,6 +33,11 @@ const routes: Routes = [
   { path:'Director/Home', component:HomeDirectorComponent},
   { path:'Director/Viaje', component:MostrarViajeDirectorComponent},
   { path:'Director/Gastos', component:MostrarGastosDirectorComponent},
+  { path:'Director/Detalles/Gastos', component:MostrarDetallesGastosDirectorComponent},
+  { path:'Director/Filtro/NumeroEmpleado', component:DNumeroEmpleadoComponent},
+  { path:'Director/Filtro/NumeroViaje', component:DNumeroViajeComponent},
+  { path:'Director/Filtro/Fecha', component:DFechaComponent},
+  { path:'Director/Filtro/Estado', component:DEstadoComponent}
 
 ];
 
