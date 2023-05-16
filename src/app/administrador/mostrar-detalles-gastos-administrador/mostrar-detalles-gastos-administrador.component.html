@@ -1,0 +1,95 @@
+
+<div id="contenerdorCentrador">
+    <img src="../../../assets/image/liverpool.jpg" id="logo" alt="Logo Liverpool">
+</div>
+
+<div class="container">
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<div class="container-fluid" style="background-color: #73246D; padding: 1%;">
+  <a class="navbar-brand" style="color: white;">Usuario: 16136996</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white;">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="" style="color: white;"></a>
+      </li>
+    </ul>
+    <form class="d-flex" role="search" method="GET" action="/Administrador/Gastos">
+      <button class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="regresar">Regresar</button>
+    </form>
+  </div>
+</div>
+</nav> 
+
+</div>
+
+<div class="text-center">
+<h2 style="color: black;">Detalles de gasto seleccionado</h2>
+</div>
+
+<div class="container" style="padding: 1%;">
+<h5 style="color: black;">Viaje: #2000001826</h5>
+
+<div class="contanier" style="padding-top: 3%; padding-bottom: 3%;">
+    <button (click)="estado()" class="btn btn-success">CAMIBIAR ESTADO</button>
+</div>
+
+<form class="row g-3" style="padding-top: 3%; padding-bottom: 8%;">
+
+<div class="col-md-4">
+<label for="inputEmail4" class="form-label" style="color: black;">ESTADO:</label>
+<input type="text" class="form-control card border-dark mb-3" id="inputEmail4" value="PENDIENTE" readonly>
+</div>
+
+<div class="col-md-9">
+<label for="inputEmail4" class="form-label" style="color: black;">TIPO DE GASTO:</label>
+<input type="text" class="form-control card border-dark mb-3" id="inputEmail4" value="ALIE ALIMENTO P/EMPLEADO" readonly>
+</div>
+
+<div class="col-md-4">
+<label for="inputEmail4" class="form-label" style="color: black;">IMPORTE:</label>
+<input type="text" class="form-control card border-dark mb-3" id="inputEmail4" value="500.00" readonly>
+</div>
+
+<div class="col-md-4">
+<label for="inputPassword4" class="form-label" style="color: black;">MONEDA:</label>
+<input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="MXP - PESOS MEXICANOS" readonly>
+</div>
+
+<div class="col-md-4">
+<label for="inputPassword4" class="form-label" style="color: black;">FECHA DE GASTO:</label>
+<input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="30/05/2023" readonly>
+</div>
+
+<div class="col-md-4">
+<label for="inputEmail4" class="form-label" style="color: black;">INDICADOR DE IMPUESTOS:</label>
+<input type="text" class="form-control card border-dark mb-3" id="inputEmail4" value="F2 IVA ACREDITABLE 16%" readonly>
+</div>
+
+<div class="col-md-4">
+<label for="inputPassword4" class="form-label" style="color: black;">CAINTIDAD:</label>
+<input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="1" readonly>
+</div>
+
+<div class="col-md-4">
+<label for="inputPassword4" class="form-label" style="color: black;">INFORMACIÓN*:</label>
+<input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="" readonly>
+</div>
+
+<div class="col-md-12">
+<label for="inputPassword4" class="form-label" style="color: black;">DESCRIPCIÓN:</label>
+<input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi laudantium ex voluptas fugit facere suscipit! Molestias maxime doloremque culpa animi modi autem reiciendis. Repudiandae temporibus reiciendis beatae illo, nobis error." readonly>
+</div>
+
+<div class="col-md-3">
+<label for="inputPassword4" class="form-label" style="color: black;">JUSTIFICACIÓN:</label>
+<input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="file.pdf" readonly>
+</div>
+
+</form>
+
+</div>
+

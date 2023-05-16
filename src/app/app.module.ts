@@ -25,6 +25,13 @@ import { DNumeroEmpleadoComponent } from './director/filtros/d-numero-empleado/d
 import { DNumeroViajeComponent } from './director/filtros/d-numero-viaje/d-numero-viaje.component';
 import { DFechaComponent } from './director/filtros/d-fecha/d-fecha.component';
 import { DEstadoComponent } from './director/filtros/d-estado/d-estado.component';
+import { HomeAdministradorComponent } from './administrador/home-administrador/home-administrador.component';
+import { MostrarViajeAdministradorComponent } from './administrador/mostrar-viaje-administrador/mostrar-viaje-administrador.component';
+import { MostrarGastosAdministradorComponent } from './administrador/mostrar-gastos-administrador/mostrar-gastos-administrador.component';
+import { MostrarDetallesGastosAdministradorComponent } from './administrador/mostrar-detalles-gastos-administrador/mostrar-detalles-gastos-administrador.component';
+import { ANumeroEmpleadoComponent } from './administrador/filtros/a-numero-empleado/a-numero-empleado.component';
+import { ANumeroViajeComponent } from './administrador/filtros/a-numero-viaje/a-numero-viaje.component';
+import { AFechaComponent } from './administrador/filtros/a-fecha/a-fecha.component';
 
 
 @NgModule({
@@ -48,6 +55,13 @@ import { DEstadoComponent } from './director/filtros/d-estado/d-estado.component
     DNumeroViajeComponent,
     DFechaComponent,
     DEstadoComponent,
+    HomeAdministradorComponent,
+    MostrarViajeAdministradorComponent,
+    MostrarGastosAdministradorComponent,
+    MostrarDetallesGastosAdministradorComponent,
+    ANumeroEmpleadoComponent,
+    ANumeroViajeComponent,
+    AFechaComponent,
   ],
   imports: [
     BrowserModule,
