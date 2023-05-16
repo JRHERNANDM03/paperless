@@ -31,7 +31,7 @@ willClose: () => {
 }).then((result) => {
 /* Read more about handling dismissals below */
 if (result.dismiss === Swal.DismissReason.timer) {
-  this.router.navigate(["/ViajeroHome"])
+  this.router.navigate(["/Viajero/Home"])
 
 }
 })

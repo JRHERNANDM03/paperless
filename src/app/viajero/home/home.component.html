@@ -18,11 +18,11 @@
                    <u> Filtrar Viaje </u>
                   </a>
                   <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" [routerLink]="('/Filtro_NumeroViaje')">Filtrar por Número de viaje</a></li>
+                  <li><a class="dropdown-item" [routerLink]="('/Viajero/Filtro/NumeroViaje')">Filtrar por Número de viaje</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" [routerLink]="('/Filtro_Fecha')">Filtrar por fecha</a></li>
+                    <li><a class="dropdown-item" [routerLink]="('/Viajero/Filtro/Fecha')">Filtrar por fecha</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" [routerLink]="('/Filtro_Estado')">Filtrar por Estado</a></li>
+                    <li><a class="dropdown-item" [routerLink]="('/Viajero/Filtro/Estado')">Filtrar por Estado</a></li>
                   </ul>
               </li>
             </ul>
@@ -55,7 +55,7 @@
               <p class="card-text">Hora de salida: 12:00:00 am</p>
               <hr>
               <p class="card-text card border-secondary mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
-              <a href="/MostrarViaje" style="text-decoration: none;">
+              <a href="/Viajero/Viaje" style="text-decoration: none;">
               <button class="btn btn-outline-primary">Visualizar</button>
             </a>
             </div>

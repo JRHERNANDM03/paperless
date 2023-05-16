@@ -17,6 +17,9 @@ import { EditarGastoComponent } from './viajero/editar-gasto/editar-gasto.compon
 import { NumeroViajeComponent } from './viajero/filtros/numero-viaje/numero-viaje.component';
 import { FechaComponent } from './viajero/filtros/fecha/fecha.component';
 import { EstadoComponent } from './viajero/filtros/estado/estado.component';
+import { HomeDirectorComponent } from './director/home-director/home-director.component';
+import { MostrarViajeDirectorComponent } from './director/mostrar-viaje-director/mostrar-viaje-director.component';
+import { MostrarGastosDirectorComponent } from './director/mostrar-gastos-director/mostrar-gastos-director.component';
 
 
 @NgModule({
@@ -32,6 +35,9 @@ import { EstadoComponent } from './viajero/filtros/estado/estado.component';
     NumeroViajeComponent,
     FechaComponent,
     EstadoComponent,
+    HomeDirectorComponent,
+    MostrarViajeDirectorComponent,
+    MostrarGastosDirectorComponent,
   ],
   imports: [
     BrowserModule,

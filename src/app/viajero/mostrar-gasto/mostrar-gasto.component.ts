@@ -37,7 +37,7 @@ export class MostrarGastoComponent {
           confirmButtonText: 'Aceptar',
         }
       ).then((result) => {
-        this.router.navigate(["/MostrarGastos"])
+        this.router.navigate(["/Viajero/Gastos"])
       })
     }
    })

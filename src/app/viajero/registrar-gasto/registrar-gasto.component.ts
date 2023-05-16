@@ -26,7 +26,7 @@ success(){
  }).then((result) => {
   if(result.isConfirmed)
   {
-    this.router.navigate(["/MostrarGastos"])
+    this.router.navigate(["/Viajero/Gastos"])
   }
  })
 
