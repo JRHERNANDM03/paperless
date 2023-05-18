@@ -5,24 +5,35 @@
 
 <div class="container">
     
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <nav class="navbar navbar-dark ">
     <div class="container-fluid" style="background-color: #73246D; padding: 1%;">
       <a class="navbar-brand" style="color: white;">Usuario: 16136996</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white;">
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="" style="color: white;"></a>
-          </li>
-        </ul>
-        <form class="d-flex" role="search" method="GET" action="/Viajero/Gastos">
-          <button class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="regresar">Regresar</button>
-        </form>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #73246D;">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"  style="color: white;">Usuario: 16136996</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/Viajero/Home">Home</a>
+            </li>
+            <br>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/Viajero/Gastos">Regresar</a>
+            </li>
+          </ul>
+          <br>
+          <form class="d-flex mt-3" role="search" action="/">
+            <button class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="cerrar sesión">Cerrar Sesión</button>
+          </form>
+        </div>
       </div>
     </div>
-  </nav> 
+  </nav>
 
 </div>
 
@@ -33,54 +44,97 @@
 <div class="container" style="padding: 1%;">
 <h5 style="color: black;">Viaje: #2000001826</h5>
 
-<form class="row g-3" style="padding-top: 3%; padding-bottom: 8%;">
+<div class="" style="padding-top: 2%;">
+<button (click)="update()" class="btn btn-outline-warning">Actualizar Gasto</button>
+</div>
+
+<form class="row g-3" style="padding-top: 1%; padding-bottom: 2%;">
+
+   <!-- <div class="col-md3">
+    <button class="btn btn-outline-warning" name="update">Actualizar Gasto</button>
+  </div> -->
+
+  <div class="form-floating">
+    <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
+      <option selected>ALIE ALIMENTO P/EMPLEADO</option>
+      <option value="ALID">ALID ALIM REST LIVER P/COMPLEMENTAR</option>
+      <option value="ALIL">ALIL ALIMENTO P/LPC</option>
+      <option value="ALIE">ALIE ALIMENTO p/EMPLEADO</option>
+      <option value="ZAVN">ZAVN AVION NO UTILIZADO P//EMPRESA</option>
+      <option value="AVIR">AVIR AVION P/EMPR.REUTILIZADO</option>
+      <option value="AVIP">AVIP AVION P/EMPRESA</option>
+      <option value="ZAVU">ZAVU AVION UTILIZADO P/EMPRESA</option>
+      <option value="CASE">CASE CASETA P/EMPLEADO</option>
+    </select>
+    <label for="floatingSelect">Tipo de Gasto</label>
+  </div>
+
+<div class="row" style="padding-top: 3%;">
+  <div class="col form-floating mb-3" >
+    <input type="number" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="500" aria-label="First name" required>
+    <label for="floatingInput">Importe</label>
+  </div>
+  <div class="col form-floating mb-3">
+    <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
+      <option selected>MXP</option>
+      <option value="MXP">MXP Pesos Mexicanos</option>
+      <option value="option2">OPTION2</option>
+      <option value="option3">OPTION3</option>
+      <option value="option4">OPTION4</option>
+      <option value="option5">OPTION5</option>
+      <option value="option6">OPTION6</option>
+      <option value="option7">OPTION7</option>
+      <option value="option8">OPTION8</option>
+    </select>
+    <label for="floatingSelect">Moneda</label>
+  </div>
+</div> 
+
+<div class="col-md-4">
+  <label for="" class="form-label" style="color: black;">Fecha de gasto: 12/12/2021</label>
+  <input type="date" name="date" class="form-control card border-dark mb-3" id="inputEmail4" required>
+</div>
+
+<div class="row" style="padding-top: 3%;">
+  <div class="col form-floating mb-3">
+    <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
+      <option selected>F2 IVA ACREDITABLE 16%</option>
+      <option value="F2">F2 IVA ACREDITABLE 16%</option>
+      <option value="E3">E3 IVA ACREDITABLE EXENTO</option>
+      <option value="option3">OPTION3</option>
+      <option value="option4">OPTION4</option>
+      <option value="option5">OPTION5</option>
+      <option value="option6">OPTION6</option>
+      <option value="option7">OPTION7</option>
+      <option value="option8">OPTION8</option>
+    </select>
+    <label for="floatingSelect">Indicador de impuestos</label>
+  </div>
+  <div class="col form-floating mb-3" >
+    <input type="number" class="form-control card border-dark mb-3" id="floatingInput" value="1" aria-label="First name" required>
+    <label for="floatingInput">Importe</label>
+  </div>
+</div>
+
+<div class="form-floating">
+    <input type="text" class="form-control card border-dark mb-3" value="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque explicabo, libero hic praesentium repellendus commodi. Atque reiciendis quaerat sequi officiis quos voluptate laborum dicta at ad, minima ex eos molestias." aria-label="First name">
+    <label for="floatingTextarea">Info</label>
+  </div>
+
+  <div class="form-floating">
+    <input type="text" class="form-control card border-dark mb-3" value="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque explicabo, libero hic praesentium repellendus commodi. Atque reiciendis quaerat sequi officiis quos voluptate laborum dicta at ad, minima ex eos molestias." aria-label="First name">
+    <label for="floatingTextarea">Descripción</label>
+  </div>
+
+<div class="col-md-12">
+  <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
+  <input type="file" name="file" class="form-control card border-dark mb-3" id="inputPassword4" required>
+</div>
+
+ <!-- <div class="col-md3">
+    <button class="btn btn-outline-warning" name="update">Actualizar Gasto</button>
+  </div> -->
   
-
-  <div class="col-md-9">
-    <label for="inputEmail4" class="form-label" style="color: black;">TIPO DE GASTO:</label>
-    <input type="text" class="form-control card border-dark mb-3" id="inputEmail4" value="ALIE ALIMENTO P/EMPLEADO" required>
-  </div>
-
-  <div class="col-md-4">
-    <label for="inputEmail4" class="form-label" style="color: black;">IMPORTE:</label>
-    <input type="text" class="form-control card border-dark mb-3" id="inputEmail4" value="500.00" required>
-  </div>
-  
-  <div class="col-md-4">
-    <label for="inputPassword4" class="form-label" style="color: black;">MONEDA:</label>
-    <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="MXP - PESOS MEXICANOS" required>
-  </div>
-  
-  <div class="col-md-4">
-    <label for="inputPassword4" class="form-label" style="color: black;">FECHA DE GASTO:</label>
-    <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="30/05/2023" required>
-  </div>
-  
-  <div class="col-md-4">
-    <label for="inputEmail4" class="form-label" style="color: black;">INDICADOR DE IMPUESTOS:</label>
-    <input type="text" class="form-control card border-dark mb-3" id="inputEmail4" value="F2 IVA ACREDITABLE 16%" required>
-  </div>
-  
-  <div class="col-md-4">
-    <label for="inputPassword4" class="form-label" style="color: black;">CAINTIDAD:</label>
-    <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="1" required>
-  </div>
-
-  <div class="col-md-4">
-    <label for="inputPassword4" class="form-label" style="color: black;">INFORMACIÓN*:</label>
-    <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="" required>
-  </div>
-
-  <div class="col-md-12">
-    <label for="inputPassword4" class="form-label" style="color: black;">DESCRIPCIÓN:</label>
-    <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi laudantium ex voluptas fugit facere suscipit! Molestias maxime doloremque culpa animi modi autem reiciendis. Repudiandae temporibus reiciendis beatae illo, nobis error." required>
-  </div>
-
-  <div class="col-md-3">
-    <label for="inputPassword4" class="form-label" style="color: black;">JUSTIFICACIÓN:</label>
-    <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="file.pdf" required>
-  </div>
-
 </form>
 
 <button (click)="update()" class="btn btn-outline-warning">Actualizar Gasto</button>

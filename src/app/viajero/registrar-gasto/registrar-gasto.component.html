@@ -4,25 +4,37 @@
 </div>
 
 <div class="container">
-    
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+
+  <nav class="navbar navbar-dark ">
     <div class="container-fluid" style="background-color: #73246D; padding: 1%;">
       <a class="navbar-brand" style="color: white;">Usuario: 16136996</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: white;">
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="" style="color: white;"></a>
-          </li>
-        </ul>
-        <form class="d-flex" role="search" method="GET" action="/Viajero/Gastos">
-          <button class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="regresar">Regresar</button>
-        </form>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #73246D;">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"  style="color: white;">Usuario: 16136996</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/Viajero/Home">Home</a>
+            </li>
+            <br>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/Viajero/Gastos">Regresar</a>
+            </li>
+          </ul>
+          <br>
+          <form class="d-flex mt-3" role="search" action="/">
+            <button class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="cerrar sesión">Cerrar Sesión</button>
+          </form>
+        </div>
       </div>
     </div>
-  </nav> 
+  </nav>
+    
 
 </div>
 
@@ -36,11 +48,10 @@
 
 <div class="container card border-dark mb-3">
     <div class="container" style="padding: 1%;">
-        <form class="row g-3" action="register_success.html" method="POST" enctype="multipart/form-data" style="padding-top: 5%; padding-bottom: 8%;">
-  
-            <div class="col-md-12">
-                <label for="inputState" class="form-label">Tipo de gasto</label>
-                <select id="inputState" name="type" class="form-select card border-dark mb-3" required>
+        <form class="row g-3" action="register_success.html" method="POST" enctype="multipart/form-data" style="padding-top: 5%; padding-bottom: 2%;">
+
+              <div class="form-floating">
+                <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
                   <option selected>Choose...</option>
                   <option value="ALID">ALID ALIM REST LIVER P/COMPLEMENTAR</option>
                   <option value="ALIL">ALIL ALIMENTO P/LPC</option>
@@ -51,16 +62,16 @@
                   <option value="ZAVU">ZAVU AVION UTILIZADO P/EMPRESA</option>
                   <option value="CASE">CASE CASETA P/EMPLEADO</option>
                 </select>
+                <label for="floatingSelect">Tipo de Gasto</label>
               </div>
             
-            <div class="col-md-6">
-              <label for="inputPassword4" class="form-label" style="color: black;">Importe:</label>
-              <input type="number" step="any" name="import" class="form-control card border-dark mb-3" id="inputPassword4" placeholder="Ingresa el importe" required>
-            </div>
-            
-            <div class="col-md-6">
-                <label for="inputState" class="form-label">Moneda</label>
-                <select id="inputState" name="coin" class="form-select card border-dark mb-3" required>
+            <div class="row" style="padding-top: 3%;">
+              <div class="col form-floating mb-3" >
+                <input type="number" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" placeholder="Ingresa el importe" aria-label="First name" required>
+                <label for="floatingInput">Importe</label>
+              </div>
+              <div class="col form-floating mb-3">
+                <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
                   <option selected>Choose...</option>
                   <option value="MXP">MXP Pesos Mexicanos</option>
                   <option value="option2">OPTION2</option>
@@ -70,17 +81,19 @@
                   <option value="option6">OPTION6</option>
                   <option value="option7">OPTION7</option>
                   <option value="option8">OPTION8</option>
-                </select> 
-            </div>
+                </select>
+                <label for="floatingSelect">Moneda</label>
+              </div>
+            </div> 
             
-            <div class="col-md-6">
-              <label for="inputEmail4" class="form-label" style="color: black;">Fecha de gasto:</label>
+            <div class="col-md-4">
+              <label for="" class="form-label" style="color: black;">Fecha de gasto:</label>
               <input type="date" name="date" class="form-control card border-dark mb-3" id="inputEmail4" required>
             </div>
             
-            <div class="col-md-6">
-                <label for="inputState" class="form-label">Indicador de impuestos</label>
-                <select id="inputState" name="indicator" class="form-select card border-dark mb-3" required>
+            <div class="row" style="padding-top: 3%;">
+              <div class="col form-floating mb-3">
+                <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
                   <option selected>Choose...</option>
                   <option value="F2">F2 IVA ACREDITABLE 16%</option>
                   <option value="E3">E3 IVA ACREDITABLE EXENTO</option>
@@ -91,21 +104,22 @@
                   <option value="option7">OPTION7</option>
                   <option value="option8">OPTION8</option>
                 </select>
+                <label for="floatingSelect">Indicador de impuestos</label>
+              </div>
+              <div class="col form-floating mb-3" >
+                <input type="number" class="form-control card border-dark mb-3" id="floatingInput" value="1" aria-label="First name" required>
+                <label for="floatingInput">Importe</label>
+              </div>
             </div>
       
-            <div class="col-md-4">
-              <label for="inputPassword4" class="form-label" style="color: black;">Cantidad:</label>
-              <input type="number" name="count" class="form-control card border-dark mb-3" id="inputPassword4" value="1" required>
-            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control card border-dark mb-3" placeholder="Campo opcional" aria-label="First name">
+                <label for="floatingTextarea">Info</label>
+              </div>
       
-            <div class="col-md-8">
-              <label for="inputPassword4" class="form-label" style="color: black;">Info breve:</label>
-              <input type="text" name="info" class="form-control card border-dark mb-3" id="inputPassword4" placeholder="Campo opcional">
-            </div>
-      
-            <div class="col-md-12">
-              <label for="inputPassword4" class="form-label" style="color: black;">Descripción:</label>
-              <textarea name="description" required></textarea>
+            <div class="form-floating">
+              <textarea class="form-control card border-dark mb-3" placeholder="Leave a comment here" id="floatingTextarea" required></textarea>
+              <label for="floatingTextarea">Descripción</label>
             </div>
       
             <div class="col-md-12">

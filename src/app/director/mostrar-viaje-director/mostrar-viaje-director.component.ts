@@ -54,4 +54,14 @@ export class MostrarViajeDirectorComponent {
     this.router.navigate(["/Director/Gastos"])
   }
 
+  status()
+  {
+    Swal.fire({
+      icon: 'info',
+      title: 'Estado: PENDIENTE',
+      showCancelButton: false,
+      confirmButtonColor: 'purple'
+    })
+  }
+
 }

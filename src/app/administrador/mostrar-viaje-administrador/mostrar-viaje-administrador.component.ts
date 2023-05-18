@@ -18,4 +18,14 @@ export class MostrarViajeAdministradorComponent {
     this.router.navigate(["/Administrador/Gastos"])
   }
 
+  status()
+  {
+    Swal.fire({
+      icon: 'info',
+      title: 'Estado: APROBADO',
+      showCancelButton: false,
+      confirmButtonColor: 'purple'
+    })
+  }
+
 }
