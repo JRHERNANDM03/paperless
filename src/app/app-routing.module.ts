@@ -25,6 +25,16 @@ import { MostrarDetallesGastosAdministradorComponent } from './administrador/mos
 import { ANumeroEmpleadoComponent } from './administrador/filtros/a-numero-empleado/a-numero-empleado.component';
 import { ANumeroViajeComponent } from './administrador/filtros/a-numero-viaje/a-numero-viaje.component';
 import { AFechaComponent } from './administrador/filtros/a-fecha/a-fecha.component';
+import { HomeChangeUserComponent } from './viajero/home-change-user/home-change-user.component';
+import { HomeOtherUserComponent } from './otherUser/home-other-user/home-other-user.component';
+import { MostrarViajeOtherUserComponent } from './otherUser/mostrar-viaje-other-user/mostrar-viaje-other-user.component';
+import { MostrarGastoOtherUserComponent } from './otherUser/mostrar-gasto-other-user/mostrar-gasto-other-user.component';
+import { DetalleGastoOtherUserComponent } from './otherUser/detalle-gasto-other-user/detalle-gasto-other-user.component';
+import { OtherEstadoComponent } from './otherUser/filtros/other-estado/other-estado.component';
+import { OtherFechaComponent } from './otherUser/filtros/other-fecha/other-fecha.component';
+import { OtherNumeroViajeComponent } from './otherUser/filtros/other-numero-viaje/other-numero-viaje.component';
+import { RegistrarGastoOtherUserComponent } from './otherUser/registrar-gasto-other-user/registrar-gasto-other-user.component';
+import { EditarGastoOtherUserComponent } from './otherUser/editar-gasto-other-user/editar-gasto-other-user.component';
 
 const routes: Routes = [
   { path:'', component:IndexComponent},
@@ -37,6 +47,7 @@ const routes: Routes = [
   { path:'Viajero/Filtro/NumeroViaje', component:NumeroViajeComponent},
   { path:'Viajero/Filtro/Fecha', component:FechaComponent},
   { path:'Viajero/Filtro/Estado', component:EstadoComponent},
+  { path:'Viajero/CambiarUsuaro', component:HomeChangeUserComponent},
   { path:'Director/Home', component:HomeDirectorComponent},
   { path:'Director/Viaje', component:MostrarViajeDirectorComponent},
   { path:'Director/Gastos', component:MostrarGastosDirectorComponent},
@@ -51,7 +62,16 @@ const routes: Routes = [
   { path:'Administrador/Detalles/Gastos', component:MostrarDetallesGastosAdministradorComponent},
   { path:'Administrador/Filtro/NumeroEmpleado', component:ANumeroEmpleadoComponent},
   { path:'Administrador/Filtro/NumeroViaje', component:ANumeroViajeComponent},
-  { path:'Administrador/Filtro/Fecha', component:AFechaComponent}
+  { path:'Administrador/Filtro/Fecha', component:AFechaComponent},
+  { path:'otherUser/Home', component:HomeOtherUserComponent},
+  { path:'otherUser/Viaje', component:MostrarViajeOtherUserComponent},
+  { path:'otherUser/Gastos', component:MostrarGastoOtherUserComponent},
+  { path:'otherUser/Filtros/Fecha', component:OtherFechaComponent},
+  { path:'otherUser/Filtros/Estado', component:OtherEstadoComponent},
+  { path:'otherUser/Filtros/NumeroViaje', component:OtherNumeroViajeComponent},
+  { path:'otherUser/Detalles/Gasto', component:DetalleGastoOtherUserComponent},
+  { path:'otherUser/Registrar/Gasto', component:RegistrarGastoOtherUserComponent},
+  { path:'otherUser/Editar/Gasto', component:EditarGastoOtherUserComponent}
   
 ];
 

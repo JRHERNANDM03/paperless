@@ -32,6 +32,15 @@ import { MostrarDetallesGastosAdministradorComponent } from './administrador/mos
 import { ANumeroEmpleadoComponent } from './administrador/filtros/a-numero-empleado/a-numero-empleado.component';
 import { ANumeroViajeComponent } from './administrador/filtros/a-numero-viaje/a-numero-viaje.component';
 import { AFechaComponent } from './administrador/filtros/a-fecha/a-fecha.component';
+import { HomeOtherUserComponent } from './otherUser/home-other-user/home-other-user.component';
+import { OtherEstadoComponent } from './otherUser/filtros/other-estado/other-estado.component';
+import { OtherFechaComponent } from './otherUser/filtros/other-fecha/other-fecha.component';
+import { OtherNumeroViajeComponent } from './otherUser/filtros/other-numero-viaje/other-numero-viaje.component';
+import { MostrarViajeOtherUserComponent } from './otherUser/mostrar-viaje-other-user/mostrar-viaje-other-user.component';
+import { DetalleGastoOtherUserComponent } from './otherUser/detalle-gasto-other-user/detalle-gasto-other-user.component';
+import { MostrarGastoOtherUserComponent } from './otherUser/mostrar-gasto-other-user/mostrar-gasto-other-user.component';
+import { RegistrarGastoOtherUserComponent } from './otherUser/registrar-gasto-other-user/registrar-gasto-other-user.component';
+import { EditarGastoOtherUserComponent } from './otherUser/editar-gasto-other-user/editar-gasto-other-user.component';
 
 
 @NgModule({
@@ -62,6 +71,15 @@ import { AFechaComponent } from './administrador/filtros/a-fecha/a-fecha.compone
     ANumeroEmpleadoComponent,
     ANumeroViajeComponent,
     AFechaComponent,
+    HomeOtherUserComponent,
+    OtherEstadoComponent,
+    OtherFechaComponent,
+    OtherNumeroViajeComponent,
+    MostrarViajeOtherUserComponent,
+    DetalleGastoOtherUserComponent,
+    MostrarGastoOtherUserComponent,
+    RegistrarGastoOtherUserComponent,
+    EditarGastoOtherUserComponent,
   ],
   imports: [
     BrowserModule,

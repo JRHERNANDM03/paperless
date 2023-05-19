@@ -1,0 +1,67 @@
+<div id="contenerdorCentrador">
+    <img src="../../../assets/image/logo_panel.png" id="logo" alt="Logo Liverpool">
+</div>
+
+<div class="container">
+
+<nav class="navbar navbar-dark ">
+<div class="container-fluid" style="background-color: #73246D; padding: 1%;">
+
+<a class="navbar-brand" style="color: white;">Usuario: 16136996</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
+  <span class="navbar-toggler-icon" style="color: white; "></span>
+</button>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #73246D;">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"  style="color: white;">Usuario: 16136996</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/otherUser/Home">Home</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Filtrar viaje
+        </a>
+        <ul class="dropdown-menu dropdown-menu-light">
+          <li><a class="dropdown-item" href="/otherUser/Filtros/NumeroViaje">Número de viaje</a></li>
+            <hr class="dropdown-divider">
+          <li><a class="dropdown-item" href="/otherUser/Filtros/Fecha">Fecha</a></li>
+          <hr class="dropdown-divider">
+        <li><a class="dropdown-item" href="/otherUser/Filtros/Estado">Estado</a></li>
+        </ul>
+      </li>
+    </ul>
+    <form class="d-flex mt-3" role="search" action="/Viajero/Home">
+      <button class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="cerrar sesión">Regresar a la sesión actual</button>
+    </form>
+  </div>
+</div>
+</div>
+</nav>
+
+</div>  
+
+
+<div class="text-center" style="padding-top: 4%; padding-bottom: 3%;">
+    <h3 style="color: black;">Búsqueda estado</h3>
+  </div>
+  
+  <div class="container">
+  <div id="contenerdorCentrador" style="justify-content: space-between;">
+      <a style="text-decoration: none; color: #295bd9;" title="ESTADO PENDIENTE"><button id="button">PENDIENTE</button></a>
+      <a style="text-decoration: none; color: #D9CE29;" title="ESTADO APROBADO"><button id="button">APROBADO</button></a>
+      <a style="text-decoration: none; color: #D92929;" title="ESTADO RECHAZADO"><button id="button">RECHAZADO</button></a>
+    </div>
+  </div>
+  
+  <div class="container" id="cards" style="padding-bottom: 5%;">
+    <hr>
+  
+    <h4 style="color: black;">Listado de todos los viajes en el estado $valor.</h4>
+      <br>
+  
+  
+  

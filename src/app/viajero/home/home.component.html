@@ -20,21 +20,21 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body">
-            <div class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
-              <h5 style="color: white;">Correo1</h5>
-              <p style="color: white;">Details....</p>
+            <div (click)="getEmail()" class="container" style="background-color: rgba(0, 0, 0, 0.192); border-radius: 10px; cursor: pointer;">
+              <h5 class="textEmail" style="color: white;">Correo1</h5>
+              <p class="textDetail" style="color: white;">Details....</p>
             </div>
-            <div class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
-              <h5 style="color: white;">Correo2</h5>
-              <p style="color: white;">Details....</p>
+            <div (click)="getEmailRequest2()" id="divChange2" class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
+              <h5 class="textEmail2" style="color: white;">Correo2</h5>
+              <p class="textDetail2" style="color: white;">Details....</p>
             </div>
-            <div class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
-              <h5 style="color: white;">Correo3</h5>
-              <p style="color: white;">Details....</p>
+            <div (click)="getEmailRequest3()" id="divChange3" class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
+              <h5 class="textEmail3" style="color: white;">Correo3</h5>
+              <p class="textDetail3" style="color: white;">Details....</p>
             </div>
-            <div class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
-              <h5 style="color: white;">Correo4</h5>
-              <p style="color: white;">Details....</p>
+            <div (click)="getEmailRequest4()" id="divChange4" class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
+              <h5 class="textEmail4" style="color: white;">Correo4</h5>
+              <p class="textDetail4" style="color: white;">Details....</p>
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
                 <a class="nav-link active" aria-current="page" href="/Viajero/Home">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link">Cambiar usuario</a>
+                <a (click)="user()" class="nav-link" style="cursor: pointer;">Cambiar usuario</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

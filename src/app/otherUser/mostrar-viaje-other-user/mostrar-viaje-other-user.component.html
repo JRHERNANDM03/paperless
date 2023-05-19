@@ -1,0 +1,127 @@
+<div id="contenerdorCentrador">
+    <img src="../../../assets/image/logo_panel.png" id="logo" alt="Logo Liverpool">
+</div>
+
+<div class="container">
+
+<nav class="navbar navbar-dark ">
+<div class="container-fluid" style="background-color: #73246D; padding: 1%;">
+
+<a class="navbar-brand" style="color: white;">Usuario: 16136996</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
+  <span class="navbar-toggler-icon" style="color: white; "></span>
+</button>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #73246D;">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"  style="color: white;">Usuario: 16136996</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/otherUser/Home">Home</a>
+      </li>
+    </ul>
+    <form class="d-flex mt-3" role="search" action="/Viajero/Home">
+      <button class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="cerrar sesión">Regresar a la sesión actual</button>
+    </form>
+  </div>
+</div>
+</div>
+</nav>
+
+</div>  
+
+<div class="container" style="padding: 1%;">
+    <h5 style="color: black;">Detalles del viaje: #2000001826</h5>
+
+    <div class="container"><h4>Ingresado como el usuario: 1222343</h4></div>
+
+
+    <div class="" style="padding-top: 2%;">
+    <img src="../../../assets/image/tijuana.jpg" alt="Tijuana" width="350rem">
+    </div>
+
+    <div id="contenerdorCentrador" style="justify-content: space-between; padding-top: 3%;">
+        <a [routerLink]="('/otherUser/Gastos')" class="btn btn-primary" title="Mostrar gastos">Visualizar gastos de viaje</a>
+    </div>
+
+    <hr>
+
+    <form class="row g-3" style="padding-top: 5%; padding-bottom: 8%;">
+      
+      <div class="row">
+        <div class="col">
+          Estado:
+          <p (click)="status()" style=" color: grey; padding: 2%;" title="PENDIENTE"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="8"/>
+          </svg></p>
+        </div>
+        <div class="col">
+          Total acumulable:
+          <input type="text" class="form-control card border-primary mb-3" id="inputEmail4" value="$ 13,500" readonly style="color: #0059FF;">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          Viaje:
+          <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="2000001827" readonly>
+        </div>
+        <div class="col">
+          Empleado:
+          <input type="text" class="form-control card border-dark mb-3" id="inputEmail4" value="16136996" readonly>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col">
+          Tipo:
+          <input type="text" class="form-control card border-dark mb-3" value="PL" aria-label="First name" readonly>
+        </div>
+        <div class="col">
+          Destino:
+          <input type="text" class="form-control card border-dark mb-3" value="Tijuana" aria-label="Last name" readonly>
+        </div>
+        <div class="col">
+          Pais:
+          <input type="text" class="form-control card border-dark mb-3" value="MX" aria-label="Last name" readonly>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label for="inputPassword4" class="form-label" style="color: black;">Región:</label>
+        <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="" readonly>
+      </div>
+
+      <div class="col-md-8">
+        <label for="inputPassword4" class="form-label" style="color: black;">Motivo:</label>
+        <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="Pruebas cambio de sociedades 21jun21" readonly>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          Fecha de inicio:
+          <input type="text" class="form-control card border-dark mb-3" value="12/12/2021" aria-label="First name" readonly>
+        </div>
+        <div class="col">
+          Hora de inicio:
+          <input type="text" class="form-control card border-dark mb-3" value="12:00:00 am" aria-label="Last name" readonly>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col">
+          Fecha Fin:
+          <input type="text" class="form-control card border-dark mb-3" value="13/12/2021" aria-label="First name" readonly>
+        </div>
+        <div class="col">
+          Hora Fin:
+          <input type="text" class="form-control card border-dark mb-3" value="12:00:00 am" aria-label="Last name" readonly>
+        </div>
+      </div>
+    </form>
+
+    </div>
+
+
