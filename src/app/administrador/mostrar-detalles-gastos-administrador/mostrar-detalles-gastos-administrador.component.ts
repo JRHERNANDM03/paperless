@@ -12,39 +12,7 @@ import Swal from 'sweetalert2'
 export class MostrarDetallesGastosAdministradorComponent {
 
   constructor (private router:Router){}
-
- /* estado()
-  {
-    Swal.fire({
-      icon: 'info',
-  title: 'Puedes enviar un comentario',
-  input: 'text',
-  inputAttributes: {
-    autocapitalize: 'off'
-  },
-    showCancelButton: true,
-    confirmButtonColor: '#22B41B',
-    confirmButtonText: 'APROBAR',
-    cancelButtonColor: '#D60E0E',
-    cancelButtonText: 'RECHAZAR',
-    backdrop: true,
-    allowOutsideClick: false,
-    allosEscapeKey: false,
-    allosEnterKey: false,
-    stopKeydownPropagation: false,
-}).then((result) => {
-  if (result.isConfirmed) {
-    Swal.fire(
-      window.location="./informe_gasto.html"
-    )
-  }
-  else
-  {
-    window.location="./informe_gasto.html"
-  }
-    })
-  }*/
-
+  
   estado()
   {
     Swal.fire({
@@ -53,10 +21,13 @@ export class MostrarDetallesGastosAdministradorComponent {
       input: 'textarea',
       showDenyButton: true,
       showConfirmButton: true,
-      confirmButtonText: 'APROBAR',
+      confirmButtonText: 'Aprobar',
       confirmButtonColor: 'green',
-      denyButtonText: 'RECHAZAR',
+      denyButtonText: 'Rechazar',
       denyButtonColor: 'red',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      showCloseButton: true
     }).then((respuesta) => {
       if(respuesta.isConfirmed)
       {

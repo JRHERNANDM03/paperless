@@ -41,11 +41,14 @@
     <h2 style="color: black;">FORMUALRIO PARA LA ACTUALIZACIÓN DEL REGISTRO DE GASTO</h2>
 </div>
 
-<div class="container"><h4>Ingresado como el usuario: 1222343</h4></div>
-
+<div class="container" style="padding: 1%;">
+  <div id="contenerdorCentrador" style="justify-content: space-between;">
+    <h4 style="text-decoration: none;" >Viaje: 2000001826</h4>
+    <h4 style="text-decoration: underline; color: gray;" >José Ramón (122112)</h4>
+  </div>
+  </div>
 
 <div class="container" style="padding: 1%;">
-<h5 style="color: black;">Viaje: #2000001826</h5>
 
 <div class="" style="padding-top: 2%;">
 <button (click)="update()" class="btn btn-outline-warning">Actualizar Gasto</button>
@@ -91,15 +94,20 @@
     </select>
     <label for="floatingSelect">Moneda</label>
   </div>
+  <div class="col form-floating mb-3" >
+    <input type="number" class="form-control card border-dark mb-3" id="floatingInput" value="1" aria-label="First name" required>
+    <label for="floatingInput">Cantidad</label>
+  </div>
 </div> 
 
 <div class="col-md-4">
-  <label for="" class="form-label" style="color: black;">Fecha de gasto: 12/12/2021</label>
-  <input type="date" name="date" class="form-control card border-dark mb-3" id="inputEmail4" required>
+  <label for="" class="form-label" style="color: black;">Fecha de gasto:</label>
+  <input type="date" name="date" class="form-control card border-dark mb-3" id="inputEmail4" value="2021-12-12" required>
 </div>
 
-<div class="row" style="padding-top: 3%;">
-  <div class="col form-floating mb-3">
+
+  <div class="col-md-4">
+    <label for="" class="form-label" style="color: black;">Indicador de impuestos:</label>
     <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
       <option selected>F2 IVA ACREDITABLE 16%</option>
       <option value="F2">F2 IVA ACREDITABLE 16%</option>
@@ -110,14 +118,10 @@
       <option value="option6">OPTION6</option>
       <option value="option7">OPTION7</option>
       <option value="option8">OPTION8</option>
-    </select>
-    <label for="floatingSelect">Indicador de impuestos</label>
+    </select>  
   </div>
-  <div class="col form-floating mb-3" >
-    <input type="number" class="form-control card border-dark mb-3" id="floatingInput" value="1" aria-label="First name" required>
-    <label for="floatingInput">Importe</label>
-  </div>
-</div>
+  
+
 
 <div class="form-floating">
     <input type="text" class="form-control card border-dark mb-3" value="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque explicabo, libero hic praesentium repellendus commodi. Atque reiciendis quaerat sequi officiis quos voluptate laborum dicta at ad, minima ex eos molestias." aria-label="First name">

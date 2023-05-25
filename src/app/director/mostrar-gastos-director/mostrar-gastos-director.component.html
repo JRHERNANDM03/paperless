@@ -19,18 +19,32 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/Director/Home">Home</a>
+              <a class="nav-link active" aria-current="page" href="/Director/Home">Home - Mis Viajes</a>
             </li>
-            <br>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/Director/Pendientes">Viajes pendientes por aprobar</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrar viaje
+              </a>
+              <ul class="dropdown-menu dropdown-menu-light">
+                <li><a class="dropdown-item" href="/Director/Filtro/NumeroEmpleado">Número de empleado</a></li>
+                  <hr class="dropdown-divider">
+                <li><a class="dropdown-item" href="/Director/Filtro/NumeroViaje">Número de viaje</a></li>
+                  <hr class="dropdown-divider">
+                <li><a class="dropdown-item" href="/Director/Filtro/Fecha">Fecha</a></li>
+                <hr class="dropdown-divider">
+              <li><a class="dropdown-item" href="/Director/Filtro/Estado">Estado</a></li>
+              </ul>
+            </li>
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="/Director/Viaje">Regresar</a>
             </li>
-            <br>
             <li class="nav-item">
               <a (click)="info()" class="nav-link" aria-current="page" style="cursor: pointer;">Ayuda</a>
             </li>
           </ul>
-          <br>
           <form class="d-flex mt-3" role="search" action="/">
             <button class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="cerrar sesión">Cerrar Sesión</button>
           </form>
@@ -43,9 +57,9 @@
 <h3 style="color: black;">REGISTRO DE GASTOS DE VIAJE</h3>
 </div>
 
-<div class="container" style="padding-top: 3%;">
-<h5 style="color: black;">Viaje: 2000001826</h5>
-<h6 style="color: black;">Colaborador: 11124563</h6>
+<div id="contenerdorCentrador" class="text-center" style="padding-top: 3%; justify-content: space-between;">
+<a style="color: black; font-size: x-large;">Viaje: 2000001826</a>
+<a style="color: black; font-size: x-large;">Colaborador: José Ramón (13166996)</a>
 </div>
 
 

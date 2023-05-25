@@ -48,23 +48,28 @@
     <h3 style="color: black;">Búsqueda por fecha de inicio</h3>
   </div>
 
-<div class="container"><h4>Ingresado como el usuario: 1222343</h4></div>
+  <div class="container"><h4 style="text-decoration: underline; color: gray;">José Ramón (12221)</h4></div>
 
 <div class="container" style="padding-top: 3%;">
     <form class="row g-3" action="" method="GET">
       <div class="col-md-6">
         <label for="inputPassword4" class="form-label" style="color: black;">Fecha:</label>
-        <input type="date" name="number_viaje" class="form-control card border-dark mb-3" id="inputPassword4" value="2000001827" required>
+        <input type="date" name="number_viaje" class="form-control card border-dark mb-3" id="inputPassword4" value="2021-12-12" required>
       </div>
+      <!--
       <div class="col-md-2">
         <label for="inputPassword4" class="form-label" style="color: black;"></label>
        <input type="submit" name="find" class="form-control btn btn-primary" id="inputPassword4" value="Buscar">
       </div>
+      -->
     </form>
-  
+    <div class="col-md-2">
+      <label for="inputPassword4" class="form-label" style="color: black;"></label>
+     <input (click)="listar()" type="submit" name="find" class="form-control btn btn-primary" id="inputPassword4" value="Buscar">
+    </div>
   </div>
   
-  <div class="container" id="cards" style="padding-bottom: 5%;">
+  <div class="container" id="cards" style="padding-bottom: 5%;" [style.display]="styleDisplay">
     <hr>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div class="col">

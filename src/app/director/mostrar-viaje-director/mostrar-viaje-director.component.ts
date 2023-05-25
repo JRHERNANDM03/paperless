@@ -17,14 +17,15 @@ export class MostrarViajeDirectorComponent {
   {
     let timerInterval=0;
     Swal.fire({
-      icon: 'question',
-      title: 'APROBAR VIAJE:',
+      title: '¿Aprobar viaje?',
       showConfirmButton: true,
       showCancelButton: true,
       confirmButtonColor: 'green',
-      cancelButtonColor: 'red',
-      confirmButtonText: 'APROBAR',
-      cancelButtonText: 'RECHAZAR',
+      confirmButtonText: 'Aprobar',
+      cancelButtonText: 'Cancelar',
+      showDenyButton: true,
+      denyButtonText: 'Rechazar',
+      denyButtonColor: 'red'
     }).then((result) => {
       if(result.isConfirmed)
       {
@@ -41,10 +42,21 @@ export class MostrarViajeDirectorComponent {
           }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.dismiss === Swal.DismissReason.timer) {
-            this.router.navigate(["/Director/Home"])
+            this.router.navigate(["/Director/Pendientes"])
           
           }
           })
+      }else if(result.isDenied)
+      {
+        Swal.fire({
+          icon: 'info',
+          iconColor: 'red',
+          title: 'Viaje rechazado',
+          showCancelButton: false,
+          showConfirmButton: true,
+          confirmButtonColor: 'blue',
+          confirmButtonText: 'Ok'
+        })
       }
     })
   }

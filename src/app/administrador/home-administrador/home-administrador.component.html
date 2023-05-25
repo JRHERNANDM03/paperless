@@ -19,9 +19,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-          <div class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
-            <h5 style="color: white;">Correo1</h5>
-            <p style="color: white;">Details....</p>
+          <div (click)="email()" id="div1" class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
+            <h5 class="title" style="color: white;">Autorización</h5>
+            <p class="text" style="color: white;">Nuevo viaje Aprobado</p>
+            <p class="detail" style="color: white; display: none;">El usuario José Ramón (16136996) ha concluido su proceso de captura de gastos de viaje.</p>
           </div>
           <div class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
             <h5 style="color: white;">Correo2</h5>
@@ -50,22 +51,13 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/Administrador/Home">Home</a>
+              <a class="nav-link active" aria-current="page" href="/Administrador/Home">Home - Filtro</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link">Cambiar usuario</a>
+              <a class="nav-link" href="Administrador/Mis-Viajes">Mis Viajes</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Filtrar viaje
-              </a>
-              <ul class="dropdown-menu dropdown-menu-light">
-                <li><a class="dropdown-item" href="/Administrador/Filtro/NumeroEmpleado">Número de empleado</a></li>
-                  <hr class="dropdown-divider">
-                <li><a class="dropdown-item" href="/Administrador/Filtro/NumeroViaje">Número de viaje</a></li>
-                  <hr class="dropdown-divider">
-                <li><a class="dropdown-item" href="/Administrador/Filtro/Fecha">Fecha</a></li>
-              </ul>
+            <li class="nav-item">
+              <a class="nav-link" href="Administrador/Gastos-Pendientes">Gastos Pendientes</a>
             </li>
           </ul>
           <form class="d-flex mt-3" role="search" action="/">
@@ -78,86 +70,55 @@
 
 </div>
 
+<div id="contenerdorCentrador2" class="contianer " style="padding-top: 2%;">
 
-<div class="text-center" style="padding-top: 2%; padding-bottom: 4%;">
-<h2 style="color: black">REGISTRO DE VIAJES CON GASTOS PENDIENTES</h2>        
+  <div class="card border-secondary mb-4" style="padding: 5%; background-color: #73246D;">
+<form action="" method="" >
+
+  <div class="row">
+  <div class="col form-floating mb-4" >
+    <input type="number" class="form-control card border-success mb-3" id="floatingInput" placeholder="Numero de empleado" aria-label="First name" >
+    <label for="floatingInput">Número de empleado</label>
+  </div>
+  <div class="col form-floating mb-4" >
+    <input type="number" class="form-control card border-dark mb-3" id="floatingInput" placeholder="Numero de viaje" aria-label="First name" >
+    <label for="floatingInput">Número de Viaje</label>
+  </div>
 </div>
 
-
-<div class="container" style="padding-bottom: 5%;">
-<div class="row row-cols-1 row-cols-md-3 g-4">
-  <div class="col">
-    <div class="card">
-      <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
-      <div class="card-body">
-        <h5 class="card-title">Tijuana</h5>
-        <hr>
-        <p class="card-text">Número de viaje: 2000001827</p>
-        <p class="card-text">Número de empleado: 16136996</p>
-        <p class="card-text">Tipo: PL</p>
-        <p class="card-text">Fecha de salida: 12/12/2021</p>
-        <p class="card-text">Hora de salida: 12:00:00 am</p>
-        <hr>
-        <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-        <a [routerLink]="('/Administrador/Viaje')" style="text-decoration: none;">
-        <button class="btn btn-outline-primary">Visualizar</button>
-      </a>
-      </div>
-    </div>
+<div class="row">
+  <div class="col form-floating mb-3">
+    <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
+      <option selected>Choose...</option>
+      <option value="Aprobado">Aprobado</option>
+      <option value="Pendiente">Pendiente</option>
+      <option value="Rechazado">Rechazado</option>
+    </select>
+    <label for="floatingSelect">Estatus</label>
   </div>
-  <div class="col">
-    <div class="card">
-      <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-      <div class="card-body">
-        <h5 class="card-title">Londres</h5>
-        <hr>
-        <p class="card-text">Número de viaje: 2000001839</p>
-        <p class="card-text">Número de empleado: 56321664</p>
-        <p class="card-text">Tipo: 02</p>
-        <p class="card-text">Fecha de salida: 12/12/2021</p>
-        <p class="card-text">Hora de salida: 12:00:00 am</p>
-        <hr>
-        <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-        <button class="btn btn-outline-primary">Visualizar</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <img src="../../../assets/image/Mexicali.jfif" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-      <div class="card-body">
-        <h5 class="card-title">MEXICALI</h5>
-        <hr>
-        <p class="card-text">Número de viaje: 200000654</p>
-        <p class="card-text">Número de empleado: 22751248</p>
-        <p class="card-text">Tipo: 02</p>
-        <p class="card-text">Fecha de salida: 12/12/2021</p>
-        <p class="card-text">Hora de salida: 12:00:00 am</p>
-        <hr>
-        <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-        <button class="btn btn-outline-primary">Visualizar</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-      <div class="card-body">
-        <h5 class="card-title">Londres</h5>
-        <hr>
-        <p class="card-text">Número de viaje: 2000001842</p>
-        <p class="card-text">Número de empleado: 53123473</p>
-        <p class="card-text">Tipo: 02</p>
-        <p class="card-text">Fecha de salida: 12/12/2021</p>
-        <p class="card-text">Hora de salida: 12:00:00 am</p>
-        <hr>
-        <p class="card-text card border-secondary mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
-        <button class="btn btn-outline-primary">Visualizar</button>
-      </div>
-    </div>
-  </div>
-  
-  
-</div>
 </div>
 
+<div class="row">
+  <div class="col-md-6">
+    <label for="" class="form-label" style="color: white;">Fecha inicio:</label>
+    <input type="date" name="date" class="form-control card border-dark mb-3" [value]="fechaPasada" id="inputEmail4" required>
+  </div>
+  <div class="col-md-6">
+    <label for="" class="form-label" style="color: white;">Fecha final:</label>
+    <input type="date" name="date" class="form-control card border-dark mb-3" id="dateline" [value]="fechaActual" required>
+  </div>
+</div>
+
+<!--<div class="col-md-8">
+  <input type="submit" name="share" id="button" class="btn btn-lg" value="Buscar">
+</div>-->
+
+<!--<button id="button">Buscar</button>-->
+
+</form>
+
+<a href="/Administrador/Answer" style="text-decoration: none;"><button id="button" class="btn btn-lg">Buscar</button></a>
+
+</div>
+
+</div>

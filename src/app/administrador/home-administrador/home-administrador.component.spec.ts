@@ -6,6 +6,7 @@ describe('HomeAdministradorComponent', () => {
   let component: HomeAdministradorComponent;
   let fixture: ComponentFixture<HomeAdministradorComponent>;
 
+  
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [HomeAdministradorComponent]

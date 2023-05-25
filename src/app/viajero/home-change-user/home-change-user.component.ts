@@ -38,10 +38,10 @@ export class HomeChangeUserComponent implements AfterViewInit {
       }).then((result) => {
         if(result.isConfirmed)
         {
-          this.router.navigate(['/otherUser/Home'])
+          this.router.navigate(['/otherUser/Home']);
         }else if(result.isDenied)
         {
-          this.router.navigate(['/Viajero/Home'])
+          this.router.navigate(['/Viajero/Home']);
         }
       })
         

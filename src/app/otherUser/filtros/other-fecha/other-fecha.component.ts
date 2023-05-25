@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class OtherFechaComponent {
 
+  styleDisplay = 'none';
+
+  listar()
+  {
+    this.styleDisplay='block';
+  }
+
 }

@@ -20,10 +20,12 @@ export class MostrarGastosAdministradorComponent {
       input: 'textarea',
       showDenyButton: true,
       showConfirmButton: true,
-      confirmButtonText: 'APROBAR',
+      confirmButtonText: 'Aprobar',
       confirmButtonColor: 'green',
-      denyButtonText: 'RECHAZAR',
+      denyButtonText: 'Rechazar',
       denyButtonColor: 'red',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar,'
     }).then((respuesta) => {
       if(respuesta.isConfirmed)
       {
@@ -94,6 +96,11 @@ export class MostrarGastosAdministradorComponent {
       showConfirmButton: true,
       confirmButtonColor: 'purple'
     })
+  }
+
+  downloadFile()
+  {
+    window.open('../../assets/files/testFile.pdf');
   }
   
 }

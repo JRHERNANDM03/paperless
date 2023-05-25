@@ -20,14 +20,29 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/Director/Home">Home</a>
+              <a class="nav-link active" aria-current="page" href="/Director/Home">Home - Mis Viajes</a>
             </li>
-            <br>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/Director/Pendientes">Viajes pendientes por aprobar</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrar viaje
+              </a>
+              <ul class="dropdown-menu dropdown-menu-light">
+                <li><a class="dropdown-item" href="/Director/Filtro/NumeroEmpleado">Número de empleado</a></li>
+                  <hr class="dropdown-divider">
+                <li><a class="dropdown-item" href="/Director/Filtro/NumeroViaje">Número de viaje</a></li>
+                  <hr class="dropdown-divider">
+                <li><a class="dropdown-item" href="/Director/Filtro/Fecha">Fecha</a></li>
+                <hr class="dropdown-divider">
+              <li><a class="dropdown-item" href="/Director/Filtro/Estado">Estado</a></li>
+              </ul>
+            </li>
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href="/Director/Gastos">Regresar</a>
             </li>
           </ul>
-          <br>
           <form class="d-flex mt-3" role="search" action="/">
             <button class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="cerrar sesión">Cerrar Sesión</button>
           </form>
@@ -42,10 +57,12 @@
 <h2 style="color: black;">Detalles de gasto seleccionado</h2>
 </div>
 
-<div class="container" style="padding: 1%;">
-  <h5 style="color: black;">Viaje: 2000001826</h5>
-  <h6 style="color: black;">Colaborador: 11124563</h6>
+<div id="contenerdorCentrador" class="container" style="justify-content: space-between;">
+  <a style="color: black; font-size: x-large;">Viaje: 2000001826</a>
+  <a style="color: black; font-size: x-large;">Colaborador: José Ramón (13166996)</a>
+</div>
 
+<div class="container" style="padding: 1%;">
 <form class="row g-3" style="padding-top: 3%; padding-bottom: 8%;">
 
   <div class="col-md-12">
@@ -76,7 +93,7 @@
 </div>
 <div class="col form-floating mb-3" >
   <input type="number" class="form-control card border-dark mb-3" id="floatingInput" value="1" aria-label="First name" readonly>
-  <label for="floatingInput">Importe</label>
+  <label for="floatingInput">Cantidad</label>
 </div>
 </div> 
 
@@ -101,11 +118,11 @@
    <label for="floatingTextarea">Descripción</label>
  </div>
 
-<div class="col-md-12">
- <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
- <input type="text" name="file" class="form-control card border-dark mb-3" id="inputPassword4" value="file.pdf" readonly>
-</div>
+ <div class="col-md-2">
+  <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
+  <a href="/showFile" name="file" class="form-control card border-dark mb-3" id="inputPassword4" style="text-decoration: none;">file.pdf</a>
+ </div>
 </form>
 
 </div>
-
+ 

@@ -1,6 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { SocialLoginModule } from 'angularx-social-login';
+import { GoogleLoginProvider} from 'angularx-social-login';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+
 //Rutas
 import { AppRoutingModule } from './app-routing.module';
 
@@ -29,7 +34,6 @@ import { HomeAdministradorComponent } from './administrador/home-administrador/h
 import { MostrarViajeAdministradorComponent } from './administrador/mostrar-viaje-administrador/mostrar-viaje-administrador.component';
 import { MostrarGastosAdministradorComponent } from './administrador/mostrar-gastos-administrador/mostrar-gastos-administrador.component';
 import { MostrarDetallesGastosAdministradorComponent } from './administrador/mostrar-detalles-gastos-administrador/mostrar-detalles-gastos-administrador.component';
-import { ANumeroEmpleadoComponent } from './administrador/filtros/a-numero-empleado/a-numero-empleado.component';
 import { ANumeroViajeComponent } from './administrador/filtros/a-numero-viaje/a-numero-viaje.component';
 import { AFechaComponent } from './administrador/filtros/a-fecha/a-fecha.component';
 import { HomeOtherUserComponent } from './otherUser/home-other-user/home-other-user.component';
@@ -41,6 +45,23 @@ import { DetalleGastoOtherUserComponent } from './otherUser/detalle-gasto-other-
 import { MostrarGastoOtherUserComponent } from './otherUser/mostrar-gasto-other-user/mostrar-gasto-other-user.component';
 import { RegistrarGastoOtherUserComponent } from './otherUser/registrar-gasto-other-user/registrar-gasto-other-user.component';
 import { EditarGastoOtherUserComponent } from './otherUser/editar-gasto-other-user/editar-gasto-other-user.component';
+import { ShowFileComponent } from './file/show-file/show-file.component';
+import { MostrarMiviajeDirectorComponent } from './director/mostrar-miviaje-director/mostrar-miviaje-director.component';
+import { PendientesHomeComponent } from './director/pendientes-home/pendientes-home.component';
+import { MostrarDetallesMisGastosDirectorComponent } from './director/mostrar-detalles-mis-gastos-director/mostrar-detalles-mis-gastos-director.component';
+import { MostrarMisGastosDirectorComponent } from './director/mostrar-mis-gastos-director/mostrar-mis-gastos-director.component';
+import { RegistrarGastoDirectorComponent } from './director/registrar-gasto-director/registrar-gasto-director.component';
+import { EditarGastoDirectorComponent } from './director/editar-gasto-director/editar-gasto-director.component';
+import { GastosHomeComponent } from './administrador/gastos-home/gastos-home.component';
+import { MostrarMisviajesAdministradorComponent } from './administrador/mostrar-misviajes-administrador/mostrar-misviajes-administrador.component';
+import { MostrarMiviajeAdministradorComponent } from './administrador/mostrar-miviaje-administrador/mostrar-miviaje-administrador.component';
+import { MostrarMisGastosAdministradorComponent } from './administrador/mostrar-mis-gastos-administrador/mostrar-mis-gastos-administrador.component';
+import { MostrarDetallesMisGastosAdministradorComponent } from './administrador/mostrar-detalles-mis-gastos-administrador/mostrar-detalles-mis-gastos-administrador.component';
+import { RegistrarGastoAdministradorComponent } from './administrador/registrar-gasto-administrador/registrar-gasto-administrador.component';
+import { EditarGastoAdministradorComponent } from './administrador/editar-gasto-administrador/editar-gasto-administrador.component';
+import { RespuestaFormularioAdministradorComponent } from './administrador/respuesta-formulario-administrador/respuesta-formulario-administrador.component';
+import { AEstadosComponent } from './administrador/filtros/a-estados/a-estados.component';
+
 
 
 @NgModule({
@@ -68,7 +89,6 @@ import { EditarGastoOtherUserComponent } from './otherUser/editar-gasto-other-us
     MostrarViajeAdministradorComponent,
     MostrarGastosAdministradorComponent,
     MostrarDetallesGastosAdministradorComponent,
-    ANumeroEmpleadoComponent,
     ANumeroViajeComponent,
     AFechaComponent,
     HomeOtherUserComponent,
@@ -80,11 +100,29 @@ import { EditarGastoOtherUserComponent } from './otherUser/editar-gasto-other-us
     MostrarGastoOtherUserComponent,
     RegistrarGastoOtherUserComponent,
     EditarGastoOtherUserComponent,
+    ShowFileComponent,
+    MostrarMiviajeDirectorComponent,
+    PendientesHomeComponent,
+    MostrarDetallesMisGastosDirectorComponent,
+    MostrarMisGastosDirectorComponent,
+    RegistrarGastoDirectorComponent,
+    EditarGastoDirectorComponent,
+    GastosHomeComponent,
+    MostrarMisviajesAdministradorComponent,
+    MostrarMiviajeAdministradorComponent,
+    MostrarMisGastosAdministradorComponent,
+    MostrarDetallesMisGastosAdministradorComponent,
+    RegistrarGastoAdministradorComponent,
+    EditarGastoAdministradorComponent,
+    RespuestaFormularioAdministradorComponent,
+    AEstadosComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule
+    RouterModule,
+    BrowserAnimationsModule,
+    SocialLoginModule
   ],
   providers: [],
   bootstrap: [AppComponent]

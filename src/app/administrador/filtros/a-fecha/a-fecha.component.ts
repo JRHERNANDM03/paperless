@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-a-fecha',
@@ -7,6 +6,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./a-fecha.component.css']
 })
 export class AFechaComponent {
+
+  styleDisplay = 'none';
+
+  listar()
+  {
+    this.styleDisplay='block';
+  }
   
 
 }

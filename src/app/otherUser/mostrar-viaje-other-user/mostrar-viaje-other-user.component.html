@@ -30,21 +30,25 @@
 </div>
 </nav>
 
-</div>  
+</div>
 
 <div class="container" style="padding: 1%;">
-    <h5 style="color: black;">Detalles del viaje: #2000001826</h5>
+  <div id="contenerdorCentrador" style="justify-content: space-between;">
+    <h4 style="text-decoration: none;" >Viaje: 2000001826</h4>
+    <h4 style="text-decoration: underline; color: gray;" >José Ramón (122112)</h4>
+  </div>
+  </div>
 
-    <div class="container"><h4>Ingresado como el usuario: 1222343</h4></div>
-
-
-    <div class="" style="padding-top: 2%;">
-    <img src="../../../assets/image/tijuana.jpg" alt="Tijuana" width="350rem">
+    
+    <div class="container" style="padding-top: 1%;">
+    <img src="../../../assets/image/tijuana.jpg" alt="Tijuana" width="300rem">
     </div>
 
+    <div class="container">
     <div id="contenerdorCentrador" style="justify-content: space-between; padding-top: 3%;">
         <a [routerLink]="('/otherUser/Gastos')" class="btn btn-primary" title="Mostrar gastos">Visualizar gastos de viaje</a>
-    </div>
+        <a (click)="close()" class="btn btn-danger" title="Cerrar Viaje">Cerrar viaje</a>
+      </div>
 
     <hr>
 
@@ -122,6 +126,5 @@
       </div>
     </form>
 
-    </div>
-
+  </div>
 

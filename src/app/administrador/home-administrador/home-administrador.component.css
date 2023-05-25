@@ -9,6 +9,19 @@
     padding-bottom: 10px;
 }
 
+#contenerdorCentrador2
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    
+   /* background-image: url(../imagenes/fondo_difuminado_login.jpg); */
+    background-position: center;
+    background-size: cover;
+}
+
+
 #logo
 {
     width: 25%;
@@ -25,4 +38,23 @@
 {
     padding-top: 15px;
     background-color: #F25F29;
+}
+
+#button {
+    font-family: 'Overpass', sans-serif;
+    font-size: 110%;
+    color:#000000;
+    border: 0;
+    border-radius: 5px;  
+    font-size: larger;
+    
+    background-color: #ffffff;
+    
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+#button:hover {
+    background-color: #e86513;
+    color:#ffffff;
 }

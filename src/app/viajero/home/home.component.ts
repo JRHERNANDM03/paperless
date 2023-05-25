@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import Swal from 'sweetalert2';
@@ -8,13 +8,20 @@ import Swal from 'sweetalert2';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
 
-  constructor (private router:Router){}
+export class HomeComponent implements AfterViewInit{
+  @ViewChild('inicio', { static: true }) inicioElement?: ElementRef;
 
-  index(){
-    this.router.navigate(['/'])
+  constructor(private router: Router) {
+}
+
+
+ngAfterViewInit(): void {
+  if(this.inicioElement)
+  {
+    this.inicioElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+}
 
 
   getEmail()

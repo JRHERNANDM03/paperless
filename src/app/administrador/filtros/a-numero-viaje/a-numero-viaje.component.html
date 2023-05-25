@@ -19,18 +19,21 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/Administrador/Home">Home</a>
+              <a class="nav-link" aria-current="page" href="/Administrador/Home">Home - Filtro</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/Administrador/Mis-Viajes">Mis Viajes</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Filtrar viaje
+              <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrar Mis Viajes
               </a>
               <ul class="dropdown-menu dropdown-menu-light">
-                <li><a class="dropdown-item" href="/Administrador/Filtro/NumeroEmpleado">Número de empleado</a></li>
-                  <hr class="dropdown-divider">
                 <li><a class="dropdown-item" href="/Administrador/Filtro/NumeroViaje">Número de viaje</a></li>
                   <hr class="dropdown-divider">
                 <li><a class="dropdown-item" href="/Administrador/Filtro/Fecha">Fecha</a></li>
+                <hr class="dropdown-divider">
+                <li><a class="dropdown-item" href="/Administrador/Filtro/Estado">Estado</a></li>
               </ul>
             </li>
           </ul>
@@ -54,15 +57,19 @@
   <label for="inputPassword4" class="form-label" style="color: black;">Número de viaje:</label>
   <input type="text" name="number_viaje" class="form-control card border-dark mb-3" id="inputPassword4" value="2000001827" required>
 </div>
+<!--
 <div class="col-md-2">
   <label for="inputPassword4" class="form-label" style="color: black;"></label>
  <input type="submit" name="find" class="form-control btn btn-primary" id="inputPassword4" value="Buscar">
 </div>
+-->
 </form>
+
+<button (click)="listar()" class="btn btn-primary btn-lg">Buscar</button>
 
 </div>
 
-<div class="container" id="cards" style="padding-bottom: 5%;">
+<div class="container" id="cards" style="padding-bottom: 5%;" [style.display]="styleDisplay">
 <hr>
 <div class="row row-cols-1 row-cols-md-3 g-4">
 <div class="col">
@@ -71,13 +78,37 @@
     <div class="card-body">
       <h5 class="card-title">Tijuana</h5>
       <hr>
-      <p class="card-text">Número de viaje: 2000001827</p>
-      <p class="card-text">Número de empleado: 16136996</p>
-      <p class="card-text">Fecha de salida: 12/12/2021</p>
-      <p class="card-text">Hora de salida: 12:00:00 am</p>
+      <div class="row">
+        <div class="col">
+          Viaje:
+          <input type="text" class="form-control card border-secondary mb-3" value="2000001827" aria-label="First name" readonly style="border: 1;">
+        </div>
+        <div class="col">
+            Tipo:
+            <input type="text" class="form-control card border-secondary mb-3" value="PL" aria-label="First name" readonly style="border: 1;">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          Precio:
+          <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          Fecha Salida:
+          <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
+        </div>
+        <div class="col">
+          Hora Salida:
+          <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
+        </div>
+      </div>
       <hr>
-      <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-      <a [routerLink]="('/Administrador/Viaje')" style="text-decoration: none;">
+      <p class="card-text card border-success mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
+      <a [routerLink]="('/Administrador/Detalle/Viaje')" style="text-decoration: none;">
       <button class="btn btn-outline-primary">Visualizar</button>
     </a>
     </div>

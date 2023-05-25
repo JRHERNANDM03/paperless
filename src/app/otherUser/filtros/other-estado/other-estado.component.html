@@ -45,23 +45,132 @@
 </div>  
 
 
-<div class="text-center" style="padding-top: 4%; padding-bottom: 3%;">
+<div class="text-center" style="padding-top: 2%; padding-bottom: 1%;">
     <h3 style="color: black;">Búsqueda estado</h3>
   </div>
+
+  <div class="container"><h4 style="text-decoration: underline; color: gray;">José Ramón (12221)</h4></div>
+
   
   <div class="container">
   <div id="contenerdorCentrador" style="justify-content: space-between;">
-      <a style="text-decoration: none; color: #295bd9;" title="ESTADO PENDIENTE"><button id="button">PENDIENTE</button></a>
-      <a style="text-decoration: none; color: #D9CE29;" title="ESTADO APROBADO"><button id="button">APROBADO</button></a>
-      <a style="text-decoration: none; color: #D92929;" title="ESTADO RECHAZADO"><button id="button">RECHAZADO</button></a>
+      <a (click)="listarPendient()" style="text-decoration: none; color: #295bd9;" title="ESTADO PENDIENTE"><button id="button" class="listarPendient">PENDIENTE</button></a>
+      <a (click)="listarAprovate()" style="text-decoration: none; color: #D9CE29;" title="ESTADO APROBADO"><button id="button" class="listarAprovate">APROBADO</button></a>
+      <a (click)="listarDeclain()" style="text-decoration: none; color: #D92929;" title="ESTADO RECHAZADO"><button id="button" class="listarDeclain">RECHAZADO</button></a>
     </div>
   </div>
   
   <div class="container" id="cards" style="padding-bottom: 5%;">
     <hr>
   
-    <h4 style="color: black;">Listado de todos los viajes en el estado $valor.</h4>
+    <h4 style="color: black;">Listado de todos los viajes en el estado <h4 class="titleList"></h4></h4>
       <br>
   
-  
-  
+      <div class="container" style="padding-bottom: 5%;" [style.display]="styleDisplay">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="col">
+            <div class="card">
+              <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
+              <div class="card-body">
+                <h5 class="card-title">Tijuana</h5>
+                <hr>
+                <div class="row">
+                  <div class="col">
+                    Viaje:
+                    <input type="text" class="form-control card border-secondary mb-3" value="2000001827" aria-label="First name" readonly style="border: 1;">
+                  </div>
+                  <div class="col">
+                    Tipo:
+                    <input type="text" class="form-control card border-secondary mb-3" value="PL" aria-label="Last name" readonly style="border: 1;">
+                  </div>
+                </div>
+      
+                <div class="row">
+                  <div class="col">
+                    Fecha Salida:
+                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
+                  </div>
+                  <div class="col">
+                    Hora Salida:
+                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
+                  </div>
+                </div>
+                <hr>
+                <p class="card-text card border-secondary mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
+                <a href="/otherUser/Viaje" style="text-decoration: none;">
+                <button class="btn btn-outline-primary">Visualizar</button>
+              </a>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
+              <div class="card-body">
+                <h5 class="card-title">Londres</h5>
+                <hr>
+                <div class="row">
+                  <div class="col">
+                    Viaje:
+                    <input type="text" class="form-control card border-secondary mb-3" value="2000001839" aria-label="First name" readonly style="border: 1;">
+                  </div>
+                  <div class="col">
+                    Tipo:
+                    <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="Last name" readonly style="border: 1;">
+                  </div>
+                </div>
+      
+                <div class="row">
+                  <div class="col">
+                    Fecha Salida:
+                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
+                  </div>
+                  <div class="col">
+                    Hora Salida:
+                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
+                  </div>
+                </div>
+                <hr>
+                <p class="card-text card border-success mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
+                <button class="btn btn-outline-primary">Visualizar</button>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
+              <div class="card-body">
+                <h5 class="card-title">Londres</h5>
+                <hr>
+                <div class="row">
+                  <div class="col">
+                    Viaje:
+                    <input type="text" class="form-control card border-secondary mb-3" value="2000001842" aria-label="First name" readonly style="border: 1;">
+                  </div>
+                  <div class="col">
+                    Tipo:
+                    <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="Last name" readonly style="border: 1;">
+                  </div>
+                </div>
+      
+                <div class="row">
+                  <div class="col">
+                    Fecha Salida:
+                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
+                  </div>
+                  <div class="col">
+                    Hora Salida:
+                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
+                  </div>
+                </div>
+                <hr>
+                <p class="card-text card border-danger mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
+                <button class="btn btn-outline-primary">Visualizar</button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      

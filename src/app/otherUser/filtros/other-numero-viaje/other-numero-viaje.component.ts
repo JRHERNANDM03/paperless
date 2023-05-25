@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class OtherNumeroViajeComponent {
 
+  styleDisplay = 'none';
+
+  listar()
+  {
+    this.styleDisplay='block';
+  }
+
+  
+
 }
