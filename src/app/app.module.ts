@@ -5,6 +5,8 @@ import { SocialLoginModule } from 'angularx-social-login';
 import { GoogleLoginProvider} from 'angularx-social-login';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { FormsModule } from '@angular/forms';
+
 
 //Rutas
 import { AppRoutingModule } from './app-routing.module';
@@ -122,7 +124,8 @@ import { AEstadosComponent } from './administrador/filtros/a-estados/a-estados.c
     AppRoutingModule,
     RouterModule,
     BrowserAnimationsModule,
-    SocialLoginModule
+    SocialLoginModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

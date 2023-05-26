@@ -56,13 +56,56 @@ body {
 {
     padding-top: 15px;
     background-color: #73246D;
+    width: 100%;
 }
 
 #div2
 {
     padding-top: 15px;
     background-color: #e86513;
+    height: max-content;
+    height: max-content;
 }
+
+
+.google-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    height: 40px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4285F4;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .google-button:hover {
+    background-color: #3367D6;
+  }
+  
+  .google-button-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  
+  .google-button-icon img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .google-button-text {
+    vertical-align: middle;
+  }
+
+
+
 /* contenedor del login a la izquierda */
 #contenedorcentrado {
     display: flex;
@@ -90,6 +133,7 @@ body {
     box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.15);
     
     padding: 30px;
+
     box-sizing: border-box;
 }
 
@@ -274,6 +318,12 @@ hr {
 
     .pie-form a{
         color: #000000;
+    }
+
+    #logo
+    {
+        width: 230px;
+        height: 50px;
     }
 }
 /* ajustar a pantallas con ancho menor o igual a 775px; */

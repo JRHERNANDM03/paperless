@@ -71,15 +71,24 @@
               </ul>
             </li>
           </ul>
-          <form class="d-flex mt-3" role="search" action="/">
-            <button class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="cerrar sesión">Cerrar Sesión</button>
-          </form>
+            <button [routerLink]="('/')" class="btn btn-lg" type="submit" style="background-color: #F25F29; color: white;" title="cerrar sesión">Cerrar Sesión</button>
         </div>
       </div>
     </div>
   </nav>
 
 </div>
+
+<div id="" class="container">
+
+<div class="col-md-5">
+  <label for="" class="form-label" style="color: white;">Fecha final:</label>
+  <input type="date" name="date" class="form-control card border-dark mb-3" id="dateline" required>
+</div>
+<button class="btn btn-outline-primary btn-lg">Buscar</button>
+
+</div>
+
 
 
 <div class="text-center" style="padding-top: 2%; padding-bottom: 4%;">

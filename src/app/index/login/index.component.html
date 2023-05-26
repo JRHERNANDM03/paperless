@@ -29,17 +29,23 @@
     <div id="contenedorcentrado">
         <div id="login">
             <form id="loginform" method="GET" action="">
-                <img id="contenerdorCentrador" src="../../assets/image/viaje.jpg" height="100%" width="100%">
-                <label for="usuario" style="color: #de1bbe;">Nombre Usuario</label>
-                <input id="usuario" type="text" name="usuario" placeholder="Usuario" required>
+                <img id="contenerdorCentrador" src="../../../assets/image/Business_trip.jpg" height="100%" width="100%">
+                <!--<label for="usuario" style="color: #de1bbe;">Nombre Usuario</label>-->
+                <!--<input id="usuario" type="text" name="usuario" placeholder="Usuario" required>-->
                 
-                <label for="password" style="color: #de1bbe;">Contraseña</label>
-                <input id="password" type="password" placeholder="Contraseña" name="password" required>
+                <!--<label for="password" style="color: #de1bbe;">Contraseña</label>-->
+                <!--<input id="password" type="password" placeholder="Contraseña" name="password" required>-->
                 
              <!--   <button type="submit" title="Ingresar" name="ingresar">Iniciar Sesión</button>  -->
             </form>
+            <button (click)="alerta()" class="google-button">
+                <div class="google-button-icon">
+                  <img src="../../../assets/image/google-logo.png" alt="Google Icon">
+                </div>
+                <span class="google-button-text">Iniciar sesión con Google</span>
+              </button>
 
-            <button (click)="alerta()" type="submit" title="Ingresar" name="ingresar">Iniciar Sesión</button>
+            <!--<button (click)="alerta()" type="submit" title="Ingresar" name="ingresar">Iniciar Sesión</button>-->
             
         </div>
         <div id="derecho">

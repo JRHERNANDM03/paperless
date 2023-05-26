@@ -25,7 +25,7 @@ export class MostrarGastosAdministradorComponent {
       denyButtonText: 'Rechazar',
       denyButtonColor: 'red',
       showCancelButton: true,
-      cancelButtonText: 'Cancelar,'
+      cancelButtonText: 'Cancelar'
     }).then((respuesta) => {
       if(respuesta.isConfirmed)
       {

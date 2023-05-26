@@ -26,3 +26,23 @@
     padding-top: 15px;
     background-color: #F25F29;
 }
+
+#contenerdorCentrador2
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction:row;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    justify-content: space-between; 
+
+    border: #F25F29;
+    border-radius: 10px;
+
+    padding: 1%;
+
+    color: black;
+}

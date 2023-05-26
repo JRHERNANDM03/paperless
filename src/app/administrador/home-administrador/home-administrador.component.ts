@@ -13,6 +13,10 @@ export class HomeAdministradorComponent implements AfterViewInit {
 
   fechaActual?: string;
   fechaPasada?: string;
+  n_emp: string = '';
+  name_emp: string = '';
+  n_viaje: string = '';
+  sociedad: string = '';
 
   constructor(private router:Router){}
 
@@ -101,6 +105,44 @@ export class HomeAdministradorComponent implements AfterViewInit {
           })
       }
     
-      
+      saveData()
+      {
+
+        const n_empArray = this.n_emp.split(',');
+        const name_empArray = this.name_emp.split(',');
+        const n_viajeArray = this.n_viaje.split(',');
+        const sociedadArray = this.sociedad.split(',');
+        //const primerDato = n_empArray[0].trim()
+
+        console.log("Imprimiendo valores de NUMERO DE EMPLEADO");
+        console.log("n_empArray.length: " + n_empArray.length)
+        for(let x=0; x < n_empArray.length; x++)
+        {
+          console.log(n_empArray[x].trim());
+        }
+
+        console.log("Imprimiendo valores de NOMBRE DE EMPLEADO");
+        console.log("name_empArray.length: " + name_empArray.length)
+        for(let x=0; x < name_empArray.length; x++)
+        {
+          console.log(name_empArray[x].trim());
+        }
+
+        console.log("Imprimiendo valores de NUMERO DE VIAJE");
+        console.log("n_viajeArray.length: " + n_viajeArray.length)
+        for(let x=0; x < n_viajeArray.length; x++)
+        {
+          console.log(n_viajeArray[x].trim());
+        }
+
+        console.log("Imprimiendo valores de SOCIEDAD");
+        console.log("sociedadArray.length: " + sociedadArray.length)
+        for(let x=0; x < sociedadArray.length; x++)
+        {
+          console.log(sociedadArray[x].trim());
+        }
+
+        //this.router.navigate(['/Administrador/Answer']);
+      }
       
 }
