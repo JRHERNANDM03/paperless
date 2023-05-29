@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { SocialLoginModule } from 'angularx-social-login';
-import { GoogleLoginProvider} from 'angularx-social-login';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule } from '@angular/forms';
 
+import { SocialLoginModule } from '@abacritt/angularx-social-login';
+import { NgModule } from '@angular/core';
 
 //Rutas
 import { AppRoutingModule } from './app-routing.module';
@@ -63,6 +62,7 @@ import { RegistrarGastoAdministradorComponent } from './administrador/registrar-
 import { EditarGastoAdministradorComponent } from './administrador/editar-gasto-administrador/editar-gasto-administrador.component';
 import { RespuestaFormularioAdministradorComponent } from './administrador/respuesta-formulario-administrador/respuesta-formulario-administrador.component';
 import { AEstadosComponent } from './administrador/filtros/a-estados/a-estados.component';
+
 
 
 
