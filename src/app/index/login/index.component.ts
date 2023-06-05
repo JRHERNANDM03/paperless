@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { AuthService } from '@auth0/auth0-angular';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -8,14 +10,18 @@ import Swal from 'sweetalert2'
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.css']
+  styleUrls: ['./index.component.css'],
 })
-export class IndexComponent {
+export class IndexComponent implements OnInit{
 
-  constructor (private router:Router){}
+
+  constructor(private router: Router, private auth: AuthService) {}
+
+  ngOnInit(): void {
+    
+  }
 
 alerta(){
- // this.router.navigate(["/ViajeroHome"])
  let timerInterval=0;
  Swal.fire({
   icon: 'success',
@@ -36,6 +42,11 @@ if (result.dismiss === Swal.DismissReason.timer) {
 }
 })
 
+}
+
+
+loginWithRedirect(): void {
+  this.auth.loginWithRedirect();
 }
 
 }

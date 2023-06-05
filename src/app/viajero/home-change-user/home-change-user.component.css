@@ -275,6 +275,14 @@ hr {
     .pie-form a{
         color: #000000;
     }
+
+ 
+#logo
+    {
+        width: 250px;
+        height: 50px;
+    }
+
 }
 /* ajustar a pantallas con ancho menor o igual a 775px; */
 /* ajustar a pantallas con ancho menor o igual a 775px; */

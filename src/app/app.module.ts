@@ -1,20 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
 
+import { environment as env } from 'src/environments/environment';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthModule } from '@auth0/auth0-angular';
+
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { FormsModule } from '@angular/forms';
+import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 
-import { SocialLoginModule } from '@abacritt/angularx-social-login';
 import { NgModule } from '@angular/core';
-
 //Rutas
+import { Router, RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { IndexComponent } from './index/login/index.component';
 import { HomeComponent } from './viajero/home/home.component';
 
-import { RouterModule } from '@angular/router';
+
 import { MostrarViajeComponent } from './viajero/mostrar-viaje/mostrar-viaje.component';
 import { MostrarGastoComponent } from './viajero/mostrar-gasto/mostrar-gasto.component';
 import { DetallesGastoComponent } from './viajero/detalles-gasto/detalles-gasto.component';
@@ -62,6 +67,8 @@ import { RegistrarGastoAdministradorComponent } from './administrador/registrar-
 import { EditarGastoAdministradorComponent } from './administrador/editar-gasto-administrador/editar-gasto-administrador.component';
 import { RespuestaFormularioAdministradorComponent } from './administrador/respuesta-formulario-administrador/respuesta-formulario-administrador.component';
 import { AEstadosComponent } from './administrador/filtros/a-estados/a-estados.component';
+import { FormsModule } from '@angular/forms';
+
 
 
 
@@ -125,7 +132,11 @@ import { AEstadosComponent } from './administrador/filtros/a-estados/a-estados.c
     RouterModule,
     BrowserAnimationsModule,
     SocialLoginModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    AuthModule.forRoot({
+      ...env.auth,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

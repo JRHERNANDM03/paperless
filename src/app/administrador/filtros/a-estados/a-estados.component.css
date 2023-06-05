@@ -43,3 +43,13 @@
     background-color: #e86513;
     color:#ffffff;
 }
+
+@media all and (max-width: 775px)
+{
+
+#logo
+    {
+        width: 250px;
+        height: 50px;
+    }
+}
