@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '@auth0/auth0-angular';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -7,9 +8,18 @@ import Swal from 'sweetalert2';
   templateUrl: './mostrar-mis-gastos-administrador.component.html',
   styleUrls: ['./mostrar-mis-gastos-administrador.component.css']
 })
-export class MostrarMisGastosAdministradorComponent {
+export class MostrarMisGastosAdministradorComponent implements OnInit{
 
-  constructor(private router:Router){}
+  constructor(private router:Router, public auth: AuthService){}
+
+  ngOnInit(): void {
+    this.auth.isAuthenticated$.subscribe(isAuthenticate => {
+      if(!isAuthenticate)
+      {
+        this.errLog()
+      }else if(isAuthenticate){}
+    })
+  }
 
   delete(){
     // this.router.navigate(["/ViajeroHome"])
@@ -62,5 +72,27 @@ export class MostrarMisGastosAdministradorComponent {
        
      })
    }
+
+   errLog()
+  {
+    Swal.fire({
+      icon: 'info',
+      iconColor: 'orange',
+      title: 'Cuenta no logeada',
+      text: 'No hay registros de inicio de sesión',
+      footer: 'Esta función permite la protección de rutas, podrá navegar en este módulo sin iniciar sesión durante el periodo de pruebas.',
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonColor: 'orange',
+      position: 'bottom-end',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    })
+  }
+
+  logout()
+  {
+    this.auth.logout()
+  }
 
 }

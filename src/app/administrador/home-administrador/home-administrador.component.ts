@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AfterViewInit } from '@angular/core';
 
 import Swal from 'sweetalert2';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-home-administrador',
   templateUrl: './home-administrador.component.html',
   styleUrls: ['./home-administrador.component.css']
 })
-export class HomeAdministradorComponent implements AfterViewInit {
+export class HomeAdministradorComponent implements OnInit {
+
 
   fechaActual?: string;
   fechaPasada?: string;
@@ -18,11 +20,18 @@ export class HomeAdministradorComponent implements AfterViewInit {
   n_viaje: string = '';
   sociedad: string = '';
 
-  constructor(private router:Router){}
+  constructor(private router:Router, public auth: AuthService){}
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.obtenerFecha();
     this.obtenerFechaHaceUnaSemana();
+
+    this.auth.isAuthenticated$.subscribe(isAuthenticate => {
+      if(!isAuthenticate)
+      {
+        this.errLog()
+      }else if(isAuthenticate){}
+    })
   }
 
   
@@ -142,7 +151,29 @@ export class HomeAdministradorComponent implements AfterViewInit {
           console.log(sociedadArray[x].trim());
         }
 
-        //this.router.navigate(['/Administrador/Answer']);
+        this.router.navigate(['/Administrador/Answer']);
       }
       
+
+errLog()
+  {
+    Swal.fire({
+      icon: 'info',
+      iconColor: 'orange',
+      title: 'Cuenta no logeada',
+      text: 'No hay registros de inicio de sesión',
+      footer: 'Esta función permite la protección de rutas, podrá navegar en este módulo sin iniciar sesión durante el periodo de pruebas.',
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonColor: 'orange',
+      position: 'bottom-end',
+      allowOutsideClick: false,
+      allowEscapeKey: false
+    })
+  }
+
+  logout()
+  {
+    this.auth.logout()
+  }
 }
