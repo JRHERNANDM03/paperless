@@ -40,7 +40,7 @@
       </div>
 
       <ul *ngIf="auth.user$ | async as user">
-      <a class="navbar-brand" style="color: white;">Usuario: {{ user.nickname }}</a>
+      <a class="navbar-brand" style="color: white;">Usuario: {{ user.given_name }}</a>
       </ul>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
         <span class="navbar-toggler-icon" style="color: white; "></span>

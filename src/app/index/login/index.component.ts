@@ -39,6 +39,7 @@ export class IndexComponent implements OnInit{
           })        
       }
     })
+
   }
 
 alerta(name: String){
@@ -47,7 +48,7 @@ alerta(name: String){
   icon: 'success',
   title: 'Acceso correcto!',
   text: 'Bienvenid@ 👍',
-  timer: 2000,
+  timer: 2500,
 timerProgressBar: true,
 showConfirmButton: false,
 
@@ -56,9 +57,9 @@ willClose: () => {
 }
 }).then((result) => {
 /* Read more about handling dismissals below */
-if (result.dismiss === Swal.DismissReason.timer) {
-  this.router.navigate(["Viajero/Home"])
-
+if (result.dismiss === Swal.DismissReason.timer) 
+{
+  this.example()
 }
 })
 
@@ -79,6 +80,37 @@ failed()
     showCancelButton: false,
     showConfirmButton: true,
     confirmButtonColor: 'purple'
+  })
+}
+
+example()
+{
+  Swal.fire({
+    title:'Ingresar a:',
+    showCancelButton: true,
+    showConfirmButton: true,
+    showDenyButton: true,
+    showLoaderOnConfirm: true,
+    showLoaderOnDeny: true,
+    confirmButtonText: 'Viajero',
+    confirmButtonColor: 'purple',
+    denyButtonText: 'Director',
+    denyButtonColor: 'orange',
+    cancelButtonText: 'Administrador',
+    cancelButtonColor: 'gray'
+  }).then((result) => {
+    if(result.isConfirmed)
+    {
+      this.router.navigate(['/Viajero/Home'])
+    }else 
+    if(result.isDenied)
+    {
+      this.router.navigate(['/Director/Home'])
+    }else 
+    if(result.isDismissed)
+    {
+      this.router.navigate(['/Administrador/Home'])
+    }
   })
 }
 
