@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '@auth0/auth0-angular';
 
 import Swal from 'sweetalert2';
 
@@ -8,10 +9,19 @@ import Swal from 'sweetalert2';
   templateUrl: './registrar-gasto-other-user.component.html',
   styleUrls: ['./registrar-gasto-other-user.component.css']
 })
-export class RegistrarGastoOtherUserComponent {
+export class RegistrarGastoOtherUserComponent implements OnInit {
 
 
-  constructor (private router:Router){}
+  constructor (private router:Router, public auth: AuthService){}
+
+  ngOnInit(): void {
+    this.auth.isAuthenticated$.subscribe(isAuthenticate => {
+      if(!isAuthenticate)
+      {
+        this.router.navigate(['login'])
+      }else if(isAuthenticate){}
+    })
+  }
 
   success(){
    // this.router.navigate(["/ViajeroHome"])

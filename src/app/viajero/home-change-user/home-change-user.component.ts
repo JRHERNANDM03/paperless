@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AfterViewInit } from '@angular/core';
 
@@ -9,11 +9,11 @@ import Swal from 'sweetalert2';
   templateUrl: './home-change-user.component.html',
   styleUrls: ['./home-change-user.component.css']
 })
-export class HomeChangeUserComponent implements AfterViewInit {
+export class HomeChangeUserComponent implements OnInit {
 
   constructor (private router:Router){}
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.main();
   }
 
@@ -22,27 +22,22 @@ export class HomeChangeUserComponent implements AfterViewInit {
     (async() => {
        await  Swal.fire({
         title: 'Cambio de usuario',
-        input: 'number',
-        inputLabel: 'Número de empleado',
-        inputPlaceholder: 'Ingresa el numero de empleado',
-        inputAttributes: {
-          autocapitalize: 'off',
-          autocorrect: 'off'
-        },
-        showDenyButton: true,
-        showConfirmButton: true,
-        confirmButtonText: 'CAMBIAR',
-        confirmButtonColor: '#73246D',
-        denyButtonText: 'REGRESAR',
-        denyButtonColor: '#e86513'
-      }).then((result) => {
-        if(result.isConfirmed)
-        {
-          this.router.navigate(['/otherUser/Home']);
-        }else if(result.isDenied)
-        {
-          this.router.navigate(['/Viajero/Home']);
-        }
+        
+        html: '<form method="" action="/otherUser/Home">'+
+        '<div class="form-floating mb-3 card border-dark">'+
+        '<input type="text" class="form-control text-center" id="floatingInput" placeholder="name@example.com" required>'+
+        '<label for="floatingInput">Número de empleado</label>'+
+      '</div>'+
+        '<br>'+
+        ''+
+        '<input type="submit" class="btn btn-outline-primary btn-lg" value="CAMBIAR">'+
+        '</form> '+
+        '<hr>'+
+        '<a href="/Viajero/Home" class="btn btn-secondary">REGRESAR</a>',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+
       })
         
     })()

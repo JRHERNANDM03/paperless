@@ -1,11 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-other-estado',
   templateUrl: './other-estado.component.html',
   styleUrls: ['./other-estado.component.css']
 })
-export class OtherEstadoComponent {
+export class OtherEstadoComponent implements OnInit {
+
+  constructor(private router: Router, public auth: AuthService){}
+
+  ngOnInit(): void {
+    this.auth.isAuthenticated$.subscribe(isAuthenticate => {
+      if(!isAuthenticate)
+      {
+        this.router.navigate(['login'])
+      }else if(isAuthenticate){}
+    })
+  }
 
   styleDisplay = 'none';
 

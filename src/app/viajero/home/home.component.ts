@@ -1,5 +1,6 @@
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '@auth0/auth0-angular';
 
 import Swal from 'sweetalert2';
 
@@ -9,19 +10,30 @@ import Swal from 'sweetalert2';
   styleUrls: ['./home.component.css']
 })
 
-export class HomeComponent implements AfterViewInit{
+export class HomeComponent implements OnInit{
   @ViewChild('inicio', { static: true }) inicioElement?: ElementRef;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, public auth: AuthService) {
 }
 
+ngOnInit(): void {
 
-ngAfterViewInit(): void {
-  if(this.inicioElement)
-  {
-    this.inicioElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+   this.auth.isAuthenticated$.subscribe(isAuthenticate => {
+    if(!isAuthenticate)
+    {
+      this.router.navigate(['login'])
+    }
+    else if(isAuthenticate)
+    {
+    }
+  });
+
+  const userName = document.getElementById('userName');
+  const userNameString = userName?.textContent;
+  console.log(userNameString);
+  
 }
+
 
 
   getEmail()
@@ -141,5 +153,12 @@ ngAfterViewInit(): void {
 { 
   this.router.navigate(['/Viajero/CambiarUsuaro']);
 }
+
+logout()
+{
+  this.auth.logout()
+}
+
+
 
 }

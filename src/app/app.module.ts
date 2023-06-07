@@ -7,8 +7,6 @@ import { AuthModule } from '@auth0/auth0-angular';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
-import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 
 import { NgModule } from '@angular/core';
 //Rutas
@@ -131,11 +129,14 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     RouterModule,
     BrowserAnimationsModule,
-    SocialLoginModule,
     FormsModule,
     HttpClientModule,
     AuthModule.forRoot({
-      ...env.auth,
+      domain: 'dev-ug5obmlr.us.auth0.com',
+      clientId: 'x2gvoq8ukR0ILorPJ7Rlp0SWWhJfwl6Z',
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
     }),
   ],
   providers: [],

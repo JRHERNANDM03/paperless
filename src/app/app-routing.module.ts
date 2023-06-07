@@ -53,7 +53,8 @@ import { ShowFileComponent } from './file/show-file/show-file.component';
 
 
 const routes: Routes = [
-  { path:'', component:IndexComponent},
+  { path:'', redirectTo:'login', pathMatch:'full'},
+  { path:'login', component:IndexComponent},
   { path:'Viajero/Home', component:HomeComponent},
   { path:'Viajero/Viaje', component:MostrarViajeComponent},
   { path:'Viajero/Gastos', component:MostrarGastoComponent},
@@ -102,7 +103,8 @@ const routes: Routes = [
   { path:'otherUser/Detalles/Gasto', component:DetalleGastoOtherUserComponent},
   { path:'otherUser/Registrar/Gasto', component:RegistrarGastoOtherUserComponent},
   { path:'otherUser/Editar/Gasto', component:EditarGastoOtherUserComponent},
-  { path:'showFile', component:ShowFileComponent}
+  { path:'showFile', component:ShowFileComponent},
+  { path:'***', redirectTo:'inicio', pathMatch:'full'}
   
 ];
 
