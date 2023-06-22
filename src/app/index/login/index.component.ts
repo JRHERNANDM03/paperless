@@ -80,6 +80,11 @@ failed()
     showCancelButton: false,
     showConfirmButton: true,
     confirmButtonColor: 'purple'
+  }).then((result) => {
+    if(result.isConfirmed)
+    {
+      this.auth.logout()
+    }
   })
 }
 

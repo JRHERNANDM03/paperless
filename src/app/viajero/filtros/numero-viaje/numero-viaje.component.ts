@@ -2,6 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-numero-viaje',
@@ -27,9 +28,26 @@ styleDisplay = 'none';
   }
 
   logout()
-  {
-    this.auth.logout()
-  }
+{
+  Swal.fire({
+    title: 'Estás seguro de cerrar sesión',
+    showConfirmButton: true,
+    confirmButtonText: 'Cerrar Sesión',
+    confirmButtonColor: 'purple',
+    showCancelButton: true,
+    cancelButtonText: 'Cancelar',
+    cancelButtonColor: 'orange',
+    showDenyButton: false,
+    allowEnterKey: false,
+    allowEscapeKey: false,
+    allowOutsideClick: false
+  }).then((result) => {
+    if(result.isConfirmed)
+    {
+        this.auth.logout()
+    }
+  })
+}
 
   listar()
   {

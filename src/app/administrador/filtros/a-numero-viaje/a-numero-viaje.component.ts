@@ -49,6 +49,23 @@ export class ANumeroViajeComponent implements OnInit{
 
   logout()
   {
-    this.auth.logout()
+    Swal.fire({
+      title: 'Estás seguro de cerrar sesión',
+      showConfirmButton: true,
+      confirmButtonText: 'Cerrar Sesión',
+      confirmButtonColor: 'purple',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      cancelButtonColor: 'orange',
+      showDenyButton: false,
+      allowEnterKey: false,
+      allowEscapeKey: false,
+      allowOutsideClick: false
+    }).then((result) => {
+      if(result.isConfirmed)
+      {
+          this.auth.logout()
+      }
+    })
   }
 }

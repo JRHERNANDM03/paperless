@@ -44,6 +44,8 @@ body {
 {
     width: 25%;
     height: 5%;
+    box-shadow: 5px 5px 5px gray;
+
 }
 
 #logoPanel
@@ -279,8 +281,8 @@ hr {
  
 #logo
     {
-        width: 250px;
-        height: 50px;
+        width: 230px;
+        height: 40px;
     }
 
 }
