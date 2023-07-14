@@ -65,10 +65,8 @@ import { RegistrarGastoAdministradorComponent } from './administrador/registrar-
 import { EditarGastoAdministradorComponent } from './administrador/editar-gasto-administrador/editar-gasto-administrador.component';
 import { RespuestaFormularioAdministradorComponent } from './administrador/respuesta-formulario-administrador/respuesta-formulario-administrador.component';
 import { AEstadosComponent } from './administrador/filtros/a-estados/a-estados.component';
+import { HomeChangeUserComponent } from './viajero/home-change-user/home-change-user.component';
 import { FormsModule } from '@angular/forms';
-
-
-
 
 
 @NgModule({
@@ -123,6 +121,7 @@ import { FormsModule } from '@angular/forms';
     EditarGastoAdministradorComponent,
     RespuestaFormularioAdministradorComponent,
     AEstadosComponent,
+    HomeChangeUserComponent
   ],
   imports: [
     BrowserModule,

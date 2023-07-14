@@ -53,19 +53,16 @@
 </div>
 
 <div class="container" style="padding-top: 3%;">
-  <form class="row g-3" action="" method="GET">
+  <form class="row g-3" (ngSubmit)="submitForm()">
     <div class="col-md-6">
       <label for="inputPassword4" class="form-label" style="color: black;">Número de viaje:</label>
-      <input type="text" name="number_viaje" class="form-control card border-dark mb-3" id="inputPassword4" value="2000001827" required>
+      <input type="number" [(ngModel)]="reinrN" name="reinrN" class="form-control card border-dark mb-3" id="inputPassword4" placeholder="Ingresa el numero de viaje REINR" required>
     </div>
-   <!-- <div class="col-md-2">
+   <div class="col-md-2">
       <label for="inputPassword4" class="form-label" style="color: black;"></label>
-     <input type="submit" name="find" class="form-control btn btn-primary" id="inputPassword4" value="Buscar">
-    </div> -->
+     <input type="submit" name="find" class="form-control btn btn-primary" id="inputPassword4" value="Buscar" [disabled]="!formValid()">
+    </div> 
   </form>
-
-  <button (click)="listar()" class="btn btn-primary">Buscar</button>
-
 </div>
 
 <div class="container" id="cards" style="padding-bottom: 5%;">
@@ -75,15 +72,15 @@
       <div class="card">
         <img src="../../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
         <div class="card-body">
-          <h5 class="card-title">Tijuana</h5>
+          <h5 class="card-title">{{zort1}}</h5>
           <hr>
-          <p class="card-text">Número de viaje: 2000001827</p>
-          <p class="card-text">Número de empleado: 16136996</p>
-          <p class="card-text">Fecha de salida: 12/12/2021</p>
-          <p class="card-text">Hora de salida: 12:00:00 am</p>
+          <p class="card-text">Número de viaje: {{reinrH}}</p>
+          <p class="card-text">Número de empleado: {{pernrH}}</p>
+          <p class="card-text">Fecha de salida: {{datv1}}</p>
+          <p class="card-text">Hora de salida: {{uhrv1}}</p>
           <hr>
-          <p class="card-text card border-secondary mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
-          <a [routerLink]="('/Viajero/Viaje')" style="text-decoration: none;">
+          <p class="card-text card border-dark mb-3 text-center" [style.color]="getEstado(authorized) === 'Aprobado' ? 'green' : (getEstado(authorized) === 'Rechazado' ? 'red' : 'grey')">Estado: {{getEstado(authorized)}}</p>
+          <a (click)="detail(idH)" style="text-decoration: none;">
           <button class="btn btn-outline-primary">Visualizar</button>
         </a>
         </div>

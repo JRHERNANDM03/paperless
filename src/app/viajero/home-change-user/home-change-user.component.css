@@ -225,6 +225,12 @@ hr {
 .pie-form a:hover {
     color: #000000;
 }
+
+
+#miEnlace:hover
+{
+    color: black;
+}
 /* seccion de la derecha */
 /* seccion de la derecha */
 

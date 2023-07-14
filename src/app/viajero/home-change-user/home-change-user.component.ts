@@ -1,8 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AfterViewInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { AuthService } from '@auth0/auth0-angular';
+import { timeInterval } from 'rxjs';
 import Swal from 'sweetalert2';
+
+interface user
+{
+  PERNR: number;
+}
+
 
 @Component({
   selector: 'app-home-change-user',
@@ -11,36 +19,73 @@ import Swal from 'sweetalert2';
 })
 export class HomeChangeUserComponent implements OnInit {
 
-  constructor (private router:Router){}
+  numeroEmpleado!: number;
+
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
 
   ngOnInit(): void {
-    this.main();
+    this.auth.isAuthenticated$.subscribe(isAutenticate => {
+      if(!isAutenticate)
+      {
+        this.router.navigate(['login'])
+      }else if(isAutenticate)
+      {
+        
+      }
+    })
   }
 
-  main()
+  formValid(): boolean {
+    // Verificar si los campos requeridos están llenados
+    if (
+      
+      this.numeroEmpleado
+    ) {
+      return true; // Todos los campos están llenados
+    } else {
+      return false; // Al menos un campo requerido está vacío
+    }
+  }
+
+  submitForm() 
   {
-    (async() => {
-       await  Swal.fire({
-        title: 'Cambio de usuario',
-        
-        html: '<form method="" action="/otherUser/Home">'+
-        '<div class="form-floating mb-3 card border-dark">'+
-        '<input type="text" class="form-control text-center" id="floatingInput" placeholder="name@example.com" required>'+
-        '<label for="floatingInput">Número de empleado</label>'+
-      '</div>'+
-        '<br>'+
-        ''+
-        '<input type="submit" class="btn btn-outline-primary btn-lg" value="CAMBIAR">'+
-        '</form> '+
-        '<hr>'+
-        '<a href="/Viajero/Home" class="btn btn-secondary">REGRESAR</a>',
-        showConfirmButton: false,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-
+    let timerInterval = 0;
+    this.http.get('http://localhost:3000/User/' + this.numeroEmpleado).subscribe(data => 
+    {
+      if(data)
+      {
+        Swal.fire({
+          icon: 'success',
+          title: 'Ingresando....',
+          text: 'Cambiando de usuario',
+          timer: 2000,
+          timerProgressBar: true,
+          showCancelButton: false,
+          showConfirmButton: false,
+          willClose: () => {
+            clearInterval(timerInterval)
+          }
+          }).then((result) => {
+          /* Read more about handling dismissals below */
+            this.router.navigate(['/otherUser/Home'], {queryParams: {pernr:this.numeroEmpleado}})
+          })
+      }else
+      {
+        console.log('User dont found')
+      }
+    },
+    error => {
+      Swal.fire({
+        icon: 'error',
+        title: 'El usuario no existe!'
       })
-        
-    })()
+    }
+    );
   }
+
+
+  /* /otherUser/Home */
 
 }
+
+   

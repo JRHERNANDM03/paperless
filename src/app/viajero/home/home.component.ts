@@ -2,7 +2,33 @@ import { Component, AfterViewInit, ElementRef, ViewChild, OnInit } from '@angula
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 
+import { HttpClient } from '@angular/common/http';
+
 import Swal from 'sweetalert2';
+
+interface UserData {
+  PERNR: string;
+  // Otros campos que esperas en los datos de respuesta
+}
+
+interface PTRV_HEAD{
+  id: number;
+  pernr: string
+  reinr: string;
+  schem: string;
+  zort1: string;
+  zland: string;
+  hrgrio: string;
+  kunde: string;
+  datv1: string;
+  uhrv1: string;
+  datb1: string;
+  uhrb1: string;
+  date: string;
+  times: string;
+  uname: string;
+  auth: number;
+}
 
 @Component({
   selector: 'app-home',
@@ -13,7 +39,7 @@ import Swal from 'sweetalert2';
 export class HomeComponent implements OnInit{
   @ViewChild('inicio', { static: true }) inicioElement?: ElementRef;
 
-  constructor(private router: Router, public auth: AuthService) {
+  constructor(private router: Router, public auth: AuthService, private http: HttpClient) {
 }
 
 ngOnInit(): void {
@@ -25,6 +51,10 @@ ngOnInit(): void {
     }
     else if(isAuthenticate)
     {
+      this.auth.user$.subscribe(user => {
+        const nickname = String(user?.nickname);
+        this.getData(nickname);     
+      })
     }
   });
 
@@ -32,6 +62,34 @@ ngOnInit(): void {
   const userNameString = userName?.textContent;
   console.log(userNameString);
   
+}
+
+responseArray: PTRV_HEAD[] = [];
+ 
+  authorized!: number[];
+
+getData(nickname: String)
+{
+  this.http.get<UserData>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+    this.http.get<PTRV_HEAD[]>('http://localhost:3000/PTRV_HEADS/find/' + data.PERNR).subscribe(info_PTRV_HEAD => {
+      this.responseArray = info_PTRV_HEAD;
+      this.authorized = info_PTRV_HEAD.map(item => item.auth); // Almacenar todos los valores de auth en authorized
+      //console.log(info_PTRV_HEAD.map(item => item.auth))
+  })
+  });
+
+}
+
+getEstado(auth: number): string {
+  if (auth === 0) {
+    return 'Pendiente';
+  } else if (auth === 1) { 
+    return 'Aprobado';
+  } else if (auth === 2) {
+    return 'Rechazado';
+  } else {
+    return 'Desconocido';
+  }
 }
 
 
@@ -174,6 +232,11 @@ logout()
         this.auth.logout()
     }
   })
+}
+
+tripDetail(id: number)
+{
+  this.router.navigate(['/Viajero/Viaje'], {queryParams: {id: id} });
 }
 
 

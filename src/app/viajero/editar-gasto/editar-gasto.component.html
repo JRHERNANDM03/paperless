@@ -27,7 +27,7 @@
             </li>
             <br>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/Viajero/Gastos">Regresar</a>
+              <a class="nav-link" aria-current="page" href="/Viajero/Gastos?id={{head}}">Regresar</a>
             </li>
           </ul>
           <br>
@@ -46,21 +46,19 @@
 </div>
 
 <div class="container" style="padding: 1%;">
-<h5 style="color: black;">Viaje: #2000001826</h5>
+<h5 style="color: black;">Viaje: {{reinr}}</h5>
+ 
 
-<div class="" style="padding-top: 2%;">
-<button (click)="update()" class="btn btn-outline-warning">Actualizar Gasto</button>
-</div>
 
-<form class="row g-3" style="padding-top: 1%; padding-bottom: 2%;">
+<form class="row g-3" (ngSubmit)="submitForm()" enctype="multipart/form-data" style="padding-top: 1%; padding-bottom: 2%;">
 
-   <!-- <div class="col-md3">
-    <button class="btn btn-outline-warning" name="update">Actualizar Gasto</button>
-  </div> -->
+  <div class="col-md3">
+    <input type="submit" class="btn btn-outline-warning" name="update" [disabled]="!formValid()" value="Actualizar campos">
+  </div> 
 
   <div class="form-floating">
-    <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
-      <option selected>ALIE ALIMENTO P/EMPLEADO</option>
+    <select class="form-select card border-dark mb-3" [(ngModel)]="exp_typeN" name="exp_typeN" id="floatingSelect" aria-label="Floating label select example">
+      <option selected>{{exp_type}}</option>
       <option value="ALID">ALID ALIM REST LIVER P/COMPLEMENTAR</option>
       <option value="ALIL">ALIL ALIMENTO P/LPC</option>
       <option value="ALIE">ALIE ALIMENTO p/EMPLEADO</option>
@@ -75,12 +73,12 @@
 
 <div class="row" style="padding-top: 3%;">
   <div class="col form-floating mb-3" >
-    <input type="number" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="500" aria-label="First name" required>
+    <input type="number" step="any" [(ngModel)]="locAmountN"  name="locAmountN" class="form-control card border-dark mb-3" id="floatingInput" value="{{loc_amount}}" aria-label="First name" required>
     <label for="floatingInput">Importe</label>
   </div>
   <div class="col form-floating mb-3">
-    <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
-      <option selected>MXP</option>
+    <select class="form-select card border-dark mb-3" [(ngModel)]="locCurrN" name="locCurrN" id="floatingSelect" aria-label="Floating label select example">
+      <option selected>{{loc_curr}}</option>
       <option value="MXP">MXP Pesos Mexicanos</option>
       <option value="option2">OPTION2</option>
       <option value="option3">OPTION3</option>
@@ -93,20 +91,20 @@
     <label for="floatingSelect">Moneda</label>
   </div>
   <div class="col form-floating mb-3" >
-    <input type="number" class="form-control card border-dark mb-3" id="floatingInput" value="1" aria-label="First name" required>
+    <input type="number" [(ngModel)]="multipliN" name="multipliN" class="form-control card border-dark mb-3" id="floatingInput" value="{{multipli}}" aria-label="First name" required>
     <label for="floatingInput">Cantidad</label>
   </div>
 </div> 
 
 <div class="col-md-4">
   <label for="" class="form-label" style="color: black;">Fecha de gasto:</label>
-  <input type="date" name="date" class="form-control card border-dark mb-3" id="inputEmail4" value="2021-12-12" required>
+  <input type="date" [(ngModel)]="dateN" name="dateN" class="form-control card border-dark mb-3" id="inputEmail4" value="{{rec_date}}" required>
 </div>
 
 <div class="col-md-4">
   <label for="" class="form-label" style="color: black;">Indicador de impuestos:</label>
-  <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
-    <option selected>F2 IVA ACREDITABLE 16%</option>
+  <select class="form-select card border-dark mb-3" [(ngModel)]="taxCodeN" name="tax_codeN" id="floatingSelect" aria-label="Floating label select example">
+    <option selected>{{tax_code}}</option>
     <option value="F2">F2 IVA ACREDITABLE 16%</option>
     <option value="E3">E3 IVA ACREDITABLE EXENTO</option>
     <option value="option3">OPTION3</option>
@@ -119,27 +117,26 @@
 </div>
 
 <div class="form-floating">
-    <input type="text" class="form-control card border-dark mb-3" value="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque explicabo, libero hic praesentium repellendus commodi. Atque reiciendis quaerat sequi officiis quos voluptate laborum dicta at ad, minima ex eos molestias." aria-label="First name">
+    <input type="text" [(ngModel)]="busPurpoN" name="busPurpoN" class="form-control card border-dark mb-3" value="{{bus_purpo}}" aria-label="First name">
     <label for="floatingTextarea">Info</label>
   </div>
 
   <div class="form-floating">
-    <input type="text" class="form-control card border-dark mb-3" value="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque explicabo, libero hic praesentium repellendus commodi. Atque reiciendis quaerat sequi officiis quos voluptate laborum dicta at ad, minima ex eos molestias." aria-label="First name">
+    <input type="text" [(ngModel)]="descriptN" name="descriptN" class="form-control card border-dark mb-3" value="{{descript}}" aria-label="First name">
     <label for="floatingTextarea">Descripción</label>
   </div>
 
 <div class="col-md-12">
   <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
-  <input type="file" name="file" class="form-control card border-dark mb-3" id="inputPassword4" required>
+  <input type="file" (change)="onFileSelected($event)" [(ngModel)]="documentoN" name="documentoN" class="form-control card border-dark mb-3" id="inputPassword4" required accept=".pdf, .xml">
 </div>
 
- <!-- <div class="col-md3">
-    <button class="btn btn-outline-warning" name="update">Actualizar Gasto</button>
-  </div> -->
+<div class="col-md3">
+    <input type="submit" class="btn btn-outline-warning" name="update" [disabled]="!formValid()" value="Actualizar campos">
+</div> 
   
 </form>
 
-<button (click)="update()" class="btn btn-outline-warning">Actualizar Gasto</button>
 
 </div>
 

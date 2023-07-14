@@ -1,8 +1,40 @@
 
 
-    <div id="contenerdorCentrador">
-                <img src="../../assets/image/liverpool.jpg" id="logo" alt="">
-        </div>
- 
-        <div id="div1"></div>
-        <div id="div2"></div>
+<div id="contenerdorCentrador">
+    <img src="../../assets/image/LogotipoEPLFondoNaranja.png" id="logo" alt="">
+</div>
+
+<div id="div1"></div>
+<div id="div2"></div>
+
+<br>
+
+<div class="contenerdorCentrador" style="padding-top: 1%;">
+<div class="container" style="display: flex;align-items: center;justify-content: center; padding-bottom: 5%;">
+<div id="contenedorcentrado">
+<div id="login">
+<form id="loginform" (ngSubmit)="submitForm()">
+    <img id="contenerdorCentrador" src="../../../assets/image/Business_trip.jpg" height="100%" width="100%">
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Numero de empleado:</label>
+        <input type="number" [(ngModel)]="numeroEmpleado" name="numeroEmpleado" class="form-control card border-dark mb-3" id="inputPassword4" placeholder="Campo numerico" style="border-radius: 5px;" required>
+      </div>
+    <input type="submit" class="btn btn-primary" style="color: white;" value="Ingresar" [disabled]="!formValid()">
+</form>
+
+
+
+</div>
+<div id="derecho">
+<div class="titulo">
+    <a  style="text-decoration: none; color: #6e0f6a;"><h1>PAPERLESS</h1></a>
+    <img src="../../../assets/image/logo_panel.png" id="logoPanel" alt="Logo Liverpool">
+    <hr>
+    <a  style="text-decoration: none; color: #e86513;"> Cambio de Usuario </a>
+    <br>
+    <a href="/Viajero/Home" style="font-size: 18px; color: gray; text-decoration: none;" onmouseover="this.style.color='black';" onmouseout="this.style.color='gray';"><< regresar >></a>
+</div>
+</div>
+</div>
+</div>
+</div>

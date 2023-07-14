@@ -27,7 +27,7 @@
       </li>
       <br>
       <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="/otherUser/Gastos">Regresar</a>
+        <a class="nav-link" aria-current="page" href="/otherUser/Gastos?id={{head}}&pernr={{pernr}}">Regresar</a>
       </li>
     </ul>
     <br>
@@ -48,67 +48,68 @@
 
 <div class="container" style="padding: 1%;">
   <div id="contenerdorCentrador" style="justify-content: space-between;">
-    <h4 style="text-decoration: none;" >Viaje: 2000001826</h4>
-    <h4 style="text-decoration: underline; color: gray;" >(name)-(number)</h4>
+    <h4 style="text-decoration: none;" >Viaje: {{reinr}}</h4>
+    <h4 style="text-decoration: underline; color: gray;" >{{name}} - {{pernr}}</h4>
   </div>
   </div>
 
 <div class="container" style="padding: 1%;">
-<form class="row g-3" style="padding-top: 3%; padding-bottom: 1%;">
+  <form class="row g-3" style="padding-top: 3%; padding-bottom: 2%;">
   
-  <div class="col-md-12">
-    <label for="inputEmail4" class="form-label" style="color: black;">COMENTARIO:</label>
-    <input type="text" class="form-control card border-primary mb-3" id="inputEmail4" value="" readonly>
+    <div class="col-md-12">
+      <label for="inputEmail4" class="form-label" style="color: black;">COMENTARIO:</label>
+      <input type="text" class="form-control card border-primary mb-3" id="inputEmail4" [value]="comentarioGeneral" readonly>
+    </div>
+  
+    <div class="row" style="padding-top: 3%;">
+      <div class="col form-floating mb-3" >
+        <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" [value]="authGeneral" aria-label="First name" readonly>
+        <label for="floatingInput">Estado</label>
+      </div>
+      <div class="col form-floating mb-3" >
+        <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" [value]="exp_typeGeneral" aria-label="First name" readonly>
+        <label for="floatingInput">Tipo de gasto</label>
+      </div>
+    </div>
+  
+  
+  <div class="row" style="padding-top: 3%;">
+   <div class="col form-floating mb-3" >
+     <input type="number" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" [value]="loc_amountGeneral" aria-label="First name" readonly>
+     <label for="floatingInput">Importe</label>
+   </div>
+   <div class="col form-floating mb-3" >
+    <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" [value]="loc_currGeneral" aria-label="First name" readonly>
+    <label for="floatingInput">Moneda</label>
   </div>
-
+  <div class="col form-floating mb-3" >
+    <input type="number" class="form-control card border-dark mb-3" id="floatingInput" [value]="multipli_General" aria-label="First name" readonly>
+    <label for="floatingInput">Cantidad</label>
+  </div>
+  </div> 
+  
   <div class="row" style="padding-top: 3%;">
     <div class="col form-floating mb-3" >
-      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="PENDIENTE" aria-label="First name" readonly>
-      <label for="floatingInput">Estado</label>
+      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" [value]="rec_dateGeneral" aria-label="First name" readonly>
+      <label for="floatingInput">Fecha de gasto</label>
     </div>
     <div class="col form-floating mb-3" >
-      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="ALIE ALIMENTO P/EMPLEADO" aria-label="First name" readonly>
-      <label for="floatingInput">Tipo de gasto</label>
-    </div>
-  </div>
-
-
-<div class="row" style="padding-top: 3%;">
- <div class="col form-floating mb-3" >
-   <input type="number" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="500" aria-label="First name" readonly>
-   <label for="floatingInput">Importe</label>
- </div>
- <div class="col form-floating mb-3" >
-  <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="MXP" aria-label="First name" readonly>
-  <label for="floatingInput">Moneda</label>
-</div>
-<div class="col form-floating mb-3" >
-  <input type="number" class="form-control card border-dark mb-3" id="floatingInput" value="1" aria-label="First name" readonly>
-  <label for="floatingInput">Cantidad</label>
-</div>
-</div> 
-
-<div class="row" style="padding-top: 3%;">
-  <div class="col form-floating mb-3" >
-    <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="12/12/2021" aria-label="First name" readonly>
-    <label for="floatingInput">Fecha de gasto</label>
-  </div>
-  <div class="col form-floating mb-3" >
-   <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="F2 IVA ACREDITABLE 16%" aria-label="First name" readonly>
-   <label for="floatingInput">Indicador de impuestos</label>
- </div>
- </div> 
-
-<div class="form-floating">
-   <input type="text" class="form-control card border-dark mb-3" value="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque explicabo, libero hic praesentium repellendus commodi. Atque reiciendis quaerat sequi officiis quos voluptate laborum dicta at ad, minima ex eos molestias." aria-label="First name" readonly>
-   <label for="floatingTextarea">Info</label>
- </div>
-
- <div class="form-floating">
-   <input type="text" class="form-control card border-dark mb-3" value="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque explicabo, libero hic praesentium repellendus commodi. Atque reiciendis quaerat sequi officiis quos voluptate laborum dicta at ad, minima ex eos molestias." aria-label="First name" readonly>
-   <label for="floatingTextarea">Descripción</label>
- </div>
-</form>
+     <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" [value]="tax_codeGeneral" aria-label="First name" readonly>
+     <label for="floatingInput">Indicador de impuestos</label>
+   </div>
+   </div> 
+  
+  <div class="form-floating">
+     <input type="text" class="form-control card border-dark mb-3" [value]="bus_purpoGeneral" aria-label="First name" readonly>
+     <label for="floatingTextarea">Info</label>
+   </div>
+  
+   <div class="form-floating">
+     <input type="text" class="form-control card border-dark mb-3" value="{{uuidGeneral}}" aria-label="First name" readonly>
+     <label for="floatingTextarea">Descripción</label>
+   </div>
+  
+  </form>
 
 
 <div class="col-md-2">

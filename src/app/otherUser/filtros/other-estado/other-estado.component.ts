@@ -1,6 +1,75 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+
+
+interface user
+{
+  name: string;
+}
+
+interface ptrv_headP
+{
+  id: number;
+  pernr: string;
+  reinr: string;
+  schem: string;
+  zort1: string;
+  zland: string;
+  hrgio: string;
+  kunde: string;
+  datv1: string;
+  uhrv1: string;
+  datb1: string;
+  uhrb1: string;
+  date: string;
+  times: string;
+  uname: string;
+  auth: number;
+}
+
+interface ptrv_headA
+{
+  id: number;
+  pernr: string;
+  reinr: string;
+  schem: string;
+  zort1: string;
+  zland: string;
+  hrgio: string;
+  kunde: string;
+  datv1: string;
+  uhrv1: string;
+  datb1: string;
+  uhrb1: string;
+  date: string;
+  times: string;
+  uname: string;
+  auth: number;
+}
+
+interface ptrv_headR
+{
+  id: number;
+  pernr: string;
+  reinr: string;
+  schem: string;
+  zort1: string;
+  zland: string;
+  hrgio: string;
+  kunde: string;
+  datv1: string;
+  uhrv1: string;
+  datb1: string;
+  uhrb1: string;
+  date: string;
+  times: string;
+  uname: string;
+  auth: number;
+}
+
+
 
 @Component({
   selector: 'app-other-estado',
@@ -9,63 +78,145 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class OtherEstadoComponent implements OnInit {
 
-  constructor(private router: Router, public auth: AuthService){}
+  pernr!: number;
+  name!: string;
+  
+  styleDisplay = 'none';
 
+  styleDisplay1 = 'none';
+  styleDisplay2 = 'none';
+  styleDisplay3 = 'none';
+
+  constructor(private router: Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.router.navigate(['login'])
-      }else if(isAuthenticate){}
+      }else if(isAuthenticate){
+        this.route.queryParams.subscribe(params => {
+          this.pernr = params['pernr'];
+          this.getInfoUser(this.pernr)
     })
   }
 
-  styleDisplay = 'none';
+})
+  
+}
 
-  listarPendient()
+  getInfoUser(pernr: number)
+{
+  this.http.get<user>('http://localhost:3000/User/' + pernr).subscribe(data => {
+    this.name = data.name;
+  })
+}
+
+
+responseArray1: ptrv_headP[] = [];
+responseArray2: ptrv_headA[] = [];
+responseArray3: ptrv_headR[] = [];
+
+authorized!: number[];
+
+getTRIPP()
+{
+  this.http.get<ptrv_headP[]>('http://localhost:3000/PTRV_HEADS/filter/authP/' + this.pernr).subscribe(pendientes => {
+    this.responseArray1 = pendientes;
+    this.authorized = pendientes.map(item => item.auth);
+  })
+  this.btnPendiente()
+}
+
+getTRIPA()
+{
+  this.http.get<ptrv_headA[]>('http://localhost:3000/PTRV_HEADS/filter/authA/' + this.pernr).subscribe(autorizados => {
+    this.responseArray2 = autorizados;
+    this.authorized = autorizados.map(item => item.auth);
+  })
+  this.btnAprovado()
+}
+
+getTRIPR()
+{
+  this.http.get<ptrv_headR[]>('http://localhost:3000/PTRV_HEADS/filter/authR/' + this.pernr).subscribe(rechazados => {
+    this.responseArray3 = rechazados;
+    this.authorized = rechazados.map(item => item.auth);
+  })
+  this.btnRechazado()
+}
+
+
+btnPendiente()
   {
-    var btnPendient = document.querySelector('.listarPendient');
-      var titleList = document.querySelector('.titleList');
-      var cardsP = document.querySelector('#cardsP');
 
-    var htmlBtn = btnPendient?.textContent;
-    console.log(htmlBtn);
+    var text = document.querySelector('.pendiente');
+    var title = document.querySelector('.title');
+    
 
-    if(titleList && htmlBtn)
+    var htmlBtn = text?.textContent;
+
+    console.log(htmlBtn );
+
+    if(title && htmlBtn)
     {
-      titleList.textContent = htmlBtn;
+      title.textContent=htmlBtn;
     }
 
-    this.styleDisplay='block';
+    this.styleDisplay1 = 'block';
+    this.styleDisplay2 = 'none';
+    this.styleDisplay3 = 'none';
   }
 
-  listarAprovate()
+  btnAprovado()
   {
-    var btnAprovate = document.querySelector('.listarAprovate');
-      var titleList = document.querySelector('.titleList');
 
-      var htmlBtn = btnAprovate?.textContent;
-      console.log(htmlBtn);
+    var text = document.querySelector('.aprovado');
+    var title = document.querySelector('.title');
 
-      if(titleList && htmlBtn)
+    var htmlBtn = text?.textContent;
+
+    if(title && htmlBtn)
     {
-      titleList.textContent = htmlBtn;
+      title.textContent=htmlBtn;
     }
 
-    this.styleDisplay='none';
+    this.styleDisplay1 = 'none';
+    this.styleDisplay2 = 'block';
+    this.styleDisplay3 = 'none';
   }
 
-  listarDeclain()
+  btnRechazado()
   {
-    var btnDeclain = document.querySelector('.listarDeclain');
-      var titleList = document.querySelector('.titleList');
 
-      var htmlBtn = btnDeclain?.textContent;
-      console.log(htmlBtn);
+    var text = document.querySelector('.rechazado');
+    var title = document.querySelector('.title');
 
-      if(titleList && htmlBtn)
+    var htmlBtn = text?.textContent;
+
+    if(title && htmlBtn)
     {
-      titleList.textContent = htmlBtn;
+      title.textContent=htmlBtn;
+    }
+
+    this.styleDisplay1 = 'none';
+    this.styleDisplay2 = 'none';
+    this.styleDisplay3 = 'block';
+  }
+  getEstado(auth: number): string {
+    if (auth === 0) {
+      return 'Pendiente';
+    } else if (auth === 1) { 
+      return 'Aprobado';
+    } else if (auth === 2) {
+      return 'Rechazado';
+    } else {
+      return 'Desconocido';
     }
   }
+
+  tripDetail(id: number)
+      {
+        this.router.navigate(['/otherUser/Viaje'], {queryParams: {id: id, pernr: this.pernr} });
+      }
 }

@@ -1,8 +1,40 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 
 import  Swal  from 'sweetalert2'
+
+interface user
+{
+  name: string;
+  lastname: string;
+  nickname: string;
+}
+
+interface ptrv_head
+{
+  id: number;
+  pernr: string;
+  reinr: string;
+  closeTrip: number;
+}
+
+interface zfi_gv_paper_general
+{
+  head: string;
+  receiptno: number;
+  exp_type: string;
+  rec_amount: number;
+  rec_curr: string;
+  rec_rate: string;
+  loc_amount: number;
+  loc_curr: string;
+  tax_code: string;
+  rec_date: string;
+  shorttxt: string;
+  auth: number;
+}
 
 @Component({
   selector: 'app-mostrar-gasto-other-user',
@@ -11,18 +43,115 @@ import  Swal  from 'sweetalert2'
 })
 export class MostrarGastoOtherUserComponent implements OnInit {
 
-  constructor (private router:Router, public auth: AuthService){}
+idReinr!: number;
+pernr!: number;
+
+id_head!: number;
+pernr_head!: string;
+reinr_head!: string;
+
+name!: string;
+lastname!: string;
+nickname!: string;
+
+
+  receiptno_general!: string;
+  exp_type_general!: string;
+  rec_amount_general!: number;
+  rec_curr_general!: string;
+  rec_rate_general!: string;
+  loc_amount_general!: number;
+  loc_curr_general!: string;
+  tax_code_general!: string;
+  rec_date_general!: string;
+  shorttxt_general!: string;
+  auth_general!: string;
+
+
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+
+  styleCreate = 'none';
+  styleEdit = 'none';
+  styleDelete = 'none';
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.router.navigate(['login'])
-      }else if(isAuthenticate){}
+      }else if(isAuthenticate){
+        this.route.queryParams.subscribe(params => {
+          this.idReinr = params['id'];
+          this.pernr = params['pernr'];
+          this.getData(this.idReinr)
+          this.getUser(this.pernr);
+        })
+      }
     })
   }
 
-  delete(){
+  getUser(pernr: number)
+  {
+    this.http.get<user>('http://localhost:3000/User/' + pernr).subscribe(data => {
+      this.name = data.name;
+      this.lastname = data.lastname;
+      this.nickname = data.nickname;
+    })
+  }
+
+  getData(id: number)
+{
+  this.http.get<ptrv_head>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
+    this.id_head = data.id;
+    this.pernr_head = data.pernr;
+    this.reinr_head = data.reinr;
+
+    this.getDetails(this.reinr_head);
+
+    if (data.closeTrip === 0) {
+      this.styleCreate='block';
+    }else{
+      this.styleCreate='none';
+    }
+  });
+}
+
+responseArray: zfi_gv_paper_general[] = [];
+
+authorized!: number[];
+
+getDetails(reinr_head: string)
+{
+  this.http.get<zfi_gv_paper_general[]>('http://localhost:3000/GENERAL/find/' + reinr_head).subscribe(data => {
+    this.responseArray = data;
+    this.authorized = data.map(item => item.auth); // Almacenar todos los valores de auth en authorized
+   // console.log(this.responseArray)
+  })
+}
+
+getEstado(auth: number): string {
+  if (auth === 0) {
+    this.styleEdit='block';
+    this.styleDelete='block';
+    return 'Pendiente';
+  } else if (auth === 1) {
+    this.styleEdit='none';
+    this.styleDelete='none';
+    return 'Aprobado';
+  } else if (auth === 2) {
+    this.styleEdit='block';
+    this.styleDelete='block';
+    return 'Rechazado';
+  } else {
+    this.styleEdit='none';
+    this.styleDelete='none';
+    return 'Desconocido';
+  }
+}
+
+
+
+  delete(receiptno: number, id_head: number){
    // this.router.navigate(["/ViajeroHome"])
    let timerInterval=0;
    Swal.fire({
@@ -38,20 +167,25 @@ export class MostrarGastoOtherUserComponent implements OnInit {
    }).then((result) => {
     if(result.isConfirmed)
     {
-      Swal.fire(
-        {
-          icon: 'success',
-          title: 'Gasto eliminado con exito',
-          showConfirmButton: true,
-          confirmButtonText: 'Aceptar',
-        }
-      ).then((result) => {
-        this.router.navigate(["/otherUser/Gastos"])
+
+      //console.log(this.id_head)
+      this.http.delete('http://localhost:3000/GENERAL/' + receiptno).subscribe(d => {
+        Swal.fire(
+          {
+            icon: 'success',
+            title: 'Gasto eliminado con exito',
+            showConfirmButton: true,
+            confirmButtonText: 'Aceptar',
+          }
+        ).then((result) => {
+          this.router.navigate(["/otherUser/Viaje"], {queryParams: {id:id_head, pernr: this.pernr}})
+        })
       })
     }
    })
   
   }
+
 
   info()
   {

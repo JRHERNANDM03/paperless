@@ -3,8 +3,16 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '@auth0/auth0-angular';
 
+import { HttpClient } from '@angular/common/http';
+
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
+
+
+interface UserData {
+  rol_id: string;
+  // Otros campos que esperas en los datos de respuesta
+}
 
 
 @Component({
@@ -15,7 +23,7 @@ import Swal from 'sweetalert2'
 export class IndexComponent implements OnInit{
 
 
-  constructor(private router: Router, public auth: AuthService) {}
+  constructor(private router: Router, public auth: AuthService, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -25,11 +33,12 @@ export class IndexComponent implements OnInit{
           this.auth.user$.subscribe(user => {
             const userEmail = user?.email;
             const userName = String(user?.name);
+            const nickname = String(user?.nickname);
             //console.log("El email del usuario logeado es: "+userEmail);
             if(userEmail?.endsWith('@liverpool.com.mx'))
             {
               //console.log("Acesso concedido");
-              this.alerta(userName)
+              this.alerta(nickname)
             }
             else
             {
@@ -42,7 +51,7 @@ export class IndexComponent implements OnInit{
 
   }
 
-alerta(name: String){
+alerta(nickname: String){
  let timerInterval=0;
  Swal.fire({
   icon: 'success',
@@ -59,7 +68,8 @@ willClose: () => {
 /* Read more about handling dismissals below */
 if (result.dismiss === Swal.DismissReason.timer) 
 {
-  this.example()
+  const id = nickname;
+  this.getData(id)
 }
 })
 
@@ -88,35 +98,25 @@ failed()
   })
 }
 
-example()
-{
-  Swal.fire({
-    title:'Ingresar a:',
-    showCancelButton: true,
-    showConfirmButton: true,
-    showDenyButton: true,
-    showLoaderOnConfirm: true,
-    showLoaderOnDeny: true,
-    confirmButtonText: 'Viajero',
-    confirmButtonColor: 'purple',
-    denyButtonText: 'Director',
-    denyButtonColor: 'orange',
-    cancelButtonText: 'Administrador',
-    cancelButtonColor: 'gray'
-  }).then((result) => {
-    if(result.isConfirmed)
-    {
-      this.router.navigate(['/Viajero/Home'])
-    }else 
-    if(result.isDenied)
-    {
-      this.router.navigate(['/Director/Home'])
-    }else 
-    if(result.isDismissed)
-    {
-      this.router.navigate(['/Administrador/Home'])
-    }
-  })
+
+
+
+getData(id: String) {
+  const nickname = id;
+    this.http.get<UserData>('http://localhost:3000/USERS/' + nickname).subscribe(
+      data => {
+        if(data.rol_id == '1')
+        {
+          this.router.navigate(['/Viajero/Home'])
+        }else if(data.rol_id == '2')
+        {
+          this.router.navigate(['/Director/Home'])
+        }else if(data.rol_id == '3')
+        {
+          this.router.navigate(['/Administrador/Home'])
+        }
+      });
 }
+
 
 }

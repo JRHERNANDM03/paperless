@@ -37,19 +37,19 @@
         </nav>
 
     </div>
-  
+
 
     
     <div class="container" style="padding: 1%;">
-    <h5 style="color: black;">Detalles del viaje: #2000001826</h5>
+    <h5 style="color: black;">Detalles del viaje: <h4 id="numberTrip">{{reinr}}</h4></h5>
 
     <div class="row row-cols-1 row-cols-md-3 g-5" >
       <div class="col">
         <div class="card">
-          <img src="../../../assets/image/tijuana.jpg" class="imgTravel" alt="Tijuana">
+          <img src="../../../assets/image/tijuana.jpg" class="imgTravel" alt="{{zort1}}" title="{{zort1}}">
             <div class="card-img-overlay" style="background-color: #00000045;">
-              <h5 class="card-title" style="color: white;">Tijuana</h5>
-              <p class="card-text" style="color: white;">MX</p>
+              <h5 class="card-title" style="color: white;">{{zort1}}</h5>
+              <p class="card-text" style="color: white;">{{zland}}</p>
          </div>
         </div>
       </div>
@@ -57,8 +57,8 @@
 
 
     <div id="contenerdorCentrador" style="justify-content: space-between; padding-top: 3%;">
-        <a href="/Viajero/Gastos" class="btn btn-primary" title="Mostrar gastos">Visualizar gastos de viaje</a>
-        <a (click)="close()" class="btn btn-danger" title="Cerrar Viaje">Cerrar viaje</a>
+        <a (click)="details(id)" class="btn btn-primary" title="Mostrar gastos">Visualizar gastos de viaje</a>
+        <a (click)="close()" class="btn btn-danger" title="Cerrar Viaje" [style.display]="styleClose">Cerrar viaje</a>
 
     </div>
 
@@ -69,71 +69,73 @@
       <div class="row">
         <div class="col">
           Estado:
-          <p (click)="status()" style=" color: grey; padding: 2%;" title="PENDIENTE"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
-            <circle cx="8" cy="8" r="8"/>
-          </svg></p>
+          <p (click)="status(authorized)" [style.color]="getColor(authorized)" style="padding: 2%;" [title]="getTitle(authorized)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8"/>
+            </svg>
+          </p>
         </div>
         <div class="col">
           Total acumulable:
-          <input type="text" class="form-control card border-primary mb-3" id="inputEmail4" value="$ 13,500" readonly style="color: #0059FF;">
+          <input type="text" class="form-control card border-primary mb-3" id="inputEmail4" [value]="'$ '+TOTAL" readonly style="color: #0059FF;">
         </div>
       </div>
 
       <div class="row">
         <div class="col">
           Viaje:
-          <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="2000001827" readonly>
+          <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" [value]="reinr" readonly>
         </div>
         <div class="col">
           Empleado:
-          <input type="text" class="form-control card border-dark mb-3" id="inputEmail4" value="16136996" readonly>
+          <input type="text" class="form-control card border-dark mb-3" id="inputEmail4" [value]="pernr" readonly>
         </div>
       </div>
       
       <div class="row">
         <div class="col">
           Tipo:
-          <input type="text" class="form-control card border-dark mb-3" value="PL" aria-label="First name" readonly>
+          <input type="text" class="form-control card border-dark mb-3" [value]="schem" aria-label="First name" readonly>
         </div>
         <div class="col">
           Destino:
-          <input type="text" class="form-control card border-dark mb-3" value="Tijuana" aria-label="Last name" readonly>
+          <input type="text" class="form-control card border-dark mb-3" [value]="zort1" aria-label="Last name" readonly>
         </div>
         <div class="col">
           Pais:
-          <input type="text" class="form-control card border-dark mb-3" value="MX" aria-label="Last name" readonly>
+          <input type="text" class="form-control card border-dark mb-3" [value]="zland" aria-label="Last name" readonly>
         </div>
       </div>
 
       <div class="col-md-4">
         <label for="inputPassword4" class="form-label" style="color: black;">Región:</label>
-        <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="" readonly>
+        <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" [value]="hrgio" readonly>
       </div>
 
-      <div class="col-md-8">
+      <div class="col-md-6">
         <label for="inputPassword4" class="form-label" style="color: black;">Motivo:</label>
-        <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="Pruebas cambio de sociedades 21jun21" readonly>
+        <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" [value]="kunde" readonly>
       </div>
 
       <div class="row">
         <div class="col">
           Fecha de inicio:
-          <input type="text" class="form-control card border-dark mb-3" value="12/12/2021" aria-label="First name" readonly>
+          <input type="text" class="form-control card border-dark mb-3" [value]="datv1" aria-label="First name" readonly>
         </div>
         <div class="col">
           Hora de inicio:
-          <input type="text" class="form-control card border-dark mb-3" value="12:00:00 am" aria-label="Last name" readonly>
+          <input type="text" class="form-control card border-dark mb-3" [value]="uhrv1" aria-label="Last name" readonly>
         </div>
       </div>
       
       <div class="row">
         <div class="col">
           Fecha Fin:
-          <input type="text" class="form-control card border-dark mb-3" value="13/12/2021" aria-label="First name" readonly>
+          <input type="text" class="form-control card border-dark mb-3" [value]="datb1" aria-label="First name" readonly>
         </div>
         <div class="col">
           Hora Fin:
-          <input type="text" class="form-control card border-dark mb-3" value="12:00:00 am" aria-label="Last name" readonly>
+          <input type="text" class="form-control card border-dark mb-3" [value]="uhrb1" aria-label="Last name" readonly>
         </div>
       </div>
     </form>
