@@ -83,6 +83,9 @@ gastos:any =
   hora_mod:'...',
   auth:0
 }
+
+authCloseTrip!: number;
+
   constructor (private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute){}
 
 
@@ -97,6 +100,7 @@ gastos:any =
         this.route.queryParams.subscribe(params => {
           const id_head = params['id'];
           this.id_head = params['id'];
+          this.authCloseTrip = params['authCloseTrip'];
           this.getData(id_head);
 
           this.auth.user$.subscribe(info => {

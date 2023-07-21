@@ -57,7 +57,7 @@ export class MostrarViajeComponent implements OnInit {
   times!: string;
   uname!: string;
   authorized!: number;
-
+  authCloseTrip!: number;
   TOTAL!: number;
 
 email:any = {}
@@ -102,6 +102,8 @@ ptrv_head:any = {}
     this.times = data.times;
     this.uname = data.uname;
     this.authorized = data.auth;
+    this.authCloseTrip = data.closeTrip;
+
     this.getAccount(this.reinr);
 
     if(data.closeTrip === 0)
@@ -255,9 +257,9 @@ updatePTRV_HEAD()
   })
 }
 
-details(id: number)
+details(id: number, authCloseTrip: number)
 {
-  this.router.navigate(['/Viajero/Gastos'], {queryParams: {id: id} });
+  this.router.navigate(['/Viajero/Gastos'], {queryParams: {id: id, authCloseTrip: authCloseTrip} });
 }
 
 

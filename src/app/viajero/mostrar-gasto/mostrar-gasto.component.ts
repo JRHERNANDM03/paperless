@@ -54,6 +54,8 @@ export class MostrarGastoComponent implements OnInit {
   shorttxt_general!: string;
   auth_general!: string;
 
+  authCloseTrip!: number;
+
 
   constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
 
@@ -71,6 +73,7 @@ ngOnInit(): void {
       this.route.queryParams.subscribe(params => {
         const idHead = params['id'];
         const id = idHead;
+        this.authCloseTrip = +params['authCloseTrip'] || 0;
         this.getData(id)
         //console.log(params['id'])
       })
@@ -80,6 +83,7 @@ ngOnInit(): void {
 
 getData(id: number)
 {
+
   this.http.get<ptrv_head>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
     this.id_head = data.id;
     this.pernr_head = data.pernr;
@@ -102,31 +106,38 @@ authorized!: number[];
 getDetails(reinr_head: string)
 {
   this.http.get<zfi_gv_paper_general[]>('http://localhost:3000/GENERAL/find/' + reinr_head).subscribe(data => {
-    this.responseArray = data;
+   
+  this.responseArray = data;
     this.authorized = data.map(item => item.auth); // Almacenar todos los valores de auth en authorized
-   // console.log(this.responseArray)
   })
 }
 
 getEstado(auth: number): string {
   if (auth === 0) {
-    this.styleEdit='block';
-    this.styleDelete='block';
+    if (this.authCloseTrip === 0) {
+      this.styleEdit = 'block';
+      this.styleDelete = 'block';
+    } else if (this.authCloseTrip === 1) {
+      this.styleEdit = 'none';
+      this.styleDelete = 'none';
+    }
     return 'Pendiente';
   } else if (auth === 1) {
-    this.styleEdit='none';
-    this.styleDelete='none';
+    this.styleEdit = 'none';
+    this.styleDelete = 'none';
     return 'Aprobado';
   } else if (auth === 2) {
-    this.styleEdit='block';
-    this.styleDelete='block';
+    this.styleEdit = 'block';
+    this.styleDelete = 'block';
     return 'Rechazado';
   } else {
-    this.styleEdit='none';
-    this.styleDelete='none';
+    this.styleEdit = 'none';
+    this.styleDelete = 'none';
     return 'Desconocido';
   }
 }
+
+
 
 
 

@@ -55,6 +55,8 @@ export class DetallesGastoComponent implements OnInit {
 
   id_head!: number;
 
+  authCloseTrip!: number;
+
   constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient){}
 
   ngOnInit(): void {
@@ -66,7 +68,7 @@ export class DetallesGastoComponent implements OnInit {
       {
         this.route.queryParams.subscribe(params => {
           const id = params['id'];
-          //console.log(params['head'])
+          this.authCloseTrip = params['authCloseTrip']
            this.getData(id);
            this.id_head = (params['head']);
         });

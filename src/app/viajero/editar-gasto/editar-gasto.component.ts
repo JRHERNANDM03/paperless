@@ -78,6 +78,7 @@ export class EditarGastoComponent implements OnInit {
   hora_mod:this.horaActual
 }
 
+authCloseTrip!: number;
 
   constructor (private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute){}
 
@@ -92,6 +93,7 @@ export class EditarGastoComponent implements OnInit {
           this.receiptno = params['id'];
           this.getData(this.receiptno);
           this.head = params['head'];
+          this.authCloseTrip = params['authCloseTrip'];
         })
 
         this.auth.user$.subscribe(info => {
