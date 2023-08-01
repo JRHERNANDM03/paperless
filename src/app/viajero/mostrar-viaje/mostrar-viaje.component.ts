@@ -33,6 +33,20 @@ interface saveData{
   closeTrip: number;
 }
 
+interface authorize
+{
+  date1: string;
+  date2: string;
+  id_auth: number;
+  pernr: number;
+  pernr_auth1: number;
+  pernr_auth2: number;
+  reinr: number;
+  schem: string;
+  time1: string;
+  time2: string;
+}
+
 
 @Component({
   selector: 'app-mostrar-viaje',
@@ -64,6 +78,8 @@ email:any = {}
 
 ptrv_head:any = {}
 
+complete_name!: string;
+
   constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
   
   styleClose='none'
@@ -78,6 +94,10 @@ ptrv_head:any = {}
         this.route.queryParams.subscribe(params => {
           const id = params['id'];
           this.getDetail(id)
+        })
+
+        this.auth.user$.subscribe(info => {
+            this.complete_name = String(info?.name);
         })
       }
     })
@@ -200,22 +220,24 @@ ptrv_head:any = {}
 
 closeTrip()
 {
-  this.http.get<user>('http://localhost:3000/User/' + this.pernr).subscribe(data =>
-  {
-    this.createEmail(data.area_id)
+  this.http.get<authorize>('http://localhost:3000/one_authorized/' + this.reinr).subscribe(data => {
+    this.createEmail(data.pernr_auth1)
   })
 }
 
-createEmail(area: number)
+createEmail(pernr_auth1: number)
 {
-  console.log(area)
+
+  const messageD = 'El usuario ' + this.complete_name +' ha concluido con el proceso de captura del viaje: ' + this.reinr;
+
   this.email =
   {
     pernr: this.pernr,
     reinr: this.reinr,
-    area: area
+    message: messageD,
+    pernr_d: pernr_auth1
   }
-  this.http.post('http://localhost:3000/Email', this.email).subscribe(res => {
+  this.http.post('http://localhost:3000/EmailD', this.email).subscribe(res => {
    
   if(res)
   {
