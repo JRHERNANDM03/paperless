@@ -58,161 +58,72 @@
 </div>
 
 <div class="container" style="padding-top: 3%;">
-<form class="row g-3" action="" method="GET">
+<form class="row g-3" (ngSubmit)="submitForm()">
 <div class="col-md-6">
   <label for="inputPassword4" class="form-label" style="color: black;">Número de empleado:</label>
-  <input type="text" name="number_viaje" class="form-control card border-dark mb-3" id="inputPassword4" value="16136996" required>
+  <input type="text"  [(ngModel)]="pernr" name="pernr" class="form-control card border-dark mb-3" id="inputPassword4" value="16136996" required>
 </div>
 <div class="col-md-2">
   <label for="inputPassword4" class="form-label" style="color: black;"></label>
- <!--<input type="submit" name="find" class="form-control btn btn-primary" id="inputPassword4" value="Buscar">-->
+  <input type="submit" name="find" class="form-control btn btn-primary" id="inputPassword4" value="Buscar" [disabled]="!formValid()">
 </div>
 </form>
-<button (click)="listar()" class="btn btn-primary">Buscar</button>
 </div>
 
 
 <div class="container" style="padding-top: 4%; padding-bottom: 5%;" [style.display]="styleDisplay">
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col">
+
+      <div class="col" *ngFor="let item of responseArray; let i = index">
         <div class="card">
           <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
           <div class="card-body">
-            <h5 class="card-title">Tijuana</h5>
+            <h5 class="card-title">{{item.zort1}}</h5>
             <hr>
             <div class="row">
               <div class="col">
                 Viaje:
-                <input type="text" class="form-control card border-secondary mb-3" value="2000001842" aria-label="First name" readonly style="border: 1;">
+                <input type="text" class="form-control card border-secondary mb-3" value="{{item.reinr}}" aria-label="First name" readonly style="border: 1;">
               </div>
               <div class="col">
                 N_Emp:
-                <input type="text" class="form-control card border-secondary mb-3" value="16136996" aria-label="Last name" readonly style="border: 1;">
+                <input type="text" class="form-control card border-secondary mb-3" value="{{item.pernr}}" aria-label="Last name" readonly style="border: 1;">
               </div>
             </div>
 
             <div class="row">
               <div class="col">
                 Tipo:
-                <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
+                <input type="text" class="form-control card border-secondary mb-3" value="{{item.hrgio}}" aria-label="First name" readonly style="border: 1;">
               </div>
               <div class="col">
                 Precio:
-                <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
+                <input type="text" class="form-control card border-success mb-3" value="$ {{item.total_loc_amount}}" aria-label="Last name" readonly style="border: 1;">
               </div>
             </div>
   
             <div class="row">
               <div class="col">
                 Fecha Salida:
-                <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
+                <input type="text" class="form-control card border-secondary mb-3" value="{{item.datv1}}" aria-label="First name" readonly style="border: 1;">
               </div>
               <div class="col">
                 Hora Salida:
-                <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
+                <input type="text" class="form-control card border-secondary mb-3" value="{{item.uhrv1}}" aria-label="Last name" readonly style="border: 1;">
               </div>
             </div>
             
             <hr>
-            <p class="card-text card border-secondary mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
+            <p class="card-text mb-3 text-center" [style.color]="getEstado(authorized[i]) === 'Aprobado' ? 'green' : (getEstado(authorized[i]) === 'Rechazado' ? 'red' : 'grey')">
+              Estado: {{ getEstado(authorized[i]) }}
+            </p>
             <div id="contenerdorCentrador" style="justify-content: space-between;">
-              <a href="/Director/Viaje" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
-              <a (click)="aprovate()" style="text-decoration: none;"><button class="btn btn-outline-success">APROBAR</button></a>
+              <a href="/Director/Viaje?id={{item.id}}" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
             </div>
           </div>
         </div>
       </div>
-      <div class="col">
-        <div class="card">
-          <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-          <div class="card-body">
-            <h5 class="card-title">Londres</h5>
-            <hr>
-            <div class="row">
-              <div class="col">
-                Viaje:
-                <input type="text" class="form-control card border-secondary mb-3" value="2026531842" aria-label="First name" readonly style="border: 1;">
-              </div>
-              <div class="col">
-                N_Emp:
-                <input type="text" class="form-control card border-secondary mb-3" value="16136996" aria-label="Last name" readonly style="border: 1;">
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col">
-                Tipo:
-                <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-              </div>
-              <div class="col">
-                Precio:
-                <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-              </div>
-            </div>
-  
-            <div class="row">
-              <div class="col">
-                Fecha Salida:
-                <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-              </div>
-              <div class="col">
-                Hora Salida:
-                <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-              </div>
-            </div>
             
-            <hr>
-            <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-            <button class="btn btn-outline-primary">Visualizar</button>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="../../../assets/image/Mexicali.jfif" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-          <div class="card-body">
-            <h5 class="card-title">MEXICALI</h5>
-            <hr>
-            <div class="row">
-              <div class="col">
-                Viaje:
-                <input type="text" class="form-control card border-secondary mb-3" value="2000654267" aria-label="First name" readonly style="border: 1;">
-              </div>
-              <div class="col">
-                N_Emp:
-                <input type="text" class="form-control card border-secondary mb-3" value="16136996" aria-label="Last name" readonly style="border: 1;">
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col">
-                Tipo:
-                <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-              </div>
-              <div class="col">
-                Precio:
-                <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-              </div>
-            </div>
-  
-            <div class="row">
-              <div class="col">
-                Fecha Salida:
-                <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-              </div>
-              <div class="col">
-                Hora Salida:
-                <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-              </div>
-            </div>
-            
-            <hr>
-            <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-            <button class="btn btn-outline-primary">Visualizar</button>
-          </div>
-        </div>
-      </div>
-      
     </div>
   </div>
 

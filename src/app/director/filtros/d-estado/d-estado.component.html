@@ -54,7 +54,7 @@
 </div>
 
 <div class="text-center" style="padding-top: 4%; padding-bottom: 3%;">
-<h3 style="color: black;">Búsqueda estado</h3>
+<h3 style="color: black;">Búsqueda por estatus</h3>
 </div>
 
 <div class="container">
@@ -73,148 +73,50 @@
   
       <div class="container" id="pendiente" style="padding-bottom: 5%;" [style.display]="styleDisplay">
         <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
+
+          <div class="col" *ngFor="let item of responseArray1; let i = index">
             <div class="card">
               <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
               <div class="card-body">
-                <h5 class="card-title">Tijuana</h5>
+                <h5 class="card-title">{{item.zort1}}</h5>
                 <hr>
                 <div class="row">
                   <div class="col">
                     Viaje:
-                    <input type="text" class="form-control card border-secondary mb-3" value="2000001827" aria-label="First name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.reinr}}" aria-label="First name" readonly style="border: 1;">
                   </div>
                   <div class="col">
                     N_Emp:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12454376" aria-label="Last name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.pernr}}" aria-label="Last name" readonly style="border: 1;">
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col">
                     Tipo:
-                    <input type="text" class="form-control card border-secondary mb-3" value="PL" aria-label="First name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.hrgio}}" aria-label="First name" readonly style="border: 1;">
                   </div>
                   <div class="col">
                     Precio:
-                    <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-success mb-3" value="$ {{item.total_loc_amount}}" aria-label="Last name" readonly style="border: 1;">
                   </div>
                 </div>
       
                 <div class="row">
                   <div class="col">
                     Fecha Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.datv1}}" aria-label="First name" readonly style="border: 1;">
                   </div>
                   <div class="col">
                     Hora Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.uhrv1}}" aria-label="Last name" readonly style="border: 1;">
                   </div>
                 </div>
                 <hr>
                 <p class="card-text card border-secondary mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
                 <div class="">
                   <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
-                      <a (click)="aprobar()" style="text-decoration: none;"><button class="btn btn-outline-success">APROBAR</button></a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-              <div class="card-body">
-                <h5 class="card-title">Londres</h5>
-                <hr>
-                <div class="row">
-                  <div class="col">
-                    Viaje:
-                    <input type="text" class="form-control card border-secondary mb-3" value="2000001839" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    N_Emp:
-                    <input type="text" class="form-control card border-secondary mb-3" value="16136996" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    Tipo:
-                    <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Precio:
-                    <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-      
-                <div class="row">
-                  <div class="col">
-                    Fecha Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Hora Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-                <hr>
-                <p class="card-text card border-dark mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
-                <div class="">
-                  <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
-                      <a style="text-decoration: none;"><button class="btn btn-outline-success">APROBAR</button></a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-              <div class="card-body">
-                <h5 class="card-title">Londres</h5>
-                <hr>
-                <div class="row">
-                  <div class="col">
-                    Viaje:
-                    <input type="text" class="form-control card border-secondary mb-3" value="2000001842" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    N_Emp:
-                    <input type="text" class="form-control card border-secondary mb-3" value="11226547" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    Tipo:
-                    <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Precio:
-                    <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-      
-                <div class="row">
-                  <div class="col">
-                    Fecha Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Hora Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-                <hr>
-                <p class="card-text card border-dark mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
-                <div class="">
-                  <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
-                      <a style="text-decoration: none;"><button class="btn btn-outline-success">APROBAR</button></a>
+                      <a href="/Director/Viaje?id={{item.id}}" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
                     </div>
                   </div>
               </div>
@@ -223,150 +125,55 @@
           
         </div>
       </div>
+
+
 
       <div class="container" id="aprobado" style="padding-bottom: 5%;" [style.display]="styleDisplay2">
         <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
+
+          <div class="col" *ngFor="let item of responseArray1; let i = index">
             <div class="card">
               <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
               <div class="card-body">
-                <h5 class="card-title">Tijuana</h5>
+                <h5 class="card-title">{{item.zort1}}</h5>
                 <hr>
                 <div class="row">
                   <div class="col">
                     Viaje:
-                    <input type="text" class="form-control card border-secondary mb-3" value="2000001827" aria-label="First name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.reinr}}" aria-label="First name" readonly style="border: 1;">
                   </div>
                   <div class="col">
                     N_Emp:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12454376" aria-label="Last name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.pernr}}" aria-label="Last name" readonly style="border: 1;">
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col">
                     Tipo:
-                    <input type="text" class="form-control card border-secondary mb-3" value="PL" aria-label="First name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.hrgio}}" aria-label="First name" readonly style="border: 1;">
                   </div>
                   <div class="col">
                     Precio:
-                    <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-success mb-3" value="$ {{item.total_loc_amount}}" aria-label="Last name" readonly style="border: 1;">
                   </div>
                 </div>
       
                 <div class="row">
                   <div class="col">
                     Fecha Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.datv1}}" aria-label="First name" readonly style="border: 1;">
                   </div>
                   <div class="col">
                     Hora Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.uhrv1}}" aria-label="Last name" readonly style="border: 1;">
                   </div>
                 </div>
                 <hr>
                 <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
                 <div class="">
                   <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-              <div class="card-body">
-                <h5 class="card-title">Londres</h5>
-                <hr>
-                <div class="row">
-                  <div class="col">
-                    Viaje:
-                    <input type="text" class="form-control card border-secondary mb-3" value="2000001839" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    N_Emp:
-                    <input type="text" class="form-control card border-secondary mb-3" value="16136996" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    Tipo:
-                    <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Precio:
-                    <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-      
-                <div class="row">
-                  <div class="col">
-                    Fecha Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Hora Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-                <hr>
-                <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-                <div class="">
-                  <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-              <div class="card-body">
-                <h5 class="card-title">Londres</h5>
-                <hr>
-                
-                <div class="row">
-                  <div class="col">
-                    Viaje:
-                    <input type="text" class="form-control card border-secondary mb-3" value="2000001842" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    N_Emp:
-                    <input type="text" class="form-control card border-secondary mb-3" value="11226547" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    Tipo:
-                    <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Precio:
-                    <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-      
-                <div class="row">
-                  <div class="col">
-                    Fecha Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Hora Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-                
-                <hr>
-                <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-                <div class="">
-                  <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
+                      <a href="/Director/Viaje?id={{item.id}}" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
                     </div>
                   </div>
               </div>
@@ -376,150 +183,54 @@
         </div>
       </div>
 
+
+
       <div class="container" id="rechazado" style="padding-bottom: 5%;" [style.display]="styleDisplay3">
         <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
+
+          <div class="col" *ngFor="let item of responseArray1; let i = index">
             <div class="card">
               <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
               <div class="card-body">
-                <h5 class="card-title">Tijuana</h5>
+                <h5 class="card-title">{{item.zort1}}</h5>
                 <hr>
                 <div class="row">
                   <div class="col">
                     Viaje:
-                    <input type="text" class="form-control card border-secondary mb-3" value="2000001827" aria-label="First name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.reinr}}" aria-label="First name" readonly style="border: 1;">
                   </div>
                   <div class="col">
                     N_Emp:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12454376" aria-label="Last name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.pernr}}" aria-label="Last name" readonly style="border: 1;">
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col">
                     Tipo:
-                    <input type="text" class="form-control card border-secondary mb-3" value="PL" aria-label="First name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.hrgio}}" aria-label="First name" readonly style="border: 1;">
                   </div>
                   <div class="col">
                     Precio:
-                    <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-success mb-3" value="$ {{item.total_loc_amount}}" aria-label="Last name" readonly style="border: 1;">
                   </div>
                 </div>
       
                 <div class="row">
                   <div class="col">
                     Fecha Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.datv1}}" aria-label="First name" readonly style="border: 1;">
                   </div>
                   <div class="col">
                     Hora Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
+                    <input type="text" class="form-control card border-secondary mb-3" value="{{item.uhrv1}}" aria-label="Last name" readonly style="border: 1;">
                   </div>
                 </div>
                 <hr>
                 <p class="card-text card border-danger mb-3 text-center" style="color: red;">Estado: RECHAZADO</p>
                 <div class="">
                   <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
-                      <a (click)="change()" style="text-decoration: none;"><button class="btn btn-outline-dark">Cambiar estado</button></a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-              <div class="card-body">
-                <h5 class="card-title">Londres</h5>
-                <hr>
-                <div class="row">
-                  <div class="col">
-                    Viaje:
-                    <input type="text" class="form-control card border-secondary mb-3" value="2000001839" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    N_Emp:
-                    <input type="text" class="form-control card border-secondary mb-3" value="16136996" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    Tipo:
-                    <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Precio:
-                    <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-      
-                <div class="row">
-                  <div class="col">
-                    Fecha Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Hora Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-                <hr>
-                <p class="card-text card border-danger mb-3 text-center" style="color: red;">Estado: RECHAZADO</p>
-                <div class="">
-                  <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
-                      <a (click)="change()" style="text-decoration: none;"><button class="btn btn-outline-dark">Cambiar estado</button></a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-              <div class="card-body">
-                <h5 class="card-title">Londres</h5>
-                <hr>
-                <div class="row">
-                  <div class="col">
-                    Viaje:
-                    <input type="text" class="form-control card border-secondary mb-3" value="2000001842" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    N_Emp:
-                    <input type="text" class="form-control card border-secondary mb-3" value="11226547" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
-                    Tipo:
-                    <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Precio:
-                    <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-      
-                <div class="row">
-                  <div class="col">
-                    Fecha Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-                  </div>
-                  <div class="col">
-                    Hora Salida:
-                    <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-                  </div>
-                </div>
-                <hr>
-                <p class="card-text card border-danger mb-3 text-center" style="color: red;">Estado: RECHAZADO</p>
-                <div class="">
-                  <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
-                      <a (click)="change()" style="text-decoration: none;"><button class="btn btn-outline-dark">Cambiar estado</button></a>
+                      <a href="/Director/Viaje?id={{item.id}}" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
                     </div>
                   </div>
               </div>

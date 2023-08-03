@@ -23,10 +23,10 @@
     <div class="offcanvas-body">
       <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/Director/Home">Home</a>
+          <a class="nav-link active" aria-current="page" href="/Director/Home">Home - Mis Viajes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link " aria-current="page" href="/Director/Mis-Gastos">Regresar</a>
+          <a class="nav-link " aria-current="page" href="/Director/Mis-Gastos?id={{id_head}}&authCloseTrip={{authCloseTrip}}">Regresar</a>
         </li>
       </ul>
     </div>
@@ -45,98 +45,97 @@
 </div>
 
 <div class="container" style="padding: 1%;">
-<h5 style="color: black;">Viaje: 2000001826</h5>
+<h5 style="color: black;">Viaje: {{reinrG}}</h5>
 </div>
 
 <div class="container card border-dark mb-3">
 <div class="container" style="padding: 1%;">
-    <form class="row g-3" action="register_success.html" method="POST" enctype="multipart/form-data" style="padding-top: 5%; padding-bottom: 2%;">
+  <form class="row g-3" (ngSubmit)="submitForm()" enctype="multipart/form-data" style="padding-top: 5%; padding-bottom: 2%;">
 
-          <div class="form-floating">
-            <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
-              <option selected>Choose...</option>
-              <option value="ALID">ALID ALIM REST LIVER P/COMPLEMENTAR</option>
-              <option value="ALIL">ALIL ALIMENTO P/LPC</option>
-              <option value="ALIE">ALIE ALIMENTO p/EMPLEADO</option>
-              <option value="ZAVN">ZAVN AVION NO UTILIZADO P//EMPRESA</option>
-              <option value="AVIR">AVIR AVION P/EMPR.REUTILIZADO</option>
-              <option value="AVIP">AVIP AVION P/EMPRESA</option>
-              <option value="ZAVU">ZAVU AVION UTILIZADO P/EMPRESA</option>
-              <option value="CASE">CASE CASETA P/EMPLEADO</option>
-            </select>
-            <label for="floatingSelect">Tipo de Gasto</label>
-          </div>
-        
-        <div class="row" style="padding-top: 3%;">
-          <div class="col form-floating mb-3" >
-            <input type="number" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" placeholder="Ingresa el importe" aria-label="First name" required>
-            <label for="floatingInput">Importe</label>
-          </div>
-          <div class="col form-floating mb-3">
-            <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
-              <option selected>Choose...</option>
-              <option value="MXP">MXP Pesos Mexicanos</option>
-              <option value="option2">OPTION2</option>
-              <option value="option3">OPTION3</option>
-              <option value="option4">OPTION4</option>
-              <option value="option5">OPTION5</option>
-              <option value="option6">OPTION6</option>
-              <option value="option7">OPTION7</option>
-              <option value="option8">OPTION8</option>
-            </select>
-            <label for="floatingSelect">Moneda</label>
-          </div>
-        </div> 
-        
-        <div class="col-md-4">
-          <label for="" class="form-label" style="color: black;">Fecha de gasto:</label>
-          <input type="date" name="date" class="form-control card border-dark mb-3" id="inputEmail4" required>
-        </div>
-        
-        <div class="row" style="padding-top: 3%;">
-          <div class="col form-floating mb-3">
-            <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example">
-              <option selected>Choose...</option>
-              <option value="F2">F2 IVA ACREDITABLE 16%</option>
-              <option value="E3">E3 IVA ACREDITABLE EXENTO</option>
-              <option value="option3">OPTION3</option>
-              <option value="option4">OPTION4</option>
-              <option value="option5">OPTION5</option>
-              <option value="option6">OPTION6</option>
-              <option value="option7">OPTION7</option>
-              <option value="option8">OPTION8</option>
-            </select>
-            <label for="floatingSelect">Indicador de impuestos</label>
-          </div>
-          <div class="col form-floating mb-3" >
-            <input type="number" class="form-control card border-dark mb-3" id="floatingInput" value="1" aria-label="First name" required>
-            <label for="floatingInput">Cantidad</label>
-          </div>
-        </div>
-  
-        <div class="form-floating">
-            <input type="text" class="form-control card border-dark mb-3" placeholder="Campo opcional" aria-label="First name">
-            <label for="floatingTextarea">Info</label>
-          </div>
-  
-        <div class="form-floating">
-          <textarea class="form-control card border-dark mb-3" placeholder="Leave a comment here" id="floatingTextarea" required></textarea>
-          <label for="floatingTextarea">Descripción</label>
-        </div>
-  
-        <div class="col-md-12">
-          <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
-          <input type="file" name="file" class="form-control card border-dark mb-3" id="inputPassword4" required>
-        </div>
-
-    <!--
-        <div class="col-md-6">
-        <button class="btn btn-outline-success">Guardar registro</button>
-        </div>
-    -->
-      </form>
     
-        <button (click)="success()" class="btn btn-outline-success">Guardar registro</button>
+    <div class="form-floating">
+      <select class="form-select card border-dark mb-3" [(ngModel)]="exp_type" name="exp_type" id="floatingSelect" aria-label="Floating label select example" required>
+        <option selected>Choose...</option>
+        <option value="ALID">ALID ALIM REST LIVER P/COMPLEMENTAR</option>
+        <option value="ALIL">ALIL ALIMENTO P/LPC</option>
+        <option value="ALIE">ALIE ALIMENTO p/EMPLEADO</option>
+        <option value="ZAVN">ZAVN AVION NO UTILIZADO P//EMPRESA</option>
+        <option value="AVIR">AVIR AVION P/EMPR.REUTILIZADO</option>
+        <option value="AVIP">AVIP AVION P/EMPRESA</option>
+        <option value="ZAVU">ZAVU AVION UTILIZADO P/EMPRESA</option>
+        <option value="CASE">CASE CASETA P/EMPLEADO</option>
+      </select>
+      <label for="floatingSelect">Tipo de Gasto</label>
+    </div>
+  
+  <div class="row" style="padding-top: 3%;">
+    <div class="col form-floating mb-3" >
+      <input type="number" step="any" [(ngModel)]="locAmount"  name="loc_amount" class="form-control card border-dark mb-3" id="floatingInput" placeholder="Ingresa el importe" aria-label="First name" required>
+      <label for="floatingInput">Importe</label>
+    </div>
+    <div class="col form-floating mb-3">
+      <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example" [(ngModel)]="locCurr" name="loc_curr" required>
+        <option selected>Choose...</option>
+        <option value="MXP">MXP Pesos Mexicanos</option>
+        <option value="option2">OPTION2</option>
+        <option value="option3">OPTION3</option>
+        <option value="option4">OPTION4</option>
+        <option value="option5">OPTION5</option>
+        <option value="option6">OPTION6</option>
+        <option value="option7">OPTION7</option>
+        <option value="option8">OPTION8</option>
+      </select>
+      <label for="floatingSelect">Moneda</label>
+    </div>
+  </div> 
+  
+  <div class="col-md-4">
+    <label for="" class="form-label" style="color: black;">Fecha de gasto:</label>
+    <input type="date" [(ngModel)]="date" name="date" class="form-control card border-dark mb-3" id="inputEmail4" required>
+  </div>
+  
+  <div class="row" style="padding-top: 3%;">
+    <div class="col form-floating mb-3">
+      <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example" [(ngModel)]="taxCode" name="tax_code" required>
+        <option selected>Choose...</option>
+        <option value="F2">F2 IVA ACREDITABLE 16%</option>
+        <option value="E3">E3 IVA ACREDITABLE EXENTO</option>
+        <option value="option3">OPTION3</option>
+        <option value="option4">OPTION4</option>
+        <option value="option5">OPTION5</option>
+        <option value="option6">OPTION6</option>
+        <option value="option7">OPTION7</option>
+        <option value="option8">OPTION8</option>
+      </select>
+      <label for="floatingSelect">Indicador de impuestos</label>
+    </div>
+    <div class="col form-floating mb-3" >
+      <input type="number" class="form-control card border-dark mb-3" [(ngModel)]="multipli" name="multipli" id="floatingInput" value="1" aria-label="First name" required>
+      <label for="floatingInput">Cantidad</label>
+    </div>
+  </div>
+
+  <div class="form-floating">
+      <input type="text" class="form-control card border-dark mb-3" [(ngModel)]="busPurpo" name="bus_porpu" placeholder="Campo opcional" aria-label="First name" required>
+      <label for="floatingTextarea">Info</label>
+    </div>
+
+  <div class="form-floating">
+    <textarea class="form-control card border-dark mb-3" [(ngModel)]="descript" name="descript" placeholder="Leave a comment here" id="floatingTextarea" required></textarea>
+    <label for="floatingTextarea">Descripción</label>
+  </div>
+
+  <div class="col-md-12">
+    <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
+    <input type="file" (change)="onFileSelected($event)"  [(ngModel)]="documento" name="documento" class="form-control card border-dark mb-3" id="inputPassword4" required accept=".pdf, .xml">
+  </div>
+
+
+  <div class="col-md-4">
+    <input type="submit" class="btn btn-outline-success" [disabled]="!formValid()" value="Guardar">
+  </div>
+
+</form>
 
 </div>
 </div>

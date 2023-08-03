@@ -1,8 +1,35 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 
 import Swal from 'sweetalert2';
+
+
+interface ptrv_head
+{
+  id: number;
+  pernr: string;
+  reinr: string;
+  closeTrip: number;
+}
+
+interface zfi_gv_paper_general
+{
+  head: string;
+  receiptno: number;
+  exp_type: string;
+  rec_amount: number;
+  rec_curr: string;
+  rec_rate: string;
+  loc_amount: number;
+  loc_curr: string;
+  tax_code: string;
+  rec_date: string;
+  shorttxt: string;
+  auth: number;
+}
+
 
 @Component({
   selector: 'app-mostrar-mis-gastos-director',
@@ -11,48 +38,138 @@ import Swal from 'sweetalert2';
 })
 export class MostrarMisGastosDirectorComponent implements OnInit {
 
-  constructor(private router:Router, public auth: AuthService){}
+  id_head!: number;
+  pernr_head!: string;
+  reinr_head!: string;
+
+  receiptno_general!: string;
+  exp_type_general!: string;
+  rec_amount_general!: number;
+  rec_curr_general!: string;
+  rec_rate_general!: string;
+  loc_amount_general!: number;
+  loc_curr_general!: string;
+  tax_code_general!: string;
+  rec_date_general!: string;
+  shorttxt_general!: string;
+  auth_general!: string;
+
+  styleCreate = 'none';
+  styleEdit = 'none';
+  styleDelete = 'none';
+
+  authCloseTrip!: number;
+
+  constructor(private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.errLog()
-      }else if(isAuthenticate){}
+      }else if(isAuthenticate){
+        this.route.queryParams.subscribe(params => {
+          this.authCloseTrip = +params['authCloseTrip'] || 0;
+          const idHead = params['id'];
+        const id = idHead;
+        this.getData(id)
+        })
+      }
     })
   }
 
-  delete(){
-    // this.router.navigate(["/ViajeroHome"])
-    let timerInterval=0;
-    Swal.fire({
-     icon: 'info',
-     title: '¿Estás seguro de eliminar el gasto seleccionado?',
-     text: 'SE ELIMINARÁ POR COMPLETO',
-     showConfirmButton: true,
-     confirmButtonText: 'ELIMINAR',
-     confirmButtonColor: '#E31212',
-     showCancelButton: true,
-     cancelButtonText: 'CANCELAR' ,
-     cancelButtonColor: '123BE3'
-    }).then((result) => {
-     if(result.isConfirmed)
-     {
-       Swal.fire(
-         {
-           icon: 'success',
-           title: 'Gasto eliminado con exito',
-           showConfirmButton: true,
-           confirmButtonText: 'Aceptar',
-           confirmButtonColor: 'purple'
-         }
-       ).then((result) => {
-         this.router.navigate(["/Director/Mis-Gastos"])
-       })
-     }
+  getData(id: number)
+  {
+    this.http.get<ptrv_head>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
+      this.id_head = data.id;
+      this.pernr_head = data.pernr;
+      this.reinr_head = data.reinr;
+  
+      this.getDetails(this.reinr_head);
+  
+      if (data.closeTrip === 0) {
+        this.styleCreate='block';
+      }else{
+        this.styleCreate='none';
+      }
+    });
+  }
+  
+  responseArray: zfi_gv_paper_general[] = [];
+  
+  authorized!: number[];
+  
+  getDetails(reinr_head: string)
+  {
+    this.http.get<zfi_gv_paper_general[]>('http://localhost:3000/GENERAL/find/' + reinr_head).subscribe(data => {
+      this.responseArray = data;
+      this.authorized = data.map(item => item.auth); // Almacenar todos los valores de auth en authorized
+     // console.log(this.responseArray)
     })
-   
-   }
+  }
+  
+  getEstado(auth: number): string {
+    if (auth === 0) {
+      if (this.authCloseTrip === 0) {
+        this.styleEdit = 'block';
+        this.styleDelete = 'block';
+      } else if (this.authCloseTrip === 1) {
+        this.styleEdit = 'none';
+        this.styleDelete = 'none';
+      }
+      return 'Pendiente';
+    } else if (auth === 1) {
+      this.styleEdit = 'none';
+      this.styleDelete = 'none';
+      return 'Aprobado';
+    } else if (auth === 2) {
+      this.styleEdit = 'block';
+      this.styleDelete = 'block';
+      return 'Rechazado';
+    } else {
+      this.styleEdit = 'none';
+      this.styleDelete = 'none';
+      return 'Desconocido';
+    }
+  }
+  
+  
+  
+    delete(receiptno: number, id_head: number){
+     // this.router.navigate(["/ViajeroHome"])
+     let timerInterval=0;
+     Swal.fire({
+      icon: 'info',
+      title: '¿Estás seguro de eliminar el gasto seleccionado?',
+      text: 'SE ELIMINARÁ POR COMPLETO',
+      showConfirmButton: true,
+      confirmButtonText: 'ELIMINAR',
+      confirmButtonColor: '#E31212',
+      showCancelButton: true,
+      cancelButtonText: 'CANCELAR' ,
+      cancelButtonColor: '123BE3'
+     }).then((result) => {
+      if(result.isConfirmed)
+      { 
+  
+        //console.log(this.id_head)
+        this.http.delete('http://localhost:3000/GENERAL/' + receiptno).subscribe(d => {
+          Swal.fire(
+            {
+              icon: 'success',
+              title: 'Gasto eliminado con exito',
+              showConfirmButton: true,
+              confirmButtonText: 'Aceptar',
+            }
+          ).then((result) => {
+            this.router.navigate(["/Director/Mi-Viaje"], {queryParams: {id:id_head}})
+          })
+        })
+      }
+     })
+    
+    }
+  
  
    info()
    {

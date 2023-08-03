@@ -1,6 +1,46 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import Swal from 'sweetalert2';
+
+interface user
+{
+  area_id: number;
+}
+
+interface ptrv_head
+{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  auth: number;
+  closeTrip: number;
+  created_at: string;
+  datb1: string;
+  date: string;
+  datv1: string;
+  hrgio: string;
+  id: number;
+  kunde: string;
+  lastname: string;
+  name: string;
+  nickname: string;
+  pernr: string;
+  puesto: string;
+  reinr: string;
+  rol_id: number;
+  schem: string;
+  times: string;
+  total_loc_amount: number;
+  uhrb1: string;
+  uhrv1: string;
+  uname: string;
+  updated_at: string;
+  zland: string;
+  zort1: string;
+}
+
 
 @Component({
   selector: 'app-d-estado',
@@ -8,21 +48,43 @@ import Swal from 'sweetalert2';
   styleUrls: ['./d-estado.component.css']
 })
 export class DEstadoComponent implements OnInit{
+  
+  nickname!: string;
 
-  constructor(public auth: AuthService){}
+  areaID!: number;
+  
+  styleDisplay = 'none';
+  styleDisplay2 = 'none';
+  styleDisplay3 = 'none';
+
+  responseArray1: ptrv_head[] = [];
+  authorized!: number[];
+
+
+  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.errLog()
-      }else if(isAuthenticate){}
+      }else if(isAuthenticate){
+        this.auth.user$.subscribe(infoUser => {
+          this.nickname = String(infoUser?.nickname)
+          this.getInfoUser(this.nickname)
+        })
+
+      }
     })
   }
 
-  styleDisplay = 'none';
-  styleDisplay2 = 'none';
-  styleDisplay3 = 'none';
+  getInfoUser(nickname: string)
+  {
+    this.http.get<user>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+      this.areaID = data.area_id
+    })
+  }
+
 
   listarPendient()
   {
@@ -37,6 +99,18 @@ export class DEstadoComponent implements OnInit{
     {
       titleList.textContent = htmlBtn;
     }
+
+    this.http.get<ptrv_head[]>('http://localhost:3000/PTRV_HEADS/filter/statusp/' + this.areaID).subscribe(data => {
+      if(data.length === 0)
+      {
+        this.notdata()
+      }
+      else
+      {
+        this.responseArray1 = data;
+        this.authorized = data.map(item => item.auth);
+      }
+    })
 
     this.styleDisplay='block';
     this.styleDisplay2='none';
@@ -56,6 +130,18 @@ export class DEstadoComponent implements OnInit{
       titleList.textContent = htmlBtn;
     }
 
+    this.http.get<ptrv_head[]>('http://localhost:3000/PTRV_HEADS/filter/statusa/' + this.areaID).subscribe(data => {
+      if(data.length === 0)
+      {
+        this.notdata()
+      }
+      else
+      {
+        this.responseArray1 = data;
+        this.authorized = data.map(item => item.auth);
+      }
+    })
+
     this.styleDisplay2='block';
     this.styleDisplay='none';
     this.styleDisplay3='none';
@@ -74,93 +160,32 @@ export class DEstadoComponent implements OnInit{
       titleList.textContent = htmlBtn;
     }
 
+    this.http.get<ptrv_head[]>('http://localhost:3000/PTRV_HEADS/filter/statusr/' + this.areaID).subscribe(data => {
+      if(data.length === 0)
+      {
+        this.notdata()
+      }
+      else
+      {
+        this.responseArray1 = data;
+        this.authorized = data.map(item => item.auth);
+      }
+    })
+
     this.styleDisplay3='block';
     this.styleDisplay='none';
     this.styleDisplay2='none';
   }
 
-  aprobar()
-  {
-    let timerInterval=0;
 
-    Swal.fire({
-      title: '¿Aprobar Viaje?',
-      showConfirmButton: true,
-      showCancelButton: true,
-      confirmButtonColor: 'purple',
-      confirmButtonText: 'APROBAR',
-      cancelButtonText: 'Cancelar',
-      showDenyButton: true,
-      denyButtonText: 'Rechazar',
-      denyButtonColor: 'red'
-    }).then((result) => {
-      if(result.isConfirmed)
-      {
-        Swal.fire({
-          icon: 'success',
-          title: 'Viaje aprobado',
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          willClose: () => {
-            clearInterval(timerInterval)
-          }
-        }).then((result) => {
-          /* Read more about handling dismissals below */
-          if (result.dismiss === Swal.DismissReason.timer) {
-            
-          }
-          })
-      }else if(result.isDenied)
-      {
-        Swal.fire({
-          icon: 'info',
-          iconColor: 'red',
-          title: 'Viaje rechazado',
-          showCancelButton: false,
-          showConfirmButton: true,
-          confirmButtonText: 'Ok',
-          confirmButtonColor: 'blue'
-        })
-      }
-    })
-  }
+notdata()
+{
+  Swal.fire({
+    icon: 'info',
+    title: 'No hay registros'
+  })
+}
 
-  change()
-  {
-    let timerInterval = 0;
-
-    Swal.fire({
-      icon: 'info',
-      iconColor: 'orange',
-      title: '¿Cambiar estado?',
-      showCancelButton: true,
-      showConfirmButton: true,
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Aprobar',
-      confirmButtonColor: 'orange'
-    }).then((result) => {
-      if(result.isConfirmed)
-      {
-        Swal.fire({
-          icon: 'success',
-          title: 'Viaje aprobado',
-          timer: 2000,
-          timerProgressBar: true,
-          showCancelButton: false,
-          showConfirmButton: false,
-          willClose:() => {
-            clearInterval(timerInterval)
-          }
-        }).then((res) => {
-          if(res.dismiss === Swal.DismissReason.timer)
-          {
-
-          }
-        })
-      }
-    })
-  }
 
   errLog()
   {
