@@ -74,6 +74,8 @@ nickname!: string;
   styleEdit = 'none';
   styleDelete = 'none';
 
+  authCloseTrip!: number;
+
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
@@ -83,6 +85,8 @@ nickname!: string;
         this.route.queryParams.subscribe(params => {
           this.idReinr = params['id'];
           this.pernr = params['pernr'];
+          this.authCloseTrip = +params['authCloseTrip'] || 0;
+
           this.getData(this.idReinr)
           this.getUser(this.pernr);
         })
@@ -131,8 +135,13 @@ getDetails(reinr_head: string)
 
 getEstado(auth: number): string {
   if (auth === 0) {
-    this.styleEdit='block';
-    this.styleDelete='block';
+    if (this.authCloseTrip === 0) {
+      this.styleEdit = 'block';
+      this.styleDelete = 'block';
+    } else if (this.authCloseTrip === 1) {
+      this.styleEdit = 'none';
+      this.styleDelete = 'none';
+    }
     return 'Pendiente';
   } else if (auth === 1) {
     this.styleEdit='none';

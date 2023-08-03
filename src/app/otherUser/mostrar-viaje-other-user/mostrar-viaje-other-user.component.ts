@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { timeInterval } from 'rxjs';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -39,6 +40,19 @@ interface saveData{
   closeTrip: number;
 }
 
+interface info_auth
+{
+  date1: string;
+  date2: string;
+  id_auth: number;
+  pernr_auth1: number;
+  pernr_auth2: number;
+  reinr: string;
+  schem: string;
+  time1: string;
+  time2: string;
+}
+
 @Component({
   selector: 'app-mostrar-viaje-other-user',
   templateUrl: './mostrar-viaje-other-user.component.html',
@@ -69,10 +83,11 @@ pernr1!: number;
   times!: string;
   uname!: string;
   authorized!: number;
+  authCloseTrip!: number;
 
   TOTAL!: number;
 
-  email:any = {}
+  emailD:any = {}
 
 ptrv_head:any = {}
 
@@ -125,6 +140,8 @@ getDataTrip(id: number, pernr: number)
     this.times = data.times;
     this.uname = data.uname;
     this.authorized = data.auth;
+    this.authCloseTrip = data.closeTrip;
+
     this.getAccount(this.reinr);
 
     if(data.closeTrip === 0)
@@ -222,43 +239,72 @@ status(authorized: number)
 
   closeTrip()
 {
-  this.http.get<user>('http://localhost:3000/User/' + this.pernr).subscribe(data =>
-  {
-    this.createEmail(data.area_id)
+  this.http.get<info_auth>('http://localhost:3000/one_authorized/' + this.pernr).subscribe(dataInfo_auth => {
+    if(dataInfo_auth)
+    {
+      this.http.get<user>('http://localhost:3000/User/' + this.pernr).subscribe(dataUser =>
+      {
+        this.createEmail(dataUser.area_id, dataInfo_auth.pernr_auth1)
+      })
+
+    }else { console.log('ERR dataInfo_auth') }
   })
+  
 }
 
-createEmail(area: number)
+createEmail(area: number, pernr_auth1: number)
 {
-  console.log(area)
-  this.email =
+
+  const messageD = 'El usuario ' + this.name + ' ha cerrado el viaje ' + this.reinr + ', ahora ya puedes aprobarlo.'
+
+  this.emailD =
   {
     pernr: this.pernr,
     reinr: this.reinr,
-    area: area
+    message: messageD,
+    pernr_d: pernr_auth1
   }
-  this.http.post('http://localhost:3000/Email', this.email).subscribe(res => {
+  this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(res => {
    
   if(res)
   {
     this.updatePTRV_HEAD()
   }
-  }) 
+  })
 }
 
 updatePTRV_HEAD()
 {
+  let timerInterval=0;
+
   this.ptrv_head = 
   {
     closeTrip: 1
   }
   this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.id, this.ptrv_head).subscribe(res => {
-    this.router.navigate(['/otherUser/Home'], {queryParams: {pernr: this.pernr}})
+
+  Swal.fire({
+    icon: 'success',
+    title: 'Viaje Cerrado!',
+    timer: 3000,
+    timerProgressBar: true,
+    showCancelButton: false,
+    showConfirmButton: false,
+    willClose:() => {
+      clearInterval(timerInterval)
+    }
+  }).then((result) => {
+    /* Read more about handling dismissals below */
+    if (result.dismiss === Swal.DismissReason.timer) 
+    {
+      this.router.navigate(['/otherUser/Home'], {queryParams: {pernr: this.pernr}})
+    }
+    })
   })
 }
   
-details(id: number)
+details(id: number, authCloseTrip: number)
 {
-  this.router.navigate(['/otherUser/Gastos'], {queryParams: {id: id, pernr: this.pernr} });
+  this.router.navigate(['/otherUser/Gastos'], {queryParams: {id: id, pernr: this.pernr, authCloseTrip: authCloseTrip} });
 }
 }

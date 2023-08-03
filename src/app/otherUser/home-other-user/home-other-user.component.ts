@@ -58,6 +58,8 @@ nickname!: string;
           this.pernr = params['pernr'];
           this.getDataUser(this.pernr)
           this.getTrip(this.pernr)
+
+          
         })
       }
     })
