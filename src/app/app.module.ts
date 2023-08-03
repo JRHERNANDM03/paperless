@@ -4,6 +4,7 @@ import { environment as env } from 'src/environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from '@auth0/auth0-angular';
 
+import { DatePipe } from '@angular/common';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -138,7 +139,7 @@ import { FormsModule } from '@angular/forms';
       }
     }),
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
