@@ -91,6 +91,8 @@ pernr1!: number;
 
 ptrv_head:any = {}
 
+complete_name!: string;
+
   constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
 
   styleClose='none'
@@ -101,6 +103,11 @@ ngOnInit(): void {
     {
       this.router.navigate(['login'])
     }else if(isAuthenticate){
+
+      this.auth.user$.subscribe(dataUser => {
+        this.complete_name = String(dataUser?.name)
+      })
+
       this.route.queryParams.subscribe(params =>
         {
           this.idReinr = params['id'];
@@ -255,14 +262,28 @@ status(authorized: number)
 createEmail(area: number, pernr_auth1: number)
 {
 
-  const messageD = 'El usuario ' + this.name + ' ha cerrado el viaje ' + this.reinr + ', ahora ya puedes aprobarlo.'
+  let typeTrip = '';
+
+  if(this.schem == '01')
+  {
+    typeTrip = 'nacional';
+  }else if(this.schem == '02')
+  {
+    typeTrip = 'internacional'
+  }
+
+  const titulo = 'Nuevo viaje ' + typeTrip + ' concluido!';
+  const subtitulo = 'Viaje: ' + this.reinr;
+  const messageD = 'El usuario ' + this.complete_name +' ha concluido con el proceso de captura del viaje: ' + this.reinr;
 
   this.emailD =
   {
     pernr: this.pernr,
     reinr: this.reinr,
     message: messageD,
-    pernr_d: pernr_auth1
+    pernr_d: pernr_auth1,
+    title: titulo,
+    subtitle: subtitulo
   }
   this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(res => {
    
