@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -27,6 +28,7 @@ interface PTRV_HEAD{
   times: string;
   uname: string;
   auth: number;
+  closeTrip: number;
 }
 
 interface search{
@@ -48,7 +50,33 @@ interface search{
   auth: number;
 }
 
+interface emailsD{
+  id: number;
+  message: string;
+  pernr: number;
+  reinr: number;
+  visibility: number;
+  title: string;
+  subtitle: string;
+}
 
+interface getSum{
+  price_total: number;
+}
+
+interface authorized{
+  date1: string;
+  date2: string;
+  id_auth: number;
+  pernr: number;
+  pernr_auth1: number;
+  pernr_auth2: number;
+  reinr: string;
+  schem: string;
+  time1: string;
+  time2: string;
+
+}
 @Component({
   selector: 'app-home-director',
   templateUrl: './home-director.component.html',
@@ -56,17 +84,35 @@ interface search{
 })
 export class HomeDirectorComponent implements OnInit {
  
-  
 nickname!: string;
+nameDirector!: string;
 pernr!: number;
 
 todosMisViajes = 'block';
-
-findTrip = 'none'
+findTrip = 'none';
 
 date!: string;
 
-  constructor(private router:Router, public auth: AuthService, private http: HttpClient){}
+updateEmailD: any = {}
+
+updateAuthorized: any = {}
+
+updateHead: any = {}
+
+emailV: any = {}
+
+emailD: any = {}
+
+emailA: any = {}
+
+fechaActual!: string;
+horaActual!: string;
+
+emailsAmount: number = 0;
+
+pernrDirector!: number;
+
+  constructor(private router:Router, public auth: AuthService, private http: HttpClient, private datePipe: DatePipe){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -75,8 +121,10 @@ date!: string;
         this.errLog()
       }else if(isAuthenticate){
         this.auth.user$.subscribe(user => {
+          this.nameDirector = String(user?.name)
           this.nickname = String(user?.nickname);
           this.getPernr(this.nickname)
+          
         })
       }
     })
@@ -86,7 +134,9 @@ date!: string;
   {
     this.http.get<user>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
       this.pernr = data.PERNR;
+      this.pernrDirector = data.PERNR;
       this.getHead(this.pernr)
+      this.getEmailsD(this.pernr)
     })
   }
 
@@ -97,11 +147,34 @@ date!: string;
   getHead(pernr: number)
   {
     this.http.get<PTRV_HEAD[]>('http://localhost:3000/PTRV_HEADS/find/' + pernr).subscribe(data => {
+      
       this.responseArray = data;
       this.authorized = data.map(item => item.auth);
     })
   }
 
+responseArrayEmails: emailsD[] = [];
+ 
+visibility_auth!: number[];
+
+getEmailsD(pernr: number)
+{
+  this.http.get<emailsD[]>('http://localhost:3000/EmailsD/' + pernr).subscribe(data => {
+    
+    this.responseArrayEmails = data;
+    this.visibility_auth = data.map(item => Number(item.visibility))
+
+    let x = 0;
+    for(x=0; x < data.length; x++)
+    {
+      if(this.responseArrayEmails[x].visibility == 0)
+      {
+        this.emailsAmount = this.emailsAmount + 1;
+      }
+    }
+
+  })
+}
 
   getEstado(auth: number): string {
     if (auth === 0) {
@@ -155,58 +228,622 @@ date!: string;
     }
   }
 
-  email()
+
+  getEmailsDRequest(idEmailD: number, message: string, reinr: number, visibility: number, titulo: string, pernrV: number)
   {
-    const div1 = document.getElementById('div1');
-
-    const title = document.querySelector('.title')?.textContent;
-    const text = document.querySelector('.text')?.textContent;
-    const detail = document.querySelector('.detail')?.textContent;
-
-    const titleText = String(title);
-    const textText = String(text);
-    const detailText = String(detail);
-
-    let timerInterval=0;
-
-    Swal.fire({
-      title: titleText,
-      text: (textText && detailText),
-      showConfirmButton: true,
-      confirmButtonColor: 'green',
-      confirmButtonText: 'APROBAR',
-      showDenyButton: true,
-      denyButtonColor: 'blue',
-      denyButtonText: 'Detalles',
-      showCancelButton: false
-    }).then((result) => {
-      if(result.isConfirmed)
-      {
+    
+     this.http.get<getSum>('http://localhost:3000/getSUM_trip/' + reinr).subscribe(data => {
+      this.http.get<PTRV_HEAD>('http://localhost:3000/PTRV_HEAD/' + reinr).subscribe(trip => {
+        const idHead = trip.id;
+        
         Swal.fire({
-          icon: 'success',
-          title: 'Viaje aprobado',
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-
-          willClose: () => {
-            clearInterval(timerInterval)
-          }
-          }).then((result) => {
-          /* Read more about handling dismissals below */
-          if (result.dismiss === Swal.DismissReason.timer) {
-            if(div1)
+          title: titulo,
+          html: message +
+          '<hr>' +
+          'Precio final del viaje: <p style="color: green;">$' + data.price_total +'</p>',
+          showConfirmButton: true,
+          confirmButtonColor: 'green',
+          confirmButtonText: 'Aprobar viaje',
+          showDenyButton: true,
+          denyButtonColor: 'purple',
+          denyButtonText: 'Ver viaje',
+          showCancelButton: true,
+          cancelButtonText: 'OK',
+          cancelButtonColor: '#e86513'
+        }).then(result => {
+          if(result.isConfirmed)
+          {
+            if(trip.schem == '01')
             {
-            div1.style.backgroundColor='rgba(0, 0, 0, 0.192)';
-            }
+              
+              Swal.fire({
+                icon: 'question',
+                iconColor: 'gray',
+                title: '¿Aprobar viaje nacional?',
+                showConfirmButton: true,
+                confirmButtonColor: 'green',
+                confirmButtonText: 'Aprobar',
+                showDenyButton: true,
+                denyButtonColor: 'red',
+                denyButtonText: 'Rechazar',
+                showCancelButton: true
+              }).then(resultNacional => {
+                if(resultNacional.isConfirmed)
+                {
+
+                  if(trip.auth == 0 && trip.closeTrip == 1)
+                  {
+
+                  this.http.get<authorized>('http://localhost:3000/one_authorized/' + reinr).subscribe(infAuth => {
+              
+                  
+                  const titulo = 'Viaje aprobado!';
+                  const subtitulo = 'Viaje: ' + reinr;
+                  const messageV = 'Tu viaje ' + reinr +' fue aprobado a nivel cabecera por ' + this.nameDirector + ', ahora tu viaje se encuentra en proceso de autorización de gastos de viaje.';
+                  
+                  const fechaHoraActual = new Date();
+    
+              // Obtener fecha en formato "dd-MM-yyyy"
+              this.fechaActual = String(this.datePipe.transform(fechaHoraActual, 'dd-MM-yyyy'));
+              
+              // Obtener hora en formato "HH:mm:ss"
+              this.horaActual = String(this.datePipe.transform(fechaHoraActual, 'HH:mm:ss'));
+
+              this.updateHead = {
+                auth: 1
+              }
+
+              this.updateAuthorized = {
+                date1: this.fechaActual,
+                time1: this.horaActual
+              }
+
+              this.emailV = {
+                pernr: trip.pernr,
+                reinr: reinr,
+                message: messageV,
+                title: titulo,
+                subtitle: subtitulo
+              }
+
+              this.updateEmailD = {
+                visibility: 1
+              }
+
+           try{
+
+                this.http.patch('http://localhost:3000/PTRV_HEADS/' + idHead, this.updateHead).subscribe(head => {
+                  if(head)
+                  {
+                    this.http.patch('http://localhost:3000/authorized/' + infAuth.id_auth, this.updateAuthorized).subscribe(upAuth => {
+                      if(upAuth)
+                      {
+                        this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+                          if(email_v)
+                          {
+
+                            if(visibility == 0)
+                            {
+                              this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(email_d => {
+                                if(email_d)
+                                {
+                                  this.authorizedTrip01()
+                                }else { console.log('ERROR en EMAIL_D') }
+                              })
+                            }else if(visibility == 1)
+                            {
+                              this.authorizedTrip01()
+                            }
+
+                          }else { console.log('ERROR en EMAIL_V') }
+                        })
+                      }else { console.log('ERROR en UPAUTH') }
+                    })
+                  }else { console.log("ERROR en HEAD") }
+                })
+
+              }catch(err)
+              {
+                this.failed()
+              }
+
+            })
+          }else{
+            Swal.fire({
+              icon: 'warning',
+              title: 'Este viaje ya fue aprobado o no se encuentra disponible para autorizar',
+              showCancelButton: false,
+              showConfirmButton: true,
+              confirmButtonColor: 'purple'
+            })
           }
+
+            }else if(resultNacional.isDenied)
+            {
+
+              // Solo Se crea el mensaje al usuario Viajero indicando que su viaje fue rechazado
+              // Se modifica el viaje en la tabla PTRV_HEAD en el campo auth: 2 && closeTrip: 0
+
+              if(trip.closeTrip == 1 && trip.auth == 0)
+              {
+
+                const titulo = 'Viaje Rechazado';
+                const subtitulo = 'Viaje: ' + trip.reinr;
+                const messageV = 'Tu viaje nacional fue rechazado, revisa los datos capturados.';
+
+                this.emailV = {
+                  pernr: trip.pernr,
+                  reinr: trip.reinr,
+                  message: messageV,
+                  title: titulo,
+                  subtitle: subtitulo
+                }
+
+                this.updateHead = {
+                  auth: 2,
+                  closeTrip: 0
+                }
+
+                this.updateEmailD = {
+                  visibility: 1
+                }
+
+                try{
+
+                  this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_V =>{
+                    if(email_V)
+                    {
+                      this.http.patch('http://localhost:3000/PTRV_HEADS/' + trip.id, this.updateHead).subscribe(upHead =>{
+                        if(upHead)
+                        {
+                          this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(email_d => {
+                            this.declainTrip01()
+                          })
+                        }else { console.log('ERROR en UPHEAD') }
+                      })
+                    }else { console.log('ERROR en EMAIL_v') }
+                  })
+
+                }catch(error)
+                {
+                  this.failed()
+                }
+
+              }else {
+                Swal.fire({
+                  icon: 'warning',
+                  iconColor: 'yellow',
+                  title: 'Este viaje no se encuentra disponible para cambios!',
+                  showCancelButton: false,
+                  showConfirmButton: true,
+                  confirmButtonColor: 'purple'
+                })
+              }
+
+            }
+            
           })
+
+        }else if(trip.schem == '02')
+        {
+          const fechaHoraActual = new Date();
+    
+          // Obtener fecha en formato "dd-MM-yyyy"
+          this.fechaActual = String(this.datePipe.transform(fechaHoraActual, 'dd-MM-yyyy'));
+                      
+          // Obtener hora en formato "HH:mm:ss"
+          this.horaActual = String(this.datePipe.transform(fechaHoraActual, 'HH:mm:ss'));
+                      
+
+          this.http.get<authorized>('http://localhost:3000/one_authorized/' + trip.reinr).subscribe(data_auth => {
+            if(data_auth)
+            {
+              
+              this.http.get<PTRV_HEAD>('http://localhost:3000/PTRV_HEAD/' + data_auth.reinr).subscribe(ptrv_head => {
+
+              
+
+              if(data_auth.pernr_auth1 == this.pernrDirector)
+              {
+                if(data_auth.date1 == '' && data_auth.time1 == '' && ptrv_head.closeTrip == 1)
+                {
+                  Swal.fire({
+                    icon: 'question',
+                    iconColor: 'gray',
+                    title: '¿Aprobar viaje internacional en la primera autorización?',
+                    showConfirmButton: true,
+                    confirmButtonColor: 'green',
+                    confirmButtonText: 'Aprobar',
+                    showDenyButton: true,
+                    denyButtonColor: 'red',
+                    denyButtonText: 'Rechazar',
+                    showCancelButton: true
+                  }).then(result => {
+                    if(result.isConfirmed)
+                    {
+                      const tituloD = 'Nuevo viaje Internacional aprobado!';
+                      const subtituloD = 'Viaje: ' + reinr;
+                      const messageD = 'El viaje ' + reinr +' ya fue aprobado por el director ' + this.nameDirector + ' en la primera autorización. Ahora solo falta la segunda autorización para aprobar el viaje completo a nivel cabecera';
+                    
+                      this.emailD = {
+                        pernr: pernrV,
+                        reinr: reinr,
+                        message: messageD,
+                        title: tituloD,
+                        subtitle: subtituloD,
+                        pernr_d: data_auth.pernr_auth2
+                      }
+
+                      
+                      this.updateAuthorized = {
+                        date1: this.fechaActual,
+                        time1: this.horaActual
+                      }
+
+                      this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(email_d => {
+                        if(email_d)
+                        {
+                          this.http.patch('http://localhost:3000/authorized/' + data_auth.id_auth, this.updateAuthorized).subscribe(upd_auth => {
+                            if(upd_auth)
+                            {
+                              let timerInterval = 0;
+                              Swal.fire({
+                                icon: 'success',
+                                iconColor: 'green',
+                                title: 'Viaje aprobado en la primera autorización',
+                                text: 'Informando al segundo autorizador',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+
+                                willClose: () => {
+                                  clearInterval(timerInterval)
+                                }
+                              }).then((result) => {
+                                if(result.dismiss === Swal.DismissReason.timer)
+                                {
+                                  this.updateEmailD = {
+                                    visibility: 1
+                                  }
+
+                                  this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(upd_email_d => {
+                                    if(upd_email_d)
+                                    {
+                                      this.reload()
+                                    }else { console.log('ERROR en UPD_EMAIL_D') }
+                                  })
+                                }
+                              })
+                            }else { console.log('ERROR en UPD_AUTH') }
+                          })
+                        }else { console.log('ERROR en EMAIL_D') }
+                      })
+                    
+                    }else if(result.isDenied)
+                    {
+
+                      const titulo = 'Viaje Rechazado';
+                      const subtitulo = 'Viaje: ' + trip.reinr;
+                      const messageV = 'Tu viaje internacional fue rechazado, revisa los datos capturados.';
+
+                      this.emailV = {
+                        pernr: this.pernr,
+                        reinr: reinr,
+                        message: messageV,
+                        title: titulo,
+                        subtitle: subtitulo
+                      }
+
+                      this.updateHead = {
+                        auth: 2,
+                        closeTrip: 0
+                      }
+
+                      this.updateEmailD = {
+                        visibility: 1
+                      }
+
+                      this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe()
+                      this.http.patch('http://localhost:3000/PTRV_HEADS/' +  idHead, this.updateHead).subscribe()
+                      this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe()
+
+                      let timerInterval = 0;
+
+                      Swal.fire({
+                        icon: 'success',
+                        iconColor: 'red',
+                        title: 'Viaje internacional rechazado',
+                        text: 'Informando al usuario viajero',
+                        showConfirmButton: false,
+                        timer: 2500,
+                        timerProgressBar: true,
+                        
+                        willClose: () => {
+                          clearInterval(timerInterval)
+                        }
+
+                      }).then((result) => {
+                        if(result.dismiss === Swal.DismissReason.timer)
+                        {
+                          this.reload()
+                        }
+                      })
+      
+                    }else if(result.isDismissed)
+                    {
+                    }
+                  })
+                }else{
+                  Swal.fire({
+                    title: 'Este viaje Internacional ya fue aprobado o rechazado en la primera autorización',
+                    showConfirmButton: true,
+                    confirmButtonColor: 'purple',
+                    showCancelButton: false,
+                  })
+                }
+              }else if(data_auth.pernr_auth2 == this.pernrDirector && data_auth.date1 !== '' && data_auth.time1 !== '' && ptrv_head.closeTrip == 1 && data_auth.date2 == '' && data_auth.time2 == '')
+              {
+                Swal.fire({
+                  icon: 'question',
+                  iconColor: 'gray',
+                  title: '¿Aprobar viaje internacional en la segunda autorización?',
+                  showConfirmButton: true,
+                  confirmButtonColor: 'green',
+                  confirmButtonText: 'Aprobar',
+                  showDenyButton: true,
+                  denyButtonColor: 'red',
+                  denyButtonText: 'Rechazar',
+                  showCancelButton: true
+                }).then(result => {
+                  if(result.isConfirmed)
+                  {
+                    const tituloV = 'Viaje aprobado';
+                    const subtituloV = 'Viaje: ' + reinr;
+                    const messageV = 'Tu viaje Internacional fue aprobado por ' + this.nameDirector + ', ahora se encuentra en proceso de aprobación de gastos de viaje';
+
+                    const tituloA = 'Nuevo viaje INTERNACIONAL aprobado por directores';
+                    const subtituloA = 'Viaje: ' + reinr;
+                    const messageA = 'El viaje internacional ' + reinr + ' ya fue aprobado por ambas autorizaciones. Ya puedes aprobar sus gastos de viaje';
+
+                    this.emailV = {
+                      pernr: this.pernr,
+                      reinr: reinr,
+                      message: messageV,
+                      title: tituloV,
+                      subtitle: subtituloV
+                    }
+
+                    this.emailA = {
+                      pernr: this.pernr,
+                      reinr: reinr,
+                      message: messageA,
+                      title: tituloA,
+                      subtitle: subtituloA
+                    }
+
+                    this.updateHead = {
+                      auth: 1
+                    }
+
+                    this.updateAuthorized = {
+                      date2: this.fechaActual,
+                      time2: this.horaActual
+                    }
+
+                    this.updateEmailD = {
+                      visibility: 1
+                    }
+
+                    this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe()
+                    this.http.post('http://localhost:3000/EmailA', this.emailA).subscribe()
+                    this.http.patch('http://localhost:3000/PTRV_HEADS/' + ptrv_head.id, this.updateHead).subscribe()
+                    this.http.patch('http://localhost:3000/authorized/' + data_auth.id_auth, this.updateAuthorized).subscribe()
+                    this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe()
+
+                    let timerInterval = 0;
+                    Swal.fire({
+                      icon: 'success',
+                      iconColor: 'green',
+                      title: 'Viaje Internacional aprobado',
+                      text: 'Informando al usuario Viajero y al usuario Administrador',
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+
+                      willClose: () => {
+                        clearInterval(timerInterval)
+                      }
+                    }).then((result) => {
+                      if(result.dismiss === Swal.DismissReason.timer)
+                      {
+                        this.reload()
+                      }
+                    })
+
+                  }else if(result.isDenied){
+
+                    const titleV = 'Viajer Internacional Rechazado!';
+                    const subtitleV = 'Viaje: ' + reinr;
+                    const messageV = 'El viaje ' + reinr + ' fue rechazado, revisa los datos registrados';
+
+                    this.updateAuthorized = {
+                      date1: '',
+                      time1: ''
+                    }
+
+                    this.updateHead = {
+                      auth: 2,
+                      closeTrip: 0
+                    }
+
+                    this.emailV = {
+                      pernr: this.pernr,
+                      reinr: reinr,
+                      message: messageV,
+                      title: titleV,
+                      subtitle: subtitleV
+                    }
+
+                    this.updateEmailD = {
+                      visibility: 1
+                    }
+
+                    this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe()
+                    this.http.patch('http://localhost:3000/PTRV_HEADS/' + ptrv_head.id, this.updateHead).subscribe()
+                    this.http.patch('http://localhost:3000/authorized/' + data_auth.id_auth, this.updateAuthorized).subscribe()
+                    this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe()
+
+                    let timerInterval = 0;
+                    Swal.fire({
+                      icon: 'success',
+                      iconColor: 'red',
+                      title: 'Viajer Internacional rechazado',
+                      text: 'Informando al viajero',
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+
+                      willClose: () => {
+                        clearInterval(timerInterval)
+                      }
+                    }).then((result) => {
+                      if(result.dismiss === Swal.DismissReason.timer)
+                      {
+                        this.reload()
+                      }
+                    })
+
+                  }else if(result.isDismissed)
+                  {
+
+                  }
+                })
+              }else if(data_auth.pernr_auth2 == this.pernrDirector && data_auth.date2 !== '' && data_auth.time2 !== ''){
+                Swal.fire({
+                  title: 'Este viaje ya fue aprobado o rechazado',
+                  text: 'Por el momento no se pueden hacer cambios',
+                  showConfirmButton: true,
+                  confirmButtonColor: 'purple'
+                })
+              }
+              else { 
+                Swal.fire({
+                  title: 'Este viaje internacional aún no ha sido aprobado por la primera autorización',
+                  showConfirmButton: true,
+                  confirmButtonColor: 'purple',
+                  showCancelButton: false
+                })
+              }
+
+            }) 
+
+            }else { console.log('ERROR en DATA_AUTH') }
+          })
+
+          
+
+
+        }
       }else if(result.isDenied)
       {
-        this.router.navigate(["/Director/Viaje"])
+        if(visibility == 0)
+        {
+          this.updateEmailD = {
+            visibility: 1
+          }
+
+          this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(upd_emailD => {
+            if(upd_emailD)
+            {
+              this.router.navigate(['/Director/Viaje'], {queryParams: {id: idHead}})
+            }
+          })
+        }
+        else if(visibility == 1)
+        {
+          this.router.navigate(['/Director/Viaje'], {queryParams: {id: idHead}})
+        }
+      }else if(result.dismiss)
+      {
+        if(visibility == 0)
+        {
+          this.updateEmailD = {
+            visibility: 1
+          }
+
+          this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(upd_emailD => {
+            if(upd_emailD)
+            {
+              this.reload()
+            }
+          })
+        }
       }
     })
+  })
 
+
+  })
+
+  }
+
+  getVisibility(visibility: number): number {
+    if (visibility === 0) {
+      return 0;
+    } else if (visibility === 1) { 
+      return 1;
+    } else {
+      return -1; // O cualquier otro valor numérico que desees asignar para representar el estado desconocido
+    }
+  }
+  
+  authorizedTrip01()
+  {
+
+    let timerInterval = 0;
+
+    Swal.fire({
+      icon: 'success',
+      iconColor: 'green',
+      title: 'Viaje aprobado',
+      text: 'Informando al viajero....',
+      showConfirmButton: false,
+      timer: 2500,
+      timerProgressBar: true,
+
+      willClose: () => {
+        clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      if(result.dismiss === Swal.DismissReason.timer)
+      {
+        this.reload()
+      }
+    })
+  }
+
+  declainTrip01()
+  {
+    let timerInterval = 0;
+
+    Swal.fire({
+      icon: 'success',
+      iconColor: 'red',
+      title: 'Viaje rechazado',
+      text: 'Informando al viajero....',
+      showConfirmButton: false,
+      timer: 2500,
+      timerProgressBar: true,
+
+      willClose: () => {
+        clearInterval(timerInterval)
+      }
+    }).then((result) => {
+      if(result.dismiss === Swal.DismissReason.timer)
+      {
+        this.reload()
+      }
+    })
   }
 
   errLog()
@@ -252,6 +889,20 @@ date!: string;
   tripDetail(id: number)
 {
   this.router.navigate(['/Director/Mi-Viaje'], {queryParams: {id: id} });
+}
+
+failed()
+{
+  Swal.fire({
+    icon: 'error',
+    title: 'Ocurrio un error!',
+    text: 'Intentelo nuevamente.'
+  })
+}
+
+reload()
+{
+  location.reload()
 }
 
 }

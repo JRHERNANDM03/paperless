@@ -1,23 +1,3 @@
-/* Cambiar todo el codigo, crear nueva peticion en el back en base a este query
-
-SELECT authorized.*, ptrv_heads.*, (SELECT SUM(loc_amount) FROM zfi_gv_paper_general WHERE reinr COLLATE utf8mb4_general_ci = ptrv_heads.reinr COLLATE utf8mb4_general_ci) AS total_loc_amount, (SELECT area_id FROM users WHERE PERNR = ptrv_heads.pernr) AS AREA_ID FROM authorized JOIN ptrv_heads ON authorized.reinr = ptrv_heads.reinr WHERE ptrv_heads.reinr = 1234564;
-
-En el cual solo sustituiremos el reinr pasandolo como parametro para traer toda la info 
-
-De lado del front reutilizaremos las alertas las cuales son:
-{
-  si el viaje aun no esta cerrado,
-  si el viaje ya fue aprobado
-}
-
-Crear nuevas alertas
-{
-  si el viaje no le pertenece a la autorización del director logeado,
-  si el viaje es internacional y el director logeado es el segundo autorizador pero en la primera autorizacion aun no esta hecha
-  si el viaje es nacional y el director logeado es el primero autorizador (Indicar que el viaje solo falta la segunda autorizacion)
-}
-*/
-
 import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -312,23 +292,28 @@ export class MostrarViajeDirectorComponent implements OnInit{
         }).then((result) => {
           if(result.isConfirmed)
           {
-            const messageV = 'Tu viaje ' + this.reinr + ' ya fue aprobado por ' + this.nameDirector + ' y ya se encuentra en proceso de aprobación de gastos de viaje';
-            const messageA = 'El viaje ' + this.reinr + ' del usuario ' + this.name + ' ya fue aprobado a nivel cabezera por ' + this.nameDirector + ', ya puedes aprobar sus gastos de viaje';
+            const tituloV = 'Viaje aprobado';
+            const subtituloV = 'Viaje: ' + this.reinr;
+            const messageV = 'Tu viaje Internacional fue aprobado por ' + this.nameDirector + ', ahora se encuentra en proceso de aprobación de gastos de viaje';
 
-            this.ptrv_head = {
-              auth: 1
-            }
+            const tituloA = 'Nuevo viaje INTERNACIONAL aprobado por directores';
+            const subtituloA = 'Viaje: ' + this.reinr;
+            const messageA = 'El viaje internacional ' + this.reinr + ' ya fue aprobado por ambas autorizaciones. Ya puedes aprobar sus gastos de viaje';
 
             this.emailV = {
               pernr: this.pernr,
               reinr: this.reinr,
-              message: messageV
+              message: messageV,
+              title: tituloV,
+              subtitle: subtituloV
             }
 
             this.emailA = {
               pernr: this.pernr,
               reinr: this.reinr,
-              message: messageA
+              message: messageA,
+              title: tituloA,
+              subtitle: subtituloA
             }
 
           const fechaHoraActual = new Date();
@@ -384,12 +369,16 @@ export class MostrarViajeDirectorComponent implements OnInit{
 
           }else if(result.isDenied)
           {
-            const messageV = 'Lo sentiemos, el usuario ' + this.nameDirector + ' no aprobó tu viaje, te sugerimos que revises todos los datos.';
+            const titleV = 'Viaje rechazado!';
+            const subtitleV = 'Viaje: ' + this.reinr;
+            const messageV = 'Lo sentimos su viaje no fue aprobado, le sugerimos corregir sus datos'
 
             this.emailV = {
               pernr: this.pernr,
               reinr: this.reinr,
-              message: messageV
+              message: messageV,
+              title: titleV,
+              subtitle: subtitleV
             }
 
             this.ptrv_head = {
@@ -461,12 +450,16 @@ export class MostrarViajeDirectorComponent implements OnInit{
           if(result.isConfirmed)
           {
 
-            const messageD = 'El usuario ' + this.nameDirector + ' aprobó la primera autorización del viaje internacional: ' + this.reinr + ' del usuario: ' + this.name + ', ahora el viaje se encuentra en la segunda aprobación.'
-
+            const tituloD = 'Nuevo viaje Internacional aprobado!';
+            const subtituloD = 'Viaje: ' + this.reinr;
+            const messageD = 'El viaje ' + this.reinr +' ya fue aprobado por el director ' + this.nameDirector + ' en la primera autorización. Ahora solo falta la segunda autorización para aprobar el viaje completo a nivel cabecera';
+                    
             this.emailD = {
               pernr: this.pernr,
               reinr: this.reinr,
               message: messageD,
+              title: tituloD,
+              subtitle: subtituloD,
               pernr_d: this.pernr_auth2
             }
 
@@ -519,12 +512,16 @@ export class MostrarViajeDirectorComponent implements OnInit{
           }else if(result.isDenied)
           {
 
-            const messageV = 'Lo sentiemos, el usuario ' + this.nameDirector + ' no aprobó tu viaje, te sugerimos que revises todos los datos.';
+            const titleV = 'Viaje rechazado!';
+            const subtitleV = 'Viaje: ' + this.reinr;
+            const messageV = 'Lo sentimos, su viaje no fue aprobado. Le sugerimos corregir sus datos'
 
             this.emailV = {
               pernr: this.pernr,
               reinr: this.reinr,
-              message: messageV
+              message: messageV,
+              title: titleV,
+              subtitle: subtitleV
             }
 
             this.ptrv_head = {
@@ -609,8 +606,13 @@ export class MostrarViajeDirectorComponent implements OnInit{
             if(result.isConfirmed)
             {
 
-              const messageV = 'Tu viaje internacional: ' + this.reinr + ' ya fue aprobado a nivel cabezera y ahora se encuentra en proceso de aprobación en gastos de viaje.';
-              const messageA = 'El viaje internacional: ' + this.reinr + ' ya fue aprobado a nivel cabezera por ambas autorizaciones, los gastos del viaje ya pueden ser aprobados.';
+              const titulo = 'Viaje aprobado!';
+              const subtitulo = 'Viaje: ' + this.reinr;
+              const messageV = 'Tu viaje ' + this.reinr +' fue aprobado a nivel cabecera por ' + this.nameDirector + ', ahora tu viaje se encuentra en proceso de autorización de gastos de viaje.';
+              
+              const tituloA = 'Nuevo viaje INTERNACIONAL aprobado por directores';
+              const subtituloA =  'Viaje: ' + this.reinr;
+              const messageA = 'El viaje internacional: ' + this.reinr + ' ya fue aprobado a nivel cabecera por ambas autorizaciones, los gastos del viaje ya pueden ser aprobados.';
 
               this.ptrv_head = {
                 auth: 1
@@ -619,13 +621,17 @@ export class MostrarViajeDirectorComponent implements OnInit{
               this.emailV = {
                 pernr: this.pernr,
                 reinr: this.reinr,
-                message: messageV
+                message: messageV,
+                title: titulo,
+                subtitle: subtitulo
               }
   
               this.emailA = {
                 pernr: this.pernr,
                 reinr: this.reinr,
-                message: messageA
+                message: messageA,
+                title: tituloA,
+                subtitle: subtituloA
               }
   
             const fechaHoraActual = new Date();
@@ -681,12 +687,16 @@ export class MostrarViajeDirectorComponent implements OnInit{
 
             }else if(result.isDenied)
             {
+              const titleV = 'Viaje rechazado!';
+              const subtitleV = 'Viaje: ' + this.reinr;
               const messageV = 'Lo sentimos su viaje no fue aprobado, le sugerimos corregir sus datos'
 
               this.emailV = {
                 pernr: this.pernr,
                 reinr: this.reinr,
-                message: messageV
+                message: messageV,
+                title: titleV,
+                subtitle: subtitleV
               }
   
               this.ptrv_head = {
@@ -752,97 +762,6 @@ export class MostrarViajeDirectorComponent implements OnInit{
       } 
     }
     
-   /* let timerInterval=0;
-    Swal.fire({
-      title: '¿Aprobar viaje?',
-      showConfirmButton: true,
-      showCancelButton: true,
-      confirmButtonColor: 'green',
-      confirmButtonText: 'Aprobar',
-      cancelButtonText: 'Cancelar',
-      showDenyButton: true,
-      denyButtonText: 'Rechazar',
-      denyButtonColor: 'red'
-    }).then((result) => {
-      if(result.isConfirmed)
-      {
-        const messageV = 'Tu viaje a nivel cabecera fue aprovado por el director de tu area: ' + this.nameDirector + ', ahora tu viaje pasa al siguiente proceso para que tus gastos sean aprobados.';
-        const messageA = 'El viaje: ' + this.reinr + ' del usuario: ' + this.pernr + ' fue aprobado por el director: ' + this.nameDirector + ', ahora puedes aprobar sus gastos de viaje.';
-
-        this.emailV =
-        {
-          pernr: this.pernr,
-          reinr:  this.reinr,
-          message: messageV
-        }
-
-        this.emailA =
-        {
-          pernr: this.pernr,
-          reinr: this.reinr,
-          message: messageA
-        } 
-
-        this.ptrv_head =
-        {
-          auth: 1
-        } 
-
-        try
-        {
-        
-        }catch(err)
-      {
-        this.failed()
-      }
-        
-      
-      
-      }else if(result.isDenied)
-      {
-        const messageV = 'Tu viaje a nivel cabecera fue rechazado por el director de tu area: ' + this.nameDirector + ', valida toda la información que capturas.';
-
-        this.emailV =
-        {
-          pernr: this.pernr,
-          reinr:  this.reinr,
-          message: messageV
-        }
-
-        this.ptrv_head =
-        {
-          auth: 2,
-          closeTrip: 0
-        } 
-
-        try
-        {
-        this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(resV => {
-          if(resV)
-          {
-            this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(resH => {
-              if(resH)
-              {
-                this.false()
-              }
-                else
-                 {
-                  console.log('Error en resH')
-                 }
-              })           
-          }
-          else
-          {
-            console.log('Error en resV')
-          }
-        })
-      }catch(err)
-      {
-        this.failed()
-      }
-      }
-    })
-    */
   }
 
   true()

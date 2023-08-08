@@ -2,42 +2,46 @@
         <img src="../../../assets/image/liverpool.jpg" id="logo" alt="Logo Liverpool">
 </div>
 
+
 <div class="container">
 
   <nav class="navbar navbar-dark ">
     <div class="container-fluid" style="background-color: #73246D; padding: 1%;">
-      
 
-      <a class="" style="color: white;" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+      <div class="" style="padding-top: 2%;">
+      <button type="button" class="btn position-relative">
+        <a class="" style="color: white;" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+          <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+          </svg></a>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          {{emailsAmount}}
+        </span>
+      </button>
+    </div>
+
+    <!--  <a class="" style="color: white;" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
         <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
           <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
-        </svg></a>
+        </svg></a> -->
       
-      <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel" style="background-color: #c882c2;">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="staticBackdropLabel" style="color: white;">Bandeja de entrada</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel" style="background-color: #c882c2;" >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="staticBackdropLabel" style="color: white;">Bandeja de entrada</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <!--
+            background-color: rgba(0, 0, 0, 0.477); 
+          -->
+            <div class="offcanvas-body">
+            <div class="container" *ngFor="let item of responseArrayEmails; let i = index">
+              <div (click)="getEmailsDRequest(item.id, item.message, item.reinr, item.visibility, item.title, item.pernr)" id="divChange2" class="container" style="border-radius: 10px; cursor: pointer;" [style.background-color]="getVisibility(visibility_auth[i]) === 0 ? 'rgba(0, 0, 0, 0.477)' : 'rgba(0, 0, 0, 0.192)'">
+              <h5 class="textEmail2" style="color: white;">{{item.title}}</h5>
+              <p class="textDetail2" style="color: white;">{{item.subtitle}}</p>
+            </div>
+            </div>
         </div>
-        <div class="offcanvas-body">
-          <div (click)="email()" id="div1" class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
-            <h5 class="title" style="color: white;">Autorización</h5>
-            <p class="text" style="color: white;">Nuevo viaje</p>
-            <p class="detail" style="color: white; display: none;">José Ramón (16136996) ha dado de alta un nuevo viaje que se encuentra disponible para aprobar. Costo total: $13,000.00</p>
-          </div>
-          <div class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
-            <h5 style="color: white;">Correo2</h5>
-            <p style="color: white;">Details....</p>
-          </div>
-          <div class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
-            <h5 style="color: white;">Correo3</h5>
-            <p style="color: white;">Details....</p>
-          </div>
-          <div class="container" style="background-color: rgba(0, 0, 0, 0.477); border-radius: 10px; cursor: pointer;">
-            <h5 style="color: white;">Correo4</h5>
-            <p style="color: white;">Details....</p>
-          </div>
         </div>
-      </div>
 
       <ul *ngIf="auth.user$ | async as user">
       <a class="navbar-brand" style="color: white;">Usuario: {{ user.given_name }}</a>

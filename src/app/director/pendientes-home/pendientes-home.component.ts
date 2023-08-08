@@ -139,23 +139,33 @@ horaActual!: string;
       }).then((result) => {
         if(result.isConfirmed)
         {
-          const messageV = 'Tu viaje a nivel cabecera fue aprovado por el director de tu area: ' + this.nameDirector + ', ahora tu viaje pasa al siguiente proceso para que tus gastos sean aprobados.';
-          const messageA = 'El viaje: ' + reinr + ' del usuario: ' + pernr + ' fue aprobado por el director: ' + this.nameDirector + ', ahora puedes aprobar sus gastos de viaje.';
+          const titulo = 'Viaje aprobado!';
+              const subtitulo = 'Viaje: ' + reinr;
+              const messageV = 'Tu viaje ' + reinr +' fue aprobado a nivel cabecera por ' + this.nameDirector + ', ahora tu viaje se encuentra en proceso de autorización de gastos de viaje.';
+              
+              const tituloA = 'Nuevo viaje INTERNACIONAL aprobado por directores';
+              const subtituloA =  'Viaje: ' + reinr;
+              const messageA = 'El viaje internacional: ' + reinr + ' ya fue aprobado a nivel cabecera por ambas autorizaciones, los gastos del viaje ya pueden ser aprobados.';
+
+              this.ptrv_head = {
+                auth: 1
+              }
   
-          this.emailV =
-          {
-            pernr: pernr,
-            reinr:  reinr,
-            message: messageV
-          }
+              this.emailV = {
+                pernr: pernr,
+                reinr: reinr,
+                message: messageV,
+                title: titulo,
+                subtitle: subtitulo
+              }
   
-          this.emailA =
-          {
-            pernr: pernr,
-            reinr: reinr,
-            area: area_id,
-            message: messageA
-          } 
+              this.emailA = {
+                pernr: pernr,
+                reinr: reinr,
+                message: messageA,
+                title: tituloA,
+                subtitle: subtituloA
+              }
   
           this.ptrv_head =
           {
@@ -224,14 +234,17 @@ horaActual!: string;
         
         }else if(result.isDenied)
         {
-          const messageV = 'Tu viaje a nivel cabecera fue rechazado por el director de tu area: ' + this.nameDirector + ', valida toda la información que capturas.';
-  
-          this.emailV =
-          {
-            pernr: pernr,
-            reinr:  reinr,
-            message: messageV
-          }
+          const titleV = 'Viaje rechazado!';
+            const subtitleV = 'Viaje: ' + reinr;
+            const messageV = 'Lo sentimos, su viaje no fue aprobado. Le sugerimos corregir sus datos'
+
+            this.emailV = {
+              pernr: pernr,
+              reinr: reinr,
+              message: messageV,
+              title: titleV,
+              subtitle: subtitleV
+            }
   
           this.ptrv_head =
           {
@@ -284,23 +297,18 @@ horaActual!: string;
       }).then((result) => {
         if(result.isConfirmed)
         {
-          const messageV = 'Tu viaje internacional ya fue aprobado por la primera autorización, ahora tu viaje se encuentra en espera de la segunda aprobación';
-          const messageD = 'El viaje interncacional: ' + reinr + ' del usuario: ' + pernr + ' fue aprobado por: ' + this.nameDirector + ', ahora el viaje se encuentra en espera de la segunda aprobación.';
-  
-          this.emailV =
-          {
-            pernr: pernr,
-            reinr:  reinr,
-            message: messageV
-          }
-  
-          this.emailD =
-          {
+          const tituloD = 'Nuevo viaje Internacional aprobado!';
+          const subtituloD = 'Viaje: ' + reinr;
+          const messageD = 'El viaje ' + reinr +' ya fue aprobado por el director ' + this.nameDirector + ' en la primera autorización. Ahora solo falta la segunda autorización para aprobar el viaje completo a nivel cabecera';
+                  
+          this.emailD = {
             pernr: pernr,
             reinr: reinr,
-            area: area_id,
-            message: messageD
-          } 
+            message: messageD,
+            title: tituloD,
+            subtitle: subtituloD,
+            pernr_d: pernr_auth2
+          }
   
           this.ptrv_head =
           {
@@ -323,10 +331,7 @@ horaActual!: string;
   
           try
           {
-          this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(resV => {
-            if(resV)
-            {
-              this.http.post('http://localhost:3000/Email', this.emailD).subscribe(resA => {
+              this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(resA => {
                 if(resA)
                 {
                   
@@ -348,12 +353,7 @@ horaActual!: string;
                   console.log('Error en resA')
                 }
               })
-            }
-            else
-            {
-              console.log('Error en resV')
-            }
-          })
+            
         }catch(err)
         {
           this.failed()
@@ -363,15 +363,17 @@ horaActual!: string;
         
         }else if(result.isDenied)
         {
-          const messageV = 'Tu viaje a nivel cabecera fue rechazado por el director de tu area: ' + this.nameDirector + ', valida toda la información que capturas.';
-  
-          this.emailV =
-          {
+          const titleV = 'Viaje rechazado!';
+          const subtitleV = 'Viaje: ' + reinr;
+          const messageV = 'Lo sentimos, su viaje no fue aprobado. Le sugerimos corregir sus datos'
+
+          this.emailV = {
             pernr: pernr,
-            reinr:  reinr,
-            message: messageV
+            reinr: reinr,
+            message: messageV,
+            title: titleV,
+            subtitle: subtitleV
           }
-  
           this.ptrv_head =
           {
             auth: 2,
@@ -444,23 +446,33 @@ horaActual!: string;
       }).then((result) => {
         if(result.isConfirmed)
         {
-          const messageV = 'Tu viaje a nivel cabecera fue aprovado por el director de tu area: ' + this.nameDirector + ', ahora tu viaje pasa al siguiente proceso para que tus gastos sean aprobados.';
-          const messageA = 'El viaje: ' + reinr + ' del usuario: ' + pernr + ' fue aprobado por el director: ' + this.nameDirector + ', ahora puedes aprobar sus gastos de viaje.';
-  
-          this.emailV =
-          {
-            pernr: pernr,
-            reinr:  reinr,
-            message: messageV
+          const titulo = 'Viaje aprobado!';
+          const subtitulo = 'Viaje: ' + reinr;
+          const messageV = 'Tu viaje ' + reinr +' fue aprobado a nivel cabecera por ' + this.nameDirector + ', ahora tu viaje se encuentra en proceso de autorización de gastos de viaje.';
+          
+          const tituloA = 'Nuevo viaje INTERNACIONAL aprobado por directores';
+          const subtituloA =  'Viaje: ' + reinr;
+          const messageA = 'El viaje internacional: ' + reinr + ' ya fue aprobado a nivel cabecera por ambas autorizaciones, los gastos del viaje ya pueden ser aprobados.';
+
+          this.ptrv_head = {
+            auth: 1
           }
-  
-          this.emailA =
-          {
+
+          this.emailV = {
             pernr: pernr,
             reinr: reinr,
-            area: area_id,
-            message: messageA
-          } 
+            message: messageV,
+            title: titulo,
+            subtitle: subtitulo
+          }
+
+          this.emailA = {
+            pernr: pernr,
+            reinr: reinr,
+            message: messageA,
+            title: tituloA,
+            subtitle: subtituloA
+          }
   
           this.ptrv_head =
           {
@@ -529,14 +541,17 @@ horaActual!: string;
         
         }else if(result.isDenied)
         {
-          const messageV = 'Tu viaje a nivel cabecera fue rechazado por el director de tu area: ' + this.nameDirector + ', valida toda la información que capturas.';
-  
-          this.emailV =
-          {
-            pernr: pernr,
-            reinr:  reinr,
-            message: messageV
-          }
+          const titleV = 'Viaje rechazado!';
+            const subtitleV = 'Viaje: ' + reinr;
+            const messageV = 'Lo sentimos, su viaje no fue aprobado. Le sugerimos corregir sus datos'
+
+            this.emailV = {
+              pernr: pernr,
+              reinr: reinr,
+              message: messageV,
+              title: titleV,
+              subtitle: subtitleV
+            }
   
           this.ptrv_head =
           {
