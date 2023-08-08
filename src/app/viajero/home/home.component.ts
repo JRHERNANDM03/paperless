@@ -30,6 +30,16 @@ interface PTRV_HEAD{
   auth: number;
 }
 
+interface emailsV{
+  id: number;
+  message: string;
+  pernr: number;
+  reinr: number;
+  visibility: number;
+  title: string;
+  subtitle: string;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -38,6 +48,12 @@ interface PTRV_HEAD{
 
 export class HomeComponent implements OnInit{
   @ViewChild('inicio', { static: true }) inicioElement?: ElementRef;
+
+  updateEmailV: any = {}
+  selectedEmailIndex: number = -1;
+  backgroundColor: string = 'rgba(0, 0, 0, 0.477)';
+
+  emailsAmount: number = 0;
 
   constructor(private router: Router, public auth: AuthService, private http: HttpClient) {
 }
@@ -60,7 +76,6 @@ ngOnInit(): void {
 
   const userName = document.getElementById('userName');
   const userNameString = userName?.textContent;
-  console.log(userNameString);
   
 }
 
@@ -71,6 +86,10 @@ responseArray: PTRV_HEAD[] = [];
 getData(nickname: String)
 {
   this.http.get<UserData>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+
+  const pernr_user = Number(data.PERNR);
+  this.getEmailsV(pernr_user)
+
     this.http.get<PTRV_HEAD[]>('http://localhost:3000/PTRV_HEADS/find/' + data.PERNR).subscribe(info_PTRV_HEAD => {
       this.responseArray = info_PTRV_HEAD;
       this.authorized = info_PTRV_HEAD.map(item => item.auth); // Almacenar todos los valores de auth en authorized
@@ -78,6 +97,29 @@ getData(nickname: String)
   })
   });
 
+}
+
+responseArrayEmails: emailsV[] = [];
+ 
+  visibility_auth!: number[];
+
+getEmailsV(pernr: number)
+{
+  this.http.get<emailsV[]>('http://localhost:3000/EmailsV/' + pernr).subscribe(data => {
+    
+    this.responseArrayEmails = data;
+    this.visibility_auth = data.map(item => Number(item.visibility))
+
+    let x = 0;
+
+    for(x=0; x<data.length; x++ )
+    {
+      if(this.responseArrayEmails[x].visibility == 0)
+      {
+        this.emailsAmount = this.emailsAmount + 1;
+      }
+    }
+  })
 }
 
 getEstado(auth: number): string {
@@ -94,117 +136,69 @@ getEstado(auth: number): string {
 
 
 
-  getEmail()
-  {
-    const textEmail = document.querySelector('.textEmail')?.textContent;
-    const titlestring = String(textEmail);
-
-    const textDetail = document.querySelector('.textDetail')?.textContent;
-    const textstring = String(textDetail);
-
-    
-
-   
-    Swal.fire({
-      title: titlestring,
-      text: textstring,
-      showConfirmButton: true,
-      confirmButtonColor: 'purple',
-    })
   
-  }
-
-  getEmailRequest2()
+  getEmailsVRequest(idEmailV: number, message: string, reinr: number, visibility: number)
   {
-    const divChange2 = document.getElementById('divChange2');
 
-    const textEmail2 = document.querySelector('.textEmail2')?.textContent;
-    const titlestring2 = String(textEmail2);
-
-    const textDetail2 = document.querySelector('.textDetail2')?.textContent;
-    const textstring2 = String(textDetail2);
-
-    if(divChange2)
-    {
+    this.http.get<PTRV_HEAD>('http://localhost:3000/PTRV_HEAD/' + reinr).subscribe(trip => {
+  const idHead = trip.id;
 
     Swal.fire({
-      title: titlestring2,
-      text: textstring2,
+      text: message,
       showConfirmButton: true,
       confirmButtonColor: 'purple',
+      confirmButtonText: 'Ver viaje',
+      showCancelButton: true,
+      cancelButtonText: 'OK',
+      cancelButtonColor: 'oragne'
     }).then((result) => {
       if(result.isConfirmed)
       {
-        divChange2.style.backgroundColor='rgba(0, 0, 0, 0.192)';
-      }
-    })
-  }else
-  {
-    console.log("ERR");
-  }
 
-  }
+        this.updateEmailV = {
+          visibility: 1
+        }
+        this.http.patch('http://localhost:3000/EmailV/update/' + idEmailV, this.updateEmailV).subscribe(upd => {
+          if(upd)
+          {
+            this.router.navigate(['/Viajero/Viaje'], {queryParams: {id: idHead}})
+          }
+        })
 
-
-  getEmailRequest3()
-  {
-    const divChange3 = document.getElementById('divChange3');
-
-    const textEmail3 = document.querySelector('.textEmail3')?.textContent;
-    const titlestring3 = String(textEmail3);
-
-    const textDetail3 = document.querySelector('.textDetail3')?.textContent;
-    const textstring3 = String(textDetail3);
-
-    if(divChange3)
-    {
-
-    Swal.fire({
-      title: titlestring3,
-      text: textstring3,
-      showConfirmButton: true,
-      confirmButtonColor: 'purple',
-    }).then((result) => {
-      if(result.isConfirmed)
+      }else if(result.isDismissed)
       {
-        divChange3.style.backgroundColor='rgba(0, 0, 0, 0.192)';
+
+        if(visibility != 1)
+        {
+          this.updateEmailV = {
+            visibility: 1
+          }
+          this.http.patch('http://localhost:3000/EmailV/update/' + idEmailV, this.updateEmailV).subscribe(upd => {
+            if(upd)
+            {
+              location.reload()
+            }
+          })
+        }
+       
       }
     })
-  }else
-  {
-    console.log("ERR");
+ 
+
+})
+
   }
+
+  getVisibility(visibility: number): number {
+    if (visibility === 0) {
+      return 0;
+    } else if (visibility === 1) { 
+      return 1;
+    } else {
+      return -1; // O cualquier otro valor numérico que desees asignar para representar el estado desconocido
+    }
   }
-
-  getEmailRequest4()
-  {
-    const divChange4 = document.getElementById('divChange4');
-
-    const textEmail4 = document.querySelector('.textEmail4')?.textContent;
-    const titlestring4 = String(textEmail4);
-
-    const textDetail4 = document.querySelector('.textDetail4')?.textContent;
-    const textstring4 = String(textDetail4);
-
-    if(divChange4)
-    {
-
-    Swal.fire({
-      title: titlestring4,
-      text: textstring4,
-      showConfirmButton: true,
-      confirmButtonColor: 'purple',
-    }).then((result) => {
-      if(result.isConfirmed)
-      {
-        divChange4.style.backgroundColor='rgba(0, 0, 0, 0.192)';
-      }
-    })
-  }else
-  {
-    console.log("ERR");
-  }
-  }
+  
 
 
  user() 

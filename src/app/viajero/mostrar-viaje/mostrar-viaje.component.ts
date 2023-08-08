@@ -74,7 +74,7 @@ export class MostrarViajeComponent implements OnInit {
   authCloseTrip!: number;
   TOTAL!: number;
 
-email:any = {}
+emailD:any = {}
 
 ptrv_head:any = {}
 
@@ -228,19 +228,33 @@ closeTrip()
 createEmail(pernr_auth1: number)
 {
 
+  let typeTrip = '';
+
+  if(this.schem == '01')
+  {
+    typeTrip = 'nacional';
+  }else if(this.schem == '02')
+  {
+    typeTrip = 'internacional'
+  }
+
+  const titulo = 'Nuevo viaje ' + typeTrip + ' concluido!';
+  const subtitulo = 'Viaje: ' + this.reinr;
   const messageD = 'El usuario ' + this.complete_name +' ha concluido con el proceso de captura del viaje: ' + this.reinr;
 
-  this.email =
+  this.emailD =
   {
     pernr: this.pernr,
     reinr: this.reinr,
     message: messageD,
-    pernr_d: pernr_auth1
+    pernr_d: pernr_auth1,
+    title: titulo,
+    subtitle: subtitulo
   }
-  this.http.post('http://localhost:3000/EmailD', this.email).subscribe(res => {
+  this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(res => {
    
   if(res)
-  {
+  {   
     this.updatePTRV_HEAD()
   }
   }) 
@@ -253,7 +267,34 @@ updatePTRV_HEAD()
     closeTrip: 1
   }
   this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.id, this.ptrv_head).subscribe(res => {
-    this.router.navigate(['/Viajero/Home'], {skipLocationChange: true})
+    this.successCloseTrip()
+  })
+}
+
+
+successCloseTrip()
+{
+
+  let timerInterval = 0;
+
+  Swal.fire({
+    icon: 'success',
+    iconColor: 'green',
+    title: 'Cerrando Viaje',
+    text: 'Informando al director correspondiente....',
+    showCancelButton: false,
+    showConfirmButton: false,
+    timerProgressBar: true,
+    timer: 3000,
+
+    willClose: () => {
+      clearInterval(timerInterval)
+    }
+  }).then(result => {
+    if(result.dismiss === Swal.DismissReason.timer)
+    {
+      this.router.navigate(['/Viajero/Home'], {skipLocationChange: true})
+    }
   })
 }
 
