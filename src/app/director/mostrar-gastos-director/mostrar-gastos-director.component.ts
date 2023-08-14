@@ -95,7 +95,7 @@ export class MostrarGastosDirectorComponent implements OnInit{
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
-        this.errLog()
+        this.auth.logout()
       }else if(isAuthenticate){
         this.route.queryParams.subscribe(params => {
           this.getInfoTrip(params['id'])

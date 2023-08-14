@@ -72,7 +72,7 @@ constructor(public auth:AuthService, private router: Router, private route: Acti
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
-        this.errLog()
+        this.auth.logout()
       }else if(isAuthenticate){
         this.route.queryParams.subscribe(params => {
           this.idHead = params['id']

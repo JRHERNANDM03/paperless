@@ -76,7 +76,7 @@ horaActual!: string;
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
-        this.errLog()
+        this.auth.logout()
       }else if(isAuthenticate){
         this.auth.user$.subscribe(info => {
           const nickname = String(info?.nickname)

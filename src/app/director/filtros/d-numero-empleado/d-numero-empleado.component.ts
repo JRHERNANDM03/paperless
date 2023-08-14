@@ -56,7 +56,7 @@ ngOnInit(): void {
   this.auth.isAuthenticated$.subscribe(isAuthenticate => {
     if(!isAuthenticate)
     {
-      this.errLog()
+      this.auth.logout()
     }else if(isAuthenticate){
       this.auth.user$.subscribe(infoUser => {
         this.nickname = String(infoUser?.nickname)
