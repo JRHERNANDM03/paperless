@@ -68,6 +68,7 @@ import { RespuestaFormularioAdministradorComponent } from './administrador/respu
 import { AEstadosComponent } from './administrador/filtros/a-estados/a-estados.component';
 import { HomeChangeUserComponent } from './viajero/home-change-user/home-change-user.component';
 import { FormsModule } from '@angular/forms';
+import { Respuesta2FormularioAdministradorComponent } from './administrador/respuesta2-formulario-administrador/respuesta2-formulario-administrador.component';
 
 
 @NgModule({
@@ -122,7 +123,8 @@ import { FormsModule } from '@angular/forms';
     EditarGastoAdministradorComponent,
     RespuestaFormularioAdministradorComponent,
     AEstadosComponent,
-    HomeChangeUserComponent
+    HomeChangeUserComponent,
+    Respuesta2FormularioAdministradorComponent
   ],
   imports: [
     BrowserModule,

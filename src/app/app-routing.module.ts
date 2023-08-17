@@ -39,6 +39,7 @@ import { MostrarMisviajesAdministradorComponent } from './administrador/mostrar-
 import { MostrarMiviajeAdministradorComponent } from './administrador/mostrar-miviaje-administrador/mostrar-miviaje-administrador.component';
 import { RegistrarGastoAdministradorComponent } from './administrador/registrar-gasto-administrador/registrar-gasto-administrador.component';
 import { RespuestaFormularioAdministradorComponent } from './administrador/respuesta-formulario-administrador/respuesta-formulario-administrador.component';
+import { Respuesta2FormularioAdministradorComponent } from './administrador/respuesta2-formulario-administrador/respuesta2-formulario-administrador.component';
 import { HomeChangeUserComponent } from './viajero/home-change-user/home-change-user.component';
 import { HomeOtherUserComponent } from './otherUser/home-other-user/home-other-user.component';
 import { MostrarViajeOtherUserComponent } from './otherUser/mostrar-viaje-other-user/mostrar-viaje-other-user.component';
@@ -93,7 +94,8 @@ const routes: Routes = [
   { path:'Administrador/Mis-Viajes', component:MostrarMisviajesAdministradorComponent},
   { path:'Administrador/Detalle/Viaje', component:MostrarMiviajeAdministradorComponent},
   { path:'Administrador/Registrar/Gasto', component:RegistrarGastoAdministradorComponent},
-  { path:'Administrador/Answer', component:RespuestaFormularioAdministradorComponent},  
+  { path:'Administrador/Answer', component:RespuestaFormularioAdministradorComponent}, 
+  { path:'Administrador/Answer2', component:Respuesta2FormularioAdministradorComponent}, 
   { path:'otherUser/Home', component:HomeOtherUserComponent},
   { path:'otherUser/Viaje', component:MostrarViajeOtherUserComponent},
   { path:'otherUser/Gastos', component:MostrarGastoOtherUserComponent},
