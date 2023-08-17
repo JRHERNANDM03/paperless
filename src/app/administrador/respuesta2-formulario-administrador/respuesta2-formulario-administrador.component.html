@@ -1,0 +1,114 @@
+<div id="contenerdorCentrador">
+    <img src="../../../assets/image/liverpool.jpg" id="logo" alt="Logo Liverpool">
+</div>
+
+<div class="container">
+
+  <nav class="navbar navbar-dark ">
+    <div class="container-fluid" style="background-color: #73246D; padding: 1%;">
+
+      <ul *ngIf="auth.user$ | async as user">
+      <a class="navbar-brand" style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.given_name }}</a>
+      </ul>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
+        <span class="navbar-toggler-icon" style="color: white; "></span>
+      </button>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #73246D;">
+        <div class="offcanvas-header">
+          <ul *ngIf="auth.user$ | async as user">
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"  style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.name }}</h5>
+          </ul>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/Administrador/Home">Home - Filtro</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="Administrador/Gastos-Pendientes">Gastos Pendientes</a>
+            </li>
+          </ul>
+        </div>
+        <div class="container" style="padding-bottom: 5%;">
+            <button (click)="logout()" class="btn btn-lg"  style="background-color: #F25F29; color: white;" title="cerrar sesión">Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+</div>
+
+
+<div class="text-center" style="padding-top: 2%; padding-bottom: 4%;">
+<h2 style="color: black">RESULTADOS DE LA BÚSQUEDA: {{amountTrip}}</h2>        
+</div>
+
+
+<div class="container" style="padding-bottom: 5%;">
+<div class="row row-cols-1 row-cols-md-3 g-3">
+
+  <div class="col"  *ngFor="let item of responseArray; let i = index">
+    <div class="card">
+      <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px" height="200px">
+      <div class="card-body">
+        <h5 class="card-title">{{item.zort1}}</h5>
+        <hr>
+        <div class="row">
+          <div class="col">
+            Viaje:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.reinr" readonly style="border: 1">
+          </div>
+          <div class="col">
+            Tipo:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.schem" readonly style="border: 1">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            Usuario:
+            <input type="text" class="form-control card border-secondary mb-3" value="{{item.name}} {{item.lastname}}" readonly style="border: 1">
+          </div>
+          <div class="col">
+            Número de empleado:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.pernr" readonly style="border: 1">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            Area:
+            <input type="text" class="form-control card border-secondary mb-3" value="{{item.area}}" readonly style="border: 1">
+          </div>
+          <div class="col">
+            Sociedad:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.society" readonly style="border: 1">
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            Fecha Salida:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.datv1" readonly style="border: 1">
+          </div>
+          <div class="col">
+            Hora Salida:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.uhrv1" readonly style="border: 1">
+          </div>
+        </div>
+        <hr>
+        <p class="card-text mb-3 text-center" [style.color]="getEstado(authorized[i]) === 'Aprobado' ? 'green' : (getEstado(authorized[i]) === 'Rechazado' ? 'red' : 'grey')">
+          Estado: {{ getEstado(authorized[i]) }}
+        </p>
+    <a href='/Administrador/Viaje?id={{item.id}}' style="text-decoration: none;">
+        <button class="btn btn-outline-primary">Visualizar</button>
+      </a>
+      </div>
+    </div>
+  </div>
+  
+</div>
+</div>
+
+

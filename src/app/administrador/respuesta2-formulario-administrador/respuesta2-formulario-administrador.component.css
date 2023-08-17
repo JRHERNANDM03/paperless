@@ -1,0 +1,40 @@
+#contenerdorCentrador
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction:row;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#logo
+{
+    width: 25%;
+    height: 5%;
+    box-shadow: 5px 5px 5px gray;
+
+}
+
+#div1
+{
+    padding-top: 15px;
+    background-color: #73246D;
+}
+
+#div2
+{
+    padding-top: 15px;
+    background-color: #F25F29;
+}
+
+@media all and (max-width: 775px)
+{
+
+#logo
+    {
+        width: 230px;
+        height: 40px;
+    }
+}
