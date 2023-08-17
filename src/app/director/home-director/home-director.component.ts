@@ -755,13 +755,15 @@ getEmailsD(pernr: number)
           this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(upd_emailD => {
             if(upd_emailD)
             {
-              this.router.navigate(['/Director/Viaje'], {queryParams: {id: idHead}})
+              //this.router.navigate(['/Director/Viaje'], {queryParams: {id: idHead}})
+              window.location.href="/Director/Viaje?id="+idHead+""
             }
           })
         }
         else if(visibility == 1)
         {
-          this.router.navigate(['/Director/Viaje'], {queryParams: {id: idHead}})
+          //this.router.navigate(['/Director/Viaje'], {queryParams: {id: idHead}})
+          window.location.href="/Director/Viaje?id="+idHead+""
         }
       }else if(result.dismiss)
       {

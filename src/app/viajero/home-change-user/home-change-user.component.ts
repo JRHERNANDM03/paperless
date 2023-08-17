@@ -20,6 +20,7 @@ interface user
 export class HomeChangeUserComponent implements OnInit {
 
   numeroEmpleado!: number;
+  pernrLoggeado!: number;
 
   constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
 
@@ -30,7 +31,11 @@ export class HomeChangeUserComponent implements OnInit {
         this.router.navigate(['login'])
       }else if(isAutenticate)
       {
-        
+        this.auth.user$.subscribe(infoUser => {
+          this.http.get<user>('http://localhost:3000/USERS/'+ infoUser?.nickname).subscribe(dataUser => {
+            this.pernrLoggeado = dataUser.PERNR;
+          })
+        })
       }
     })
   }
@@ -54,21 +59,52 @@ export class HomeChangeUserComponent implements OnInit {
     {
       if(data)
       {
-        Swal.fire({
-          icon: 'success',
-          title: 'Ingresando....',
-          text: 'Cambiando de usuario',
-          timer: 2000,
-          timerProgressBar: true,
-          showCancelButton: false,
-          showConfirmButton: false,
-          willClose: () => {
-            clearInterval(timerInterval)
-          }
-          }).then((result) => {
-          /* Read more about handling dismissals below */
-            this.router.navigate(['/otherUser/Home'], {queryParams: {pernr:this.numeroEmpleado}})
+        
+        if(this.pernrLoggeado !== this.numeroEmpleado){
+
+          let timerInterval = 0;
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
           })
+          
+          Toast.fire({
+            icon: 'success',
+            title: 'Cambiando de usuario',
+            willClose: () => {
+              clearInterval(timerInterval)
+            }
+          }).then((result) => {
+            if(result.dismiss === Swal.DismissReason.timer){
+               /* Read more about handling dismissals below */
+              //this.router.navigate(['/otherUser/Home'], {queryParams: {pernr:this.numeroEmpleado}})
+               window.location.href="/otherUser/Home?pernr="+this.numeroEmpleado
+            }
+          });
+
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'No puedes ingresar al mismo usuario logeado!',
+            showCancelButton: false,
+            showConfirmButton: true,
+            confirmButtonColor: 'purple'
+          }).then( res => {
+            if(res.isConfirmed)
+            {
+              location.reload()
+            }
+          })
+        }
+
       }else
       {
         console.log('User dont found')

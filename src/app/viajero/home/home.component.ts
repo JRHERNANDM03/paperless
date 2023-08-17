@@ -161,7 +161,8 @@ getEstado(auth: number): string {
         this.http.patch('http://localhost:3000/EmailV/update/' + idEmailV, this.updateEmailV).subscribe(upd => {
           if(upd)
           {
-            this.router.navigate(['/Viajero/Viaje'], {queryParams: {id: idHead}})
+            //this.router.navigate(['/Viajero/Viaje'], {queryParams: {id: idHead}})
+            window.location.href="/Viajero/Viaje?id="+idHead
           }
         })
 
