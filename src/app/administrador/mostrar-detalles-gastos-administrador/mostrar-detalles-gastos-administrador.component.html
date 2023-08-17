@@ -27,7 +27,7 @@
               <a class="nav-link " aria-current="page" href="/Administrador/Home">Home - Filtro</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/Administrador/Gastos">Regresar</a>
+              <a class="nav-link active" aria-current="page" href="/Administrador/Gastos?idHead={{idHead}}&reinr={{reinrHead}}">Regresar</a>
             </li>
           </ul>
         </div>
@@ -46,29 +46,29 @@
 </div>
 
 <div id="contenerdorCentrador" class="text-center container" style="justify-content: space-between;">
-<a style="color: black; font-size: x-large;">Viaje: 2000001826</a>
-<a style="color: black; font-size: x-large;">Colaborador: (name)-(number)</a>
+<a style="color: black; font-size: x-large;">Viaje: {{reinrHead}}</a>
+<a style="color: black; font-size: x-large;">Colaborador: {{nameCollaborator}} - {{pernr}}</a>
 </div>
 
 
 <div class="container" style="padding-top: 3%; padding-bottom: 3%;">
-    <button (click)="estado()" class="btn btn-success">CAMIBIAR ESTADO</button>
+    <button (click)="notify(receiptno, reinr, pernr)" class="btn btn-success" [style.display]="displayChange">CAMIBIAR ESTADO</button>
 </div>
 
 <div class="container" style="padding: 1%;">
 <form class="row g-3" style="padding-top: 3%; padding-bottom: 8%;">
   <div class="col-md-12">
     <label for="inputEmail4" class="form-label" style="color: black;">COMENTARIO:</label>
-    <input type="text" class="form-control card border-primary mb-3" id="inputEmail4" value="" readonly>
+    <input type="text" class="form-control card border-primary mb-3" id="inputEmail4" value="{{comentario}}" readonly>
   </div>
 
   <div class="row" style="padding-top: 3%;">
     <div class="col form-floating mb-3" >
-      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="PENDIENTE" aria-label="First name" readonly>
+      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{authGeneral}}" aria-label="First name" readonly>
       <label for="floatingInput">Estado</label>
     </div>
     <div class="col form-floating mb-3" >
-      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="ALIE ALIMENTO P/EMPLEADO" aria-label="First name" readonly>
+      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{exp_type}}" aria-label="First name" readonly>
       <label for="floatingInput">Tipo de gasto</label>
     </div>
   </div>
@@ -76,44 +76,46 @@
 
 <div class="row" style="padding-top: 3%;">
  <div class="col form-floating mb-3" >
-   <input type="number" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="500" aria-label="First name" readonly>
+   <input type="number" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{loc_amount}}" aria-label="First name" readonly>
    <label for="floatingInput">Importe</label>
  </div>
  <div class="col form-floating mb-3" >
-  <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="MXP" aria-label="First name" readonly>
+  <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{rec_curr}}" aria-label="First name" readonly>
   <label for="floatingInput">Moneda</label>
 </div>
 <div class="col form-floating mb-3" >
-  <input type="number" class="form-control card border-dark mb-3" id="floatingInput" value="1" aria-label="First name" readonly>
+  <input type="number" class="form-control card border-dark mb-3" id="floatingInput" value="{{multipli}}" aria-label="First name" readonly>
   <label for="floatingInput">Cantidad</label>
 </div>
 </div> 
 
 <div class="row" style="padding-top: 3%;">
   <div class="col form-floating mb-3" >
-    <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="12/12/2021" aria-label="First name" readonly>
+    <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{rec_date}}" aria-label="First name" readonly>
     <label for="floatingInput">Fecha de gasto</label>
   </div>
   <div class="col form-floating mb-3" >
-   <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="F2 IVA ACREDITABLE 16%" aria-label="First name" readonly>
+   <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{tax_code}}" aria-label="First name" readonly>
    <label for="floatingInput">Indicador de impuestos</label>
  </div>
  </div> 
 
 <div class="form-floating">
-   <input type="text" class="form-control card border-dark mb-3" value="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque explicabo, libero hic praesentium repellendus commodi. Atque reiciendis quaerat sequi officiis quos voluptate laborum dicta at ad, minima ex eos molestias." aria-label="First name" readonly>
+   <input type="text" class="form-control card border-dark mb-3" value="{{shorttxt}}" aria-label="First name" readonly>
    <label for="floatingTextarea">Info</label>
  </div>
 
  <div class="form-floating">
-   <input type="text" class="form-control card border-dark mb-3" value="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque explicabo, libero hic praesentium repellendus commodi. Atque reiciendis quaerat sequi officiis quos voluptate laborum dicta at ad, minima ex eos molestias." aria-label="First name" readonly>
+   <input type="text" class="form-control card border-dark mb-3" value="{{descript}}" aria-label="First name" readonly>
    <label for="floatingTextarea">Descripción</label>
  </div>
 
-<div class="col-md-2">
-  <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
-  <a href="/showFile" name="file" class="form-control card border-dark mb-3" id="inputPassword4" style="text-decoration: none;">file.pdf</a>
- </div>
+ <div class="form-floating" (click)="showFile(uuid)">
+  <input type="text" class="form-control card border-dark mb-3" value="{{uuid}}" aria-label="First name" readonly>
+  <label for="floatingTextarea">Justificación <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/>
+  </svg></label>
+</div>
 
 </form>
 

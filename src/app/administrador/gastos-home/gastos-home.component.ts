@@ -1,6 +1,31 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import Swal from 'sweetalert2';
+
+interface dataTrip{
+  auth: number;
+  closeTrip: number;
+  created_at: string;
+  datb1: string;
+  date: string;
+  datv1: string;
+  final_approval: number;
+  hrgio: string;
+  id: number;
+  kunde: string;
+  pernr: string;
+  reinr: string;
+  schem: string;
+  times: string;
+  uhrb1: string;
+  uhrv1: string;
+  uname: string;
+  updated_at: string;
+  zland: string;
+  zort1: string;
+}
 
 @Component({
   selector: 'app-gastos-home',
@@ -9,15 +34,41 @@ import Swal from 'sweetalert2';
 })
 export class GastosHomeComponent  implements OnInit{
 
-  constructor(public auth: AuthService){}
+  constructor(public auth: AuthService, private route: ActivatedRoute, private router: Router, private http: HttpClient){}
+
+  responseArray: dataTrip[] = [];
+ 
+  authorized!: number[];
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
-        this.errLog()
-      }else if(isAuthenticate){}
+        this.auth.logout()
+      }else if(isAuthenticate){
+        this.getTrip()
+      }
     })
+  }
+
+  getTrip()
+  {
+    this.http.get<dataTrip[]>('http://localhost:3000/Trip_finalApproval').subscribe(data => {
+      this.responseArray = data;
+      this.authorized = data.map(item => item.auth);
+    })
+  }
+
+  getEstado(auth: number): string {
+    if (auth === 0) {
+      return 'Pendiente';
+    } else if (auth === 1) { 
+      return 'Aprobado';
+    } else if (auth === 2) {
+      return 'Rechazado';
+    } else {
+      return 'Desconocido';
+    }
   }
 
   errLog()
@@ -58,5 +109,10 @@ export class GastosHomeComponent  implements OnInit{
       }
     })
   }
+
+detailTrip(idHead: number)
+{
+  this.router.navigate(['/Administrador/Viaje'], {queryParams: {id: idHead}})
+}
 
 }

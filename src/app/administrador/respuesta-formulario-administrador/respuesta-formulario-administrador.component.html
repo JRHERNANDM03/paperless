@@ -23,22 +23,10 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link " aria-current="page" href="/Administrador/Home">Home - Filtro</a>
+              <a class="nav-link active" aria-current="page" href="/Administrador/Home">Home - Filtro</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="Administrador/Gastos-Pendientes">Gastos Pendientes</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Filtrar viaje
-              </a>
-              <ul class="dropdown-menu dropdown-menu-light">
-                <li><a class="dropdown-item" href="/Administrador/Filtro/NumeroEmpleado">Número de empleado</a></li>
-                  <hr class="dropdown-divider">
-                <li><a class="dropdown-item" href="/Administrador/Filtro/NumeroViaje">Número de viaje</a></li>
-                  <hr class="dropdown-divider">
-                <li><a class="dropdown-item" href="/Administrador/Filtro/Fecha">Fecha</a></li>
-              </ul>
+              <a class="nav-link " href="Administrador/Gastos-Pendientes">Gastos Pendientes</a>
             </li>
           </ul>
         </div>
@@ -53,191 +41,74 @@
 
 
 <div class="text-center" style="padding-top: 2%; padding-bottom: 4%;">
-<h2 style="color: black">RESULTADOS DE LA BÚSQUEDA</h2>        
+<h2 style="color: black">RESULTADOS DE LA BÚSQUEDA: {{amountTrip}}</h2>        
 </div>
 
 
 <div class="container" style="padding-bottom: 5%;">
-<div class="row row-cols-1 row-cols-md-4 g-4">
-  <div class="col">
+<div class="row row-cols-1 row-cols-md-3 g-3">
+
+  <div class="col"  *ngFor="let item of responseArray; let i = index">
     <div class="card">
-      <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
+      <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px" height="200px">
       <div class="card-body">
-        <h5 class="card-title">Tijuana</h5>
+        <h5 class="card-title">{{item.zort1}}</h5>
         <hr>
         <div class="row">
-            <div class="col">
-              Viaje:
-              <input type="text" class="form-control card border-secondary mb-3" value="2000001827" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              N_Emp:
-              <input type="text" class="form-control card border-secondary mb-3" value="16136996" aria-label="Last name" readonly style="border: 1;">
-            </div>
+          <div class="col">
+            Viaje:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.reinr" readonly style="border: 1">
           </div>
+          <div class="col">
+            Tipo:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.schem" readonly style="border: 1">
+          </div>
+        </div>
 
-          <div class="row">
-            <div class="col">
-              Tipo:
-              <input type="text" class="form-control card border-secondary mb-3" value="PL" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              Precio:
-              <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-            </div>
+        <div class="row">
+          <div class="col">
+            Usuario:
+            <input type="text" class="form-control card border-secondary mb-3" value="{{item.name}} {{item.lastname}}" readonly style="border: 1">
           </div>
+          <div class="col">
+            Número de empleado:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.pernr" readonly style="border: 1">
+          </div>
+        </div>
 
-          <div class="row">
-            <div class="col">
-              Fecha Salida:
-              <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              Hora Salida:
-              <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-            </div>
+        <div class="row">
+          <div class="col">
+            Area:
+            <input type="text" class="form-control card border-secondary mb-3" value="{{item.area}}" readonly style="border: 1">
           </div>
+          <div class="col">
+            Sociedad:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.society" readonly style="border: 1">
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            Fecha Salida:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.datv1" readonly style="border: 1">
+          </div>
+          <div class="col">
+            Hora Salida:
+            <input type="text" class="form-control card border-secondary mb-3" [value]="item.uhrv1" readonly style="border: 1">
+          </div>
+        </div>
         <hr>
-        <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-        <a href='/Administrador/Viaje' style="text-decoration: none;">
+        <p class="card-text mb-3 text-center" [style.color]="getEstado(authorized[i]) === 'Aprobado' ? 'green' : (getEstado(authorized[i]) === 'Rechazado' ? 'red' : 'grey')">
+          Estado: {{ getEstado(authorized[i]) }}
+        </p>
+    <a href='/Administrador/Viaje?id={{item.id}}' style="text-decoration: none;">
         <button class="btn btn-outline-primary">Visualizar</button>
       </a>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-      <div class="card-body">
-        <h5 class="card-title">Londres</h5>
-        <hr>
-        <div class="row">
-            <div class="col">
-              Viaje:
-              <input type="text" class="form-control card border-secondary mb-3" value="2000001839" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              N_Emp:
-              <input type="text" class="form-control card border-secondary mb-3" value="56321664" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              Tipo:
-              <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              Precio:
-              <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              Fecha Salida:
-              <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              Hora Salida:
-              <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-        <hr>
-        <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-        <button class="btn btn-outline-primary">Visualizar</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <img src="../../../assets/image/Mexicali.jfif" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-      <div class="card-body">
-        <h5 class="card-title">MEXICALI</h5>
-        <hr>
-        <div class="row">
-            <div class="col">
-              Viaje:
-              <input type="text" class="form-control card border-secondary mb-3" value="200000654" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              N_Emp:
-              <input type="text" class="form-control card border-secondary mb-3" value="22751248" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              Tipo:
-              <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              Precio:
-              <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              Fecha Salida:
-              <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              Hora Salida:
-              <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-        <hr>
-        <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
-        <button class="btn btn-outline-primary">Visualizar</button>
-      </div>
-    </div>
-  </div>
-  <div class="col">
-    <div class="card">
-      <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px;" height="200px;">
-      <div class="card-body">
-        <h5 class="card-title">Londres</h5>
-        <hr>
-        <div class="row">
-            <div class="col">
-              Viaje:
-              <input type="text" class="form-control card border-secondary mb-3" value="2000001839" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              N_Emp:
-              <input type="text" class="form-control card border-secondary mb-3" value="56321664" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              Tipo:
-              <input type="text" class="form-control card border-secondary mb-3" value="02" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              Precio:
-              <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              Fecha Salida:
-              <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              Hora Salida:
-              <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-        <hr>
-        <p class="card-text card border-secondary mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
-        <button class="btn btn-outline-primary">Visualizar</button>
       </div>
     </div>
   </div>
   
 </div>
 </div>
+
 

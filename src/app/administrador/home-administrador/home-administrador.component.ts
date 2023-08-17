@@ -1,9 +1,45 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AfterViewInit } from '@angular/core';
+
 
 import Swal from 'sweetalert2';
 import { AuthService } from '@auth0/auth0-angular';
+import { HttpClient } from '@angular/common/http';
+
+interface UserData {
+  PERNR: string;
+  // Otros campos que esperas en los datos de respuesta
+}
+
+interface emailsD{
+  id: number;
+  message: string;
+  pernr: number;
+  reinr: number;
+  visibility: number;
+  title: string;
+  subtitle: string;
+}
+
+interface PTRV_HEAD{
+  id: number;
+  pernr: string
+  reinr: string;
+  schem: string;
+  zort1: string;
+  zland: string;
+  hrgrio: string;
+  kunde: string;
+  datv1: string;
+  uhrv1: string;
+  datb1: string;
+  uhrb1: string;
+  date: string;
+  times: string;
+  uname: string;
+  auth: number;
+}
 
 @Component({
   selector: 'app-home-administrador',
@@ -12,28 +48,145 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class HomeAdministradorComponent implements OnInit {
 
+  updateEmailA: any = {}
+  selectedEmailIndex: number = -1;
+  backgroundColor: string = 'rgba(0, 0, 0, 0.477)';
+
+  emailsAmount: number = 0;
+
 
   fechaActual?: string;
   fechaPasada?: string;
   n_emp: string = '';
-  name_emp: string = '';
   n_viaje: string = '';
   sociedad: string = '';
+  status: string = '1';
+  date1: string = '';
+  date2: string = '';
 
-  constructor(private router:Router, public auth: AuthService){}
+  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
 
   ngOnInit(): void {
-    this.obtenerFecha();
-    this.obtenerFechaHaceUnaSemana();
-
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
-        this.errLog()
-      }else if(isAuthenticate){}
+        this.auth.logout()
+      }else if(isAuthenticate){
+        this.auth.user$.subscribe(user => {
+          const nickname = String(user?.nickname);
+          this.getData(nickname);     
+        })
+        this.obtenerFecha();
+        this.obtenerFechaHaceUnaSemana();
+      }
     })
   }
 
+  
+
+  getData(nickname: String)
+{
+  this.http.get<UserData>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+
+  const pernr_user = Number(data.PERNR);
+  this.getEmailsA(pernr_user)
+
+  })
+}
+
+responseArrayEmails: emailsD[] = [];
+ 
+  visibility_auth!: number[];
+
+getEmailsA(pernr: number)
+{
+  this.http.get<emailsD[]>('http://localhost:3000/EmailsA').subscribe(data => {
+    
+    this.responseArrayEmails = data;
+    this.visibility_auth = data.map(item => Number(item.visibility))
+
+    let x = 0;
+
+    for(x=0; x<data.length; x++ )
+    {
+      if(this.responseArrayEmails[x].visibility == 0)
+      {
+        this.emailsAmount = this.emailsAmount + 1;
+      }
+    }
+  })
+}
+
+getEmailsARequest(idEmailA: number, message: string, reinr: number, visibility: number, title: string, pernr: number)
+{
+
+  this.http.get<PTRV_HEAD>('http://localhost:3000/PTRV_HEAD/' + reinr).subscribe(trip => {
+const idHead = trip.id;
+
+  Swal.fire({
+    text: message,
+    showConfirmButton: true,
+    confirmButtonColor: 'purple',
+    confirmButtonText: 'Ver viaje',
+    showCancelButton: true,
+    cancelButtonText: 'OK',
+    cancelButtonColor: 'oragne'
+  }).then((result) => {
+    if(result.isConfirmed)
+    {
+      if(visibility != 1)
+      {
+
+      this.updateEmailA = {
+        visibility: 1
+      }
+      this.http.patch('http://localhost:3000/EmailA/update/' + idEmailA, this.updateEmailA).subscribe(upd => {
+        if(upd)
+        {
+          //this.router.navigate(['/Administrador/Viaje'], {queryParams: {id: idHead, reload: 1}})
+          window.location.href="/Administrador/Viaje?id="+idHead+""
+        }
+      })
+
+    }else{
+      //this.router.navigate(['/Administrador/Viaje'], {queryParams: {id: idHead, reload: 1}})
+      window.location.href="/Administrador/Viaje?id="+idHead+""
+    }
+
+    }else if(result.isDismissed)
+    {
+
+      if(visibility != 1)
+      {
+        this.updateEmailA = {
+          visibility: 1
+        }
+        this.http.patch('http://localhost:3000/EmailA/update/' + idEmailA, this.updateEmailA).subscribe(upd => {
+          if(upd)
+          {
+            location.reload()
+          }
+        })
+      }
+     
+    }
+  })
+
+
+})
+
+}
+
+
+getVisibility(visibility: number): number {
+  if (visibility === 0) {
+    return 0;
+  } else if (visibility === 1) { 
+    return 1;
+  } else {
+    return -1; // O cualquier otro valor numérico que desees asignar para representar el estado desconocido
+  }
+}
   
 
   obtenerFecha()
@@ -117,43 +270,130 @@ export class HomeAdministradorComponent implements OnInit {
       saveData()
       {
 
-        const n_empArray = this.n_emp.split(',');
-        const name_empArray = this.name_emp.split(',');
-        const n_viajeArray = this.n_viaje.split(',');
-        const sociedadArray = this.sociedad.split(',');
-        //const primerDato = n_empArray[0].trim()
+        const n_empString = this.n_emp.replace(/\s/g, '');
+        const n_empArray = n_empString.split(',');
 
-        console.log("Imprimiendo valores de NUMERO DE EMPLEADO");
-        console.log("n_empArray.length: " + n_empArray.length)
-        for(let x=0; x < n_empArray.length; x++)
+        const n_viajeString = this.n_viaje.replace(/\s/g, '');
+        const n_viajeArray = n_viajeString.split(',');
+        
+        const n_sociedad = this.sociedad.replace(/\s/g, '');
+        const sociedadArray = n_sociedad.split(',');
+
+       let x=0;
+       let a=0;
+       let b=0;
+       let c=0;
+
+       for(x=0; x < n_empArray.length; x++)
+       {
+        if(n_empArray[x] !== '' && n_empArray[x])
         {
-          console.log(n_empArray[x].trim());
+          a=a+1;
         }
+       }
+       //console.log(a)
 
-        console.log("Imprimiendo valores de NOMBRE DE EMPLEADO");
-        console.log("name_empArray.length: " + name_empArray.length)
-        for(let x=0; x < name_empArray.length; x++)
+       for(x=0; x < n_viajeArray.length; x++)
+       {
+        if(n_viajeArray[x] !== '')
         {
-          console.log(name_empArray[x].trim());
+          b=b+1;
         }
+       }
+       //console.log(b)
 
-        console.log("Imprimiendo valores de NUMERO DE VIAJE");
-        console.log("n_viajeArray.length: " + n_viajeArray.length)
-        for(let x=0; x < n_viajeArray.length; x++)
+       for(x=0; x < sociedadArray.length; x++)
+       {
+        if(sociedadArray[x] !== '')
         {
-          console.log(n_viajeArray[x].trim());
+          c=c+1;
         }
+       }
+       //console.log(c)
 
-        console.log("Imprimiendo valores de SOCIEDAD");
-        console.log("sociedadArray.length: " + sociedadArray.length)
-        for(let x=0; x < sociedadArray.length; x++)
-        {
-          console.log(sociedadArray[x].trim());
+       if(a==0 && b==0 && c==0){
+        let timerInterval = 0;
+
+        Swal.fire({
+          title: 'Recuperando información...',
+          html: '<div class="spinner-border text-primary" role="status">'+
+          '<span class="visually-hidden">Loading...</span>'+
+        '</div>',
+        showCancelButton: false,
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: false,
+        willClose: () => {
+          clearInterval(timerInterval)
         }
+        }).then((result) => {
+          if(result.dismiss === Swal.DismissReason.timer)
+          {
+            this.router.navigate(['/Administrador/Answer'], {queryParams: {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}});
+          }
+        })
+       }else if((a==1 || a==0) && (b==1 || b==0) && (c==1 || c==0) ){
+        let timerInterval = 0;
 
-        this.router.navigate(['/Administrador/Answer']);
-      }
-      
+        Swal.fire({
+          title: 'Recuperando información...',
+          html: '<div class="spinner-border text-primary" role="status">'+
+          '<span class="visually-hidden">Loading...</span>'+
+        '</div>',
+        showCancelButton: false,
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: false,
+        willClose: () => {
+          clearInterval(timerInterval)
+        }
+        }).then((result) => {
+          if(result.dismiss === Swal.DismissReason.timer)
+          {
+            this.router.navigate(['/Administrador/Answer2'], {queryParams: {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}});
+          }
+        })
+       }else if((a>1 || a==0) && (b>1 || b==0) && (c>1 || c==0))
+       {
+
+        let timerInterval = 0;
+
+        Swal.fire({
+          title: 'Recuperando información...',
+          html: '<div class="spinner-border text-primary" role="status">'+
+          '<span class="visually-hidden">Loading...</span>'+
+        '</div>',
+        showCancelButton: false,
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: false,
+        willClose: () => {
+          clearInterval(timerInterval)
+        }
+        }).then((result) => {
+          if(result.dismiss === Swal.DismissReason.timer)
+          {
+            this.router.navigate(['/Administrador/Answer'], {queryParams: {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}});
+          }
+        })
+
+
+       }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Este formulario acepta mas de un valor por campo!',
+          text: 'Si su busqueda será limitada a un solo valor en un campo en especifico, te sugiero que los demás campos sean igual a un solo valor o se encuentren vacios.',
+          showCancelButton: false,
+          showConfirmButton: true,
+          confirmButtonColor: 'purple'
+        }).then(result => {
+          if(result.isConfirmed){
+            location.reload()
+          }
+        })
+       }
+
+      }   
 
 errLog()
   {

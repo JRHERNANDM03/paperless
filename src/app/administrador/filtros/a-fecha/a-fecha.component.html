@@ -8,18 +8,18 @@
     <div class="container-fluid" style="background-color: #73246D; padding: 1%;">
 
       <ul *ngIf="auth.user$ | async as user">
-      <a class="navbar-brand" style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.given_name }}</a>
-      </ul>
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
-        <span class="navbar-toggler-icon" style="color: white; "></span>
-      </button>
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #73246D;">
-        <div class="offcanvas-header">
-          <ul *ngIdffngIf="auth.user$ | async as user">
-          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"  style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.name }}</h5>
-          </ul>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
+        <a class="navbar-brand" style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.given_name }}</a>
+        </ul>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
+          <span class="navbar-toggler-icon" style="color: white; "></span>
+        </button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #73246D;">
+          <div class="offcanvas-header">
+            <ul *ngIf="auth.user$ | async as user">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"  style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.name }}</h5>
+            </ul>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
@@ -53,77 +53,73 @@
 </div>
 
 <div class="text-center">
-<h3 style="color: black;">Búsqueda por fecha de inicio</h3>
+  <h3 style="color: black;">Búsqueda de rango por fecha de inicio</h3>
 </div>
 
 <div class="container" style="padding-top: 3%;">
-<form class="row g-3" action="" method="GET">
-<div class="col-md-6">
-  <label for="inputPassword4" class="form-label" style="color: black;">Fecha:</label>
-  <input type="date" name="number_viaje" class="form-control card border-dark mb-3" value="2021-12-12" id="inputPassword4" required>
+  <form class="row g-3" (ngSubmit)="submitForm()">
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label" style="color: black;">Fecha 1: (debe ser menor a fecha 2)</label>
+      <input type="date" [(ngModel)]="data1" name="data1" class="form-control card border-dark mb-3" value="{{fechaPasada}}" id="inputPassword4" required>
+    </div>
+    <div class="col-md-6">
+      <label for="inputPassword4" class="form-label" style="color: black;">Fecha 2: (debe ser mayor a fecha 1)</label>
+      <input type="date"[(ngModel)]="data2" name="data2" class="form-control card border-dark mb-3" value="{{fechaActual}}" id="inputPassword4" required>
+    </div>
+  <div class="col-md-2">
+      <label for="inputPassword4" class="form-label" style="color: black;"></label>
+       <input type="submit" name="find" class="form-control btn btn-primary" id="inputPassword4" value="Buscar" [disabled]="!formValid()">
+  </div>
+  </form>
+
+
 </div>
-<!--
-<div class="col-md-2">
-  <label for="inputPassword4" class="form-label" style="color: black;"></label>
-   <input type="submit" name="find" class="form-control btn btn-primary" id="inputPassword4" value="Buscar">
-</div>
--->
-</form>
-
-<button (click)="listar()" class="btn btn-primary btn-lg">Buscar</button>
-
-</div>
-
-<div class="container" id="cards" style="padding-bottom: 5%;" [style.display]="styleDisplay">
-<hr>
-
-<br>
-
-<div class="container" id="cards" style="padding-bottom: 3%;">
+<div class="container" id="cards" style="padding-bottom: 5%;">
+  <hr>
+ 
+  
+  <div class="container" style="padding-bottom: 5%;" [style.display]="styleDisplay">
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col">
-        <div class="card">
-          <img src="../../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
-          <div class="card-body">
-            <h5 class="card-title">Tijuana</h5>
-            <hr>
-            <div class="row">
-              <div class="col">
-                Viaje:
-                <input type="text" class="form-control card border-secondary mb-3" value="2000001827" aria-label="First name" readonly style="border: 1;">
-              </div>
-              <div class="col">
+      
+      <h4 style="color: black;">Listado de todos los viajes en la fecha correspondiente.</h4>
+        <br>
+        <div class="col" *ngFor="let item of responseArray; let i = index">
+          <div class="card">
+            <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px" height="200px">
+            <div class="card-body">
+              <h5 class="card-title">{{item.zort1}}</h5>
+              <hr>
+              <div class="row">
+                <div class="col">
+                  Viaje:
+                  <input type="text" class="form-control card border-secondary mb-3" [value]="item.reinr" readonly style="border: 1">
+                </div>
+                <div class="col">
                   Tipo:
-                  <input type="text" class="form-control card border-secondary mb-3" value="PL" aria-label="First name" readonly style="border: 1;">
+                  <input type="text" class="form-control card border-secondary mb-3" [value]="item.schem" readonly style="border: 1">
+                </div>
               </div>
+        
+              <div class="row">
+                <div class="col">
+                  Fecha Salida:
+                  <input type="text" class="form-control card border-secondary mb-3" [value]="item.datv1" readonly style="border: 1">
+                </div>
+                <div class="col">
+                  Hora Salida:
+                  <input type="text" class="form-control card border-secondary mb-3" [value]="item.uhrv1" readonly style="border: 1">
+                </div>
+              </div>
+              <hr>
+              <p class="card-text mb-3 text-center" [style.color]="getEstado(authorized[i]) === 'Aprobado' ? 'green' : (getEstado(authorized[i]) === 'Rechazado' ? 'red' : 'grey')">
+                Estado: {{ getEstado(authorized[i]) }}
+              </p>
+              <button (click)="tripDetail(item.id)" class="btn btn-outline-primary">Visualizar</button>
             </div>
-  
-            <div class="row">
-              <div class="col">
-                Precio:
-                <input type="text" class="form-control card border-success mb-3" value="$ 13,000.00" aria-label="Last name" readonly style="border: 1;">
-              </div>
-            </div>
-  
-            <div class="row">
-              <div class="col">
-                Fecha Salida:
-                <input type="text" class="form-control card border-secondary mb-3" value="12/12/2021" aria-label="First name" readonly style="border: 1;">
-              </div>
-              <div class="col">
-                Hora Salida:
-                <input type="text" class="form-control card border-secondary mb-3" value="12:00:00 am" aria-label="Last name" readonly style="border: 1;">
-              </div>
-            </div>
-            <hr>
-            <p class="card-text card border-secondary mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
-            <a [routerLink]="('/Administrador/Detalle/Viaje')" style="text-decoration: none;">
-            <button class="btn btn-outline-primary">Visualizar</button>
-          </a>
           </div>
         </div>
+        
       </div>
-      
     </div>
+
   </div>
-  

@@ -52,23 +52,23 @@
 </div>
 
 <div class="container" style="padding: 1%;">
-<h5 style="color: black;">Viaje: 2000001826</h5>
+<h5 style="color: black;">Viaje: {{reinrHead}}</h5>
 
 <div class="row row-cols-1 row-cols-md-3 g-5" >
   <div class="col">
     <div class="card">
-      <img src="../../../assets/image/tijuana.jpg" class="imgTravel" alt="Tijuana">
+      <img src="../../../assets/image/tijuana.jpg" class="imgTravel" alt="{{zort1Head}}">
         <div class="card-img-overlay" style="background-color: #00000045;">
-          <h5 class="card-title" style="color: white;">Tijuana</h5>
-          <p class="card-text" style="color: white;">MX</p>
+          <h5 class="card-title" style="color: white;">{{zort1Head}}</h5>
+          <p class="card-text" style="color: white;">{{zlandHead}}</p>
      </div>
     </div>
   </div>
 </div>
 
 <div id="contenerdorCentrador" class="text-center" style="justify-content: space-between; padding-top: 3%;">
-<a href="/Administrador/Mis-Gastos" class="btn btn-primary btn-lg" title="Visualizar informes de gastos">Informes de gastos</a>
-<a (click)="close()" class="btn btn-danger btn-lg" title="Cerrar Viaje">Cerrar Viaje</a>
+<a href="/Administrador/Mis-Gastos?id={{idHead}}&reinr={{reinrHead}}&authCloseTrip={{closeTripHead}}" class="btn btn-primary btn-lg" title="Visualizar informes de gastos">Informes de gastos</a>
+<a (click)="close()" class="btn btn-danger btn-lg" title="Cerrar Viaje" [style.display]="closeTrip">Cerrar Viaje</a>
 </div>
 
 <hr>
@@ -78,32 +78,34 @@
   <div class="row">
     <div class="col">
       Estado:
-      <p (click)="status()" style=" color: grey; padding: 2%; cursor: pointer;" title="PENDIENTE"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
-        <circle cx="8" cy="8" r="8"/>
-      </svg></p>
+      <p (click)="status(authHead)" [style.color]="getColor(authHead)" style="padding: 2%;" [title]="getTitle(authHead)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="8"/>
+        </svg>
+      </p>
     </div>
     <div class="col">
       Costo:
-      <input type="text" class="form-control card border-primary mb-3" id="inputEmail4" value="$ 13,500" readonly style="color: #0059FF;">
+      <input type="text" class="form-control card border-primary mb-3" id="inputEmail4" value="$ {{amountHead}}" readonly style="color: #0059FF;">
     </div>
     <div class="col">
       Viaje:
-      <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="2000001826" readonly>
+      <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="{{reinrHead}}" readonly>
     </div>
   </div>
 
   <div class="row">
     <div class="col">
       Tipo:
-      <input type="text" class="form-control card border-dark mb-3" value="PL" aria-label="First name" readonly>
+      <input type="text" class="form-control card border-dark mb-3" value="{{schemHead}}" aria-label="First name" readonly>
     </div>
     <div class="col">
       Destino:
-      <input type="text" class="form-control card border-dark mb-3" value="Tijuana" aria-label="Last name" readonly>
+      <input type="text" class="form-control card border-dark mb-3" value="{{zort1Head}}" aria-label="Last name" readonly>
     </div>
     <div class="col">
       Pais:
-      <input type="text" class="form-control card border-dark mb-3" value="MX" aria-label="Last name" readonly>
+      <input type="text" class="form-control card border-dark mb-3" value="{{zlandHead}}" aria-label="Last name" readonly>
     </div>
   </div>
 
@@ -115,28 +117,28 @@
 
   <div class="col-md-8" >
     <label for="inputPassword4" class="form-label" style="color: black;">Motivo:</label>
-    <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="Pruebas cambio de sociedades 21jun21" readonly>
+    <input type="text" class="form-control card border-dark mb-3" id="inputPassword4" value="{{kundeHead}}" readonly>
   </div>
 
 <div class="row">
   <div class="col">
     Fecha de inicio:
-    <input type="text" class="form-control card border-dark mb-3" value="12/12/2021" aria-label="First name" readonly>
+    <input type="text" class="form-control card border-dark mb-3" value="{{datv1Head}}" aria-label="First name" readonly>
   </div>
   <div class="col">
     Hora de inicio:
-    <input type="text" class="form-control card border-dark mb-3" value="12:00:00 am" aria-label="Last name" readonly>
+    <input type="text" class="form-control card border-dark mb-3" value="{{uhrv1Head}}" aria-label="Last name" readonly>
   </div>
 </div>
 
 <div class="row">
   <div class="col">
     Fecha Fin:
-    <input type="text" class="form-control card border-dark mb-3" value="13/12/2021" aria-label="First name" readonly>
+    <input type="text" class="form-control card border-dark mb-3" value="{{datb1Head}}" aria-label="First name" readonly>
   </div>
   <div class="col">
     Hora Fin:
-    <input type="text" class="form-control card border-dark mb-3" value="12:00:00 am" aria-label="Last name" readonly>
+    <input type="text" class="form-control card border-dark mb-3" value="{{uhrb1Head}}" aria-label="Last name" readonly>
   </div>
 </div>
 
