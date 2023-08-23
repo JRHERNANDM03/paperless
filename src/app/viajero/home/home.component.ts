@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 
 import Swal from 'sweetalert2';
 
+import { SharedDataService } from 'src/app/shared-data.service';
+
 interface UserData {
   PERNR: string;
   // Otros campos que esperas en los datos de respuesta
@@ -55,7 +57,7 @@ export class HomeComponent implements OnInit{
 
   emailsAmount: number = 0;
 
-  constructor(private router: Router, public auth: AuthService, private http: HttpClient) {
+  constructor(private router: Router, public auth: AuthService, private http: HttpClient, private sharedDataService: SharedDataService) {
 }
 
 ngOnInit(): void {
@@ -162,7 +164,17 @@ getEstado(auth: number): string {
           if(upd)
           {
             //this.router.navigate(['/Viajero/Viaje'], {queryParams: {id: idHead}})
-            window.location.href="/Viajero/Viaje?id="+idHead
+            
+            const data = {id: idHead};
+            
+            this.sharedDataService.setData(data);
+            
+            localStorage.setItem('DataHome-Viajero', JSON.stringify(data)); // Guardar en localStorage
+            
+            // Navegar a la otra vista después de establecer los datos
+            
+            window.location.href="/Viajero/Viaje"
+
           }
         })
 
@@ -232,6 +244,19 @@ logout()
 tripDetail(id: number)
 {
   this.router.navigate(['/Viajero/Viaje'], {queryParams: {id: id} });
+}
+
+sendData(id: number)
+{
+   const data = {id: id};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHome-Viajero', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    this.router.navigate(['/Viajero/Viaje']);
 }
 
 

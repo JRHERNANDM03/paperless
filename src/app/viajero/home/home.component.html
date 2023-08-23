@@ -126,7 +126,7 @@
         <p class="card-text mb-3 text-center" [style.color]="getEstado(authorized[i]) === 'Aprobado' ? 'green' : (getEstado(authorized[i]) === 'Rechazado' ? 'red' : 'grey')">
           Estado: {{ getEstado(authorized[i]) }}
         </p>
-        <button (click)="tripDetail(item.id)" class="btn btn-outline-primary">Visualizar</button>
+        <button (click)="sendData(item.id)" class="btn btn-outline-primary">Visualizar</button>
       </div>
     </div>
   </div>

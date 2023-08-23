@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
 
 interface user 
@@ -41,7 +42,7 @@ datv1: string = '';
 uhrv1: string = '';
 authorized!: number;
 
-constructor(public auth:AuthService, private router: Router, private http: HttpClient){}
+constructor(public auth:AuthService, private router: Router, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 styleDisplay = 'none';
 
@@ -140,7 +141,14 @@ validate(pernr: string)
 
 detail(id: number)
 {
-  this.router.navigate(['/Viajero/Viaje'], {queryParams: {id:id}})
+  const data = {id: id};
+            
+    this.sharedDataService.setData(data);
+            
+    localStorage.setItem('DataHome-Viajero', JSON.stringify(data)); // Guardar en localStorage
+            
+    // Navegar a la otra vista después de establecer los datos       
+    window.location.href="/Viajero/Viaje"
 }
 
 logout()

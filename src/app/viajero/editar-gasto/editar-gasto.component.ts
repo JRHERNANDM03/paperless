@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -80,7 +81,9 @@ export class EditarGastoComponent implements OnInit {
 
 authCloseTrip!: number;
 
-  constructor (private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute){}
+recivedData: any;
+
+  constructor (private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -89,12 +92,33 @@ authCloseTrip!: number;
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
-        this.route.queryParams.subscribe(params => {
+       /* this.route.queryParams.subscribe(params => {
           this.receiptno = params['id'];
           this.getData(this.receiptno);
           this.head = params['head'];
           this.authCloseTrip = params['authCloseTrip'];
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.receiptno = this.recivedData.id;
+          this.getData(this.receiptno);
+          this.head = this.recivedData.head;
+          this.authCloseTrip = this.recivedData.authCloseTrip;
+        }else{
+          const localStorageData = localStorage.getItem('DataEditarGasto-Viajero');
+          if (localStorageData) {
+            const parsedData = JSON.parse(localStorageData);
+
+            this.receiptno = parsedData.id;
+            this.getData(this.receiptno);
+            this.head = parsedData.head;
+            this.authCloseTrip = parsedData.authCloseTrip;
+        }
+      }
+
 
         this.auth.user$.subscribe(info => {
           this.nickname = String(info?.nickname);
@@ -142,7 +166,7 @@ authCloseTrip!: number;
    }).then((result) => {
     if(result.isConfirmed)
     {
-      this.router.navigate(["/Viajero/Gastos"], {queryParams: {id: this.head}})
+      window.location.href='/Viajero/Gastos'
     }
    })
   

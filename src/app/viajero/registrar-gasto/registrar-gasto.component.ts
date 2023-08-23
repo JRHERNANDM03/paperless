@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -86,7 +87,9 @@ gastos:any =
 
 authCloseTrip!: number;
 
-  constructor (private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute){}
+recivedData: any;
+
+  constructor (private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute, private sharedDataService: SharedDataService){}
 
 
 
@@ -97,16 +100,40 @@ authCloseTrip!: number;
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           const id_head = params['id'];
           this.id_head = params['id'];
           this.authCloseTrip = params['authCloseTrip'];
           this.getData(id_head);
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          const id_head = this.recivedData.id;
+
+          this.getData(id_head)
+
+        }else{
+
+          const localStorageData = localStorage.getItem('DataCrearGasto-Viajero');
+
+          if(localStorageData)
+          {
+            const parsedData = JSON.parse(localStorageData);
+
+            const id_head = parsedData.id;
+
+            this.getData(id_head)
+          }
+
+
+        }
 
           this.auth.user$.subscribe(info => {
             this.nickname = String(info?.nickname);
           })
-        })
       }
     })
   }
@@ -140,7 +167,7 @@ success(){
  }).then((result) => {
   if(result.isConfirmed)
   {
-    this.router.navigate(["/Viajero/Gastos"], {queryParams: {id:this.id_head}})
+    this.router.navigate(["/Viajero/Gastos"])
   }
  })
 

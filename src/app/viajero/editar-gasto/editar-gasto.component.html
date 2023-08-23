@@ -27,7 +27,7 @@
             </li>
             <br>
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/Viajero/Gastos?id={{head}}&authCloseTrip={{authCloseTrip}}">Regresar</a>
+              <a class="nav-link" aria-current="page" href="/Viajero/Gastos">Regresar</a>
             </li>
           </ul>
           <br>
@@ -128,7 +128,7 @@
 
 <div class="col-md-12">
   <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
-  <input type="file" (change)="onFileSelected($event)" [(ngModel)]="documentoN" name="documentoN" class="form-control card border-dark mb-3" id="inputPassword4" required accept=".pdf, .xml">
+  <input type="file" (change)="onFileSelected($event)" [(ngModel)]="documentoN" name="documentoN" class="form-control card border-dark mb-3" id="inputPassword4" accept=".pdf, .xml, .jpeg, .jpg, .png">
 </div>
 
 <div class="col-md3">

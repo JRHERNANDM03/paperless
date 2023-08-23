@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
+import { SharedDataService } from 'src/app/shared-data.service';
+
 interface user
 {
   area_id: number;
@@ -80,7 +82,10 @@ ptrv_head:any = {}
 
 complete_name!: string;
 
-  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+recivedData: any;
+idParams: any;
+
+  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
   
   styleClose='none'
 
@@ -91,10 +96,30 @@ complete_name!: string;
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
-        this.route.queryParams.subscribe(params => {
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.idParams = this.recivedData.id;
+
+        }else{
+          // Si no hay datos en el servicio, intenta recuperar desde localStorage
+      const localStorageData = localStorage.getItem('DataHome-Viajero');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        this.idParams = parsedData.id;
+        }
+      }
+        //console.log('Datos recibidos'+ this.sharedDataService.getData())
+
+        /*this.route.queryParams.subscribe(params => {
           const id = params['id'];
           this.getDetail(id)
-        })
+        })*/
+
+        this.getDetail()
 
         this.auth.user$.subscribe(info => {
             this.complete_name = String(info?.name);
@@ -103,8 +128,11 @@ complete_name!: string;
     })
   }
 
-  getDetail(id: number)
+
+  getDetail()
   {
+     const id = this.idParams;
+
     this.http.get<saveData>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
     this.id = data.id;
     this.reinr = data.reinr;
@@ -293,7 +321,7 @@ successCloseTrip()
   }).then(result => {
     if(result.dismiss === Swal.DismissReason.timer)
     {
-      this.router.navigate(['/Viajero/Home'], {skipLocationChange: true})
+      location.reload()
     }
   })
 }
@@ -322,7 +350,14 @@ successCloseTrip()
 
 details(id: number, authCloseTrip: number)
 {
-  this.router.navigate(['/Viajero/Gastos'], {queryParams: {id: id, authCloseTrip: authCloseTrip} });
+  const data = {id: id, authCloseTrip: authCloseTrip};
+
+  this.sharedDataService.setData(data);
+
+  localStorage.setItem('DataMostrarViaje-Viajero', JSON.stringify(data));
+
+  //this.router.navigate(['/Viajero/Gastos'], {queryParams: {id: id, authCloseTrip: authCloseTrip} });
+  this.router.navigate(['/Viajero/Gastos'])
 }
 
 

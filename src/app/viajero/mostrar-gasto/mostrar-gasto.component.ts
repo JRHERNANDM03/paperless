@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -56,8 +57,10 @@ export class MostrarGastoComponent implements OnInit {
 
   authCloseTrip!: number;
 
+  recivedData: any;
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   styleCreate = 'none';
   styleEdit = 'none';
@@ -70,19 +73,47 @@ ngOnInit(): void {
       this.router.navigate(['login'])
     }else if(isAuthenticate)
     {
-      this.route.queryParams.subscribe(params => {
+      /*this.route.queryParams.subscribe(params => {
         const idHead = params['id'];
         const id = idHead;
         this.authCloseTrip = +params['authCloseTrip'] || 0;
         this.getData(id)
         //console.log(params['id'])
-      })
+      })*/
+
+      this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          const id = this.recivedData.id;
+          this.getData(id)
+
+          this.authCloseTrip = +this.recivedData.authCloseTrip || 0;
+
+
+        }else{
+          // Si no hay datos en el servicio, intenta recuperar desde localStorage
+      const localStorageData = localStorage.getItem('DataMostrarViaje-Viajero');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        const id = parsedData.id;
+        this.getData(id)
+
+        this.authCloseTrip = +parsedData.authCloseTrip || 0;
+
+
+        }
+      }
+
+
     }
   })
 }
 
 getData(id: number)
 {
+  
 
   this.http.get<ptrv_head>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
     this.id_head = data.id;
@@ -138,7 +169,39 @@ getEstado(auth: number): string {
 }
 
 
+createExpenses(idHead: number, authCloseTrip: number)
+{
+  const data = {id: idHead};
 
+  this.sharedDataService.setData(data);
+
+  localStorage.setItem('DataCrearGasto-Viajero', JSON.stringify(data))
+
+  this.router.navigate(['/Viajero/Registrar/Gasto'])
+}
+
+
+showExpenses(receiptno: number, id_head: number, authCloseTrip: number)
+{
+   const data = {id: receiptno, head: id_head, authCloseTrip: authCloseTrip};
+
+   this.sharedDataService.setData(data);
+
+   localStorage.setItem('DataMostrarGasto-Viajero', JSON.stringify(data))
+
+   this.router.navigate(['/Viajero/Detalles/Gasto']);
+}
+
+editeExpenses(receiptno: number, id_head: number, authCloseTrip: number)
+{
+  const data = {id: receiptno, head: id_head, authCloseTrip: authCloseTrip};
+
+  this.sharedDataService.setData(data);
+
+  localStorage.setItem('DataEditarGasto-Viajero', JSON.stringify(data))
+
+  this.router.navigate(['/Viajero/Editar/Gasto'])
+}
 
 
   delete(receiptno: number, id_head: number){
@@ -168,7 +231,7 @@ getEstado(auth: number): string {
             confirmButtonText: 'Aceptar',
           }
         ).then((result) => {
-          this.router.navigate(["/Viajero/Viaje"], {queryParams: {id:id_head}})
+          location.reload()
         })
       })
     }
@@ -217,6 +280,8 @@ getEstado(auth: number): string {
       }
     })
   }
+
+
 
 
 

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
 
 interface zfi_gv_paper_general
@@ -57,7 +58,9 @@ export class DetallesGastoComponent implements OnInit {
 
   authCloseTrip!: number;
 
-  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient){}
+  recivedData: any;
+
+  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -66,12 +69,35 @@ export class DetallesGastoComponent implements OnInit {
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
-        this.route.queryParams.subscribe(params => {
+       /* this.route.queryParams.subscribe(params => {
           const id = params['id'];
           this.authCloseTrip = params['authCloseTrip']
            this.getData(id);
            this.id_head = (params['head']);
-        });
+        });*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          const id = this.recivedData.id;
+          this.authCloseTrip = this.recivedData.authCloseTrip;
+          this.id_head = this.recivedData.head;
+
+          this.getData(id)
+        }else
+        {
+          const localStorageData = localStorage.getItem('DataMostrarGasto-Viajero');
+          if (localStorageData) {
+            const parsedData = JSON.parse(localStorageData);
+            const id = parsedData.id;
+            this.authCloseTrip = parsedData.authCloseTrip;
+            this.id_head = parsedData.head;
+
+            this.getData(id)
+            }
+        }
+
       }
     })
   }
