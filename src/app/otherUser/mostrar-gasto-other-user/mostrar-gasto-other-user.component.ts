@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import  Swal  from 'sweetalert2'
 
@@ -67,8 +68,9 @@ nickname!: string;
   shorttxt_general!: string;
   auth_general!: string;
 
+  recivedData: any;
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   styleCreate = 'none';
   styleEdit = 'none';
@@ -82,14 +84,44 @@ nickname!: string;
       {
         this.router.navigate(['login'])
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+
+        /*this.route.queryParams.subscribe(params => {
           this.idReinr = params['id'];
           this.pernr = params['pernr'];
           this.authCloseTrip = +params['authCloseTrip'] || 0;
 
           this.getData(this.idReinr)
           this.getUser(this.pernr);
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.idReinr = this.recivedData.id;
+          this.pernr = this.recivedData.pernr;
+          this.authCloseTrip = this.recivedData.authCloseTrip || 0;
+
+          this.getData(this.idReinr)
+          this.getUser(this.pernr)
+
+        }else{
+          const localStorageData = localStorage.getItem('DataMostrarViaje-otherUser');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.idReinr = parsedData.id;
+          this.pernr = parsedData.pernr;
+          this.authCloseTrip = parsedData.authCloseTrip || 0;
+
+          this.getData(this.idReinr)
+          this.getUser(this.pernr)
+        
+        }
+        }
+
+
       }
     })
   }
@@ -187,7 +219,8 @@ getEstado(auth: number): string {
             confirmButtonText: 'Aceptar',
           }
         ).then((result) => {
-          this.router.navigate(["/otherUser/Viaje"], {queryParams: {id:id_head, pernr: this.pernr}})
+          //this.router.navigate(["/otherUser/Viaje"], {queryParams: {id:id_head, pernr: this.pernr}})
+          location.reload()
         })
       })
     }
@@ -216,5 +249,41 @@ getEstado(auth: number): string {
     })
   }
 
+  createExpenses(id_head: number, pernr: number, authCloseTrip: number)
+  {
+    const data = {id: id_head, pernr: pernr, authCloseTrip: authCloseTrip};
+
+  this.sharedDataService.setData(data);
+   //console.log('Datos establecidos en el servicio:', data);
+
+   localStorage.setItem('DataCrearGasto-otherUser', JSON.stringify(data)); // Guardar en localStorage
+
+   // Navegar a la otra vista después de establecer los datos
+   this.router.navigate(['/otherUser/Registrar/Gasto']);
+  }
+
+  showExpense(receiptno: number, id_head: number, pernr: number, authCloseTrip: number)
+  {
+    const data = {id: receiptno, head: id_head, pernr: pernr, authCloseTrip: authCloseTrip}
+
+    this.sharedDataService.setData(data);
+
+    localStorage.setItem('DataMostrarGasto-otherUser', JSON.stringify(data));
+
+    this.router.navigate(['/otherUser/Detalles/Gasto']);
+
+  }
+
+  editExpense(receiptno: number, id_head: number, pernr: number, authCloseTrip: number)
+  {
+    const data = {id: receiptno, head: id_head, pernr: pernr, authCloseTrip: authCloseTrip}
+
+    this.sharedDataService.setData(data);
+
+    localStorage.setItem('DataEditarGasto-otherUser', JSON.stringify(data));
+
+    this.router.navigate(['/otherUser/Editar/Gasto']);
+
+  }
 
 }

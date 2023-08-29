@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -89,7 +90,8 @@ Updategastos:any =
   hora_mod:this.horaActual
 }
 
-  constructor (private router:Router, public auth:AuthService, private route: ActivatedRoute, private http: HttpClient){}
+recivedData: any;
+  constructor (private router:Router, public auth:AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 ngOnInit(): void {
   this.auth.isAuthenticated$.subscribe(isAuthentica => {
@@ -97,7 +99,9 @@ ngOnInit(): void {
     {
       this.router.navigate(['login'])
     }else if(isAuthentica){
-      this.route.queryParams.subscribe(params => {
+
+      document.querySelector('#contenerdorCentrador')?.scrollIntoView()
+      /*this.route.queryParams.subscribe(params => {
           this.receiptno = params['id'];
           this.idHead = params['head'];
           this.pernr = params['pernr'];
@@ -108,7 +112,44 @@ ngOnInit(): void {
           this.auth.user$.subscribe(user => {
             this.nickname = String(user?.nickname);
           })
-      })
+      })*/
+
+      this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.receiptno = this.recivedData.id;
+          this.idHead = this.recivedData.head;
+          this.pernr = this.recivedData.pernr;
+
+          this.getInfoUser(this.pernr)
+          this.getInfoHead(this.idHead)
+          this.getData(this.receiptno)
+
+          this.auth.user$.subscribe(user => {
+            this.nickname = String(user?.nickname)
+          })
+
+        }else{
+          const localStorageData = localStorage.getItem('DataEditarGasto-otherUser');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.receiptno = parsedData.id;
+          this.idHead = parsedData.head;
+          this.pernr = parsedData.pernr;
+
+          this.getInfoUser(this.pernr)
+          this.getInfoHead(this.idHead)
+          this.getData(this.receiptno)
+
+          this.auth.user$.subscribe(user => {
+            this.nickname = String(user?.nickname)
+          })
+        
+        }
+        }
     }
   })
 }
@@ -243,7 +284,7 @@ getData(receiptno: number)
       }).then((result) => {
        if(result.isConfirmed)
        {
-         this.router.navigate(["/otherUser/Gastos"], {queryParams: {id:this.idHead, pernr:this.pernr}})
+         this.router.navigate(["/otherUser/Gastos"])
        }
       })
      

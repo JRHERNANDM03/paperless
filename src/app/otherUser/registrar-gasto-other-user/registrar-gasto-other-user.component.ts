@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 interface user
 {
@@ -91,7 +92,9 @@ gastos:any =
   auth:0
 }
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+recivedData: any;
+
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -99,7 +102,9 @@ gastos:any =
       {
         this.router.navigate(['login'])
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        
+        
+        /*this.route.queryParams.subscribe(params => {
           this.id = params['id'];
           this.pernr = params['pernr']
           this.getInfoUser(this.pernr)
@@ -108,7 +113,40 @@ gastos:any =
           this.auth.user$.subscribe(info => {
             this.nicknameG = String(info?.nickname);
           })
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.id = this.recivedData.id;
+          this.pernr = this.recivedData.pernr;
+
+          this.getInfoUser(this.pernr)
+          this.getTrip(this.id)
+
+          this.auth.user$.subscribe(info => {
+            this.nicknameG = String(info?.nickname)
+          })
+
+        }else{
+          const localStorageData = localStorage.getItem('DataCrearGasto-otherUser');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.id = parsedData.id;
+          this.pernr = parsedData.pernr;
+
+          this.getInfoUser(this.pernr)
+          this.getTrip(this.id)
+
+          this.auth.user$.subscribe(info => {
+            this.nicknameG = String(info?.nickname)
+          })
+        
+        }}
+
       }
     })
   }
@@ -148,7 +186,7 @@ onArchivoSeleccionado(event: any) {
    }).then((result) => {
     if(result.isConfirmed)
     {
-      this.router.navigate(["/otherUser/Gastos"], {queryParams: {id:this.id, pernr: this.pernr}})
+      this.router.navigate(["/otherUser/Gastos"])
     }
    })
   

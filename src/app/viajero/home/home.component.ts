@@ -216,7 +216,8 @@ getEstado(auth: number): string {
 
  user() 
 { 
-  this.router.navigate(['/Viajero/CambiarUsuaro']);
+  //this.router.navigate(['/Viajero/CambiarUsuaro']);
+  window.location.href="/Viajero/CambiarUsuaro"
 }
 
 logout()

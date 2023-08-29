@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
 
 interface user
@@ -43,7 +44,9 @@ authorized!: number;
 
   styleDisplay = 'none';
 
-  constructor(private router: Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  recivedData: any;
+
+  constructor(private router: Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -51,10 +54,26 @@ authorized!: number;
       {
         this.router.navigate(['login'])
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.pernr = params['pernr'];
           this.getInfoUser(this.pernr)
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.pernr = this.recivedData.pernr;
+          this.getInfoUser(this.pernr)
+
+        }else{
+          const localStorageData = localStorage.getItem('DataHomeFilter1-otherUser');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        this.pernr = parsedData.pernr;
+          this.getInfoUser(this.pernr)
+        }}
       }
     })
   }
@@ -133,12 +152,63 @@ validate(pernrN: string)
 
 detail()
 {
-  this.router.navigate(['/otherUser/Viaje'], {queryParams: {id:this.idH, pernr: this.pernr}})
+  //this.router.navigate(['/otherUser/Viaje'], {queryParams: {id:this.idH, pernr: this.pernr}})
+
+  const data = {id: this.idH, pernr: this.pernr};
+
+  this.sharedDataService.setData(data);
+   //console.log('Datos establecidos en el servicio:', data);
+
+   localStorage.setItem('DataHome-otherUser', JSON.stringify(data)); // Guardar en localStorage
+
+   // Navegar a la otra vista después de establecer los datos
+   this.router.navigate(['/otherUser/Viaje']);
 }
 
 listar()
 {
   this.styleDisplay='block';
+}
+
+filter1(pernr: number)
+{
+  const data = {pernr: pernr};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHomeFilter1-otherUser', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/otherUser/Filtros/NumeroViaje';
+}
+
+filter2(pernr: number)
+{
+  const data = {pernr: pernr};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHomeFilter2-otherUser', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/otherUser/Filtros/Fecha';
+
+}
+
+filter3(pernr: number)
+{
+  const data = {pernr: pernr};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHomeFilter3-otherUser', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/otherUser/Filtros/Estado';
+
 }
 
   

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { timeInterval } from 'rxjs';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -93,7 +94,9 @@ ptrv_head:any = {}
 
 complete_name!: string;
 
-  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+recivedData: any;
+
+  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   styleClose='none'
 
@@ -104,17 +107,43 @@ ngOnInit(): void {
       this.router.navigate(['login'])
     }else if(isAuthenticate){
 
+      document.querySelector('#contenerdorCentrador')?.scrollIntoView()
+      
+
       this.auth.user$.subscribe(dataUser => {
         this.complete_name = String(dataUser?.name)
       })
 
-      this.route.queryParams.subscribe(params =>
+      /*this.route.queryParams.subscribe(params =>
         {
           this.idReinr = params['id'];
           this.pernr = params['pernr'];
           this.getDataTrip(this.idReinr, this.pernr1)
           this.getInfoUser(this.pernr) 
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.idReinr = this.recivedData.id;
+          this.pernr = this.recivedData.pernr;
+          this.getDataTrip(this.idReinr, this.pernr1)
+          this.getInfoUser(this.pernr)
+
+        }else{
+          const localStorageData = localStorage.getItem('DataHome-otherUser');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        
+        this.idReinr = parsedData.id;
+          this.pernr = parsedData.pernr;
+          this.getDataTrip(this.idReinr, this.pernr1)
+          this.getInfoUser(this.pernr)
+        }
+        }
     }
   })
 }
@@ -326,6 +355,18 @@ updatePTRV_HEAD()
   
 details(id: number, authCloseTrip: number)
 {
-  this.router.navigate(['/otherUser/Gastos'], {queryParams: {id: id, pernr: this.pernr, authCloseTrip: authCloseTrip} });
+  //this.router.navigate(['/otherUser/Gastos'], {queryParams: {id: id, pernr: this.pernr, authCloseTrip: authCloseTrip} });
+
+  const data = {id: id, pernr: this.pernr, authCloseTrip: authCloseTrip};
+
+  this.sharedDataService.setData(data);
+   //console.log('Datos establecidos en el servicio:', data);
+
+   localStorage.setItem('DataMostrarViaje-otherUser', JSON.stringify(data)); // Guardar en localStorage
+
+   // Navegar a la otra vista después de establecer los datos
+   this.router.navigate(['/otherUser/Gastos']);
+
 }
+
 }

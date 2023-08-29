@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '@auth0/auth0-angular';
 import { timeInterval } from 'rxjs';
+import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
 
 interface user
@@ -22,7 +23,7 @@ export class HomeChangeUserComponent implements OnInit {
   numeroEmpleado!: number;
   pernrLoggeado!: number;
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAutenticate => {
@@ -86,7 +87,16 @@ export class HomeChangeUserComponent implements OnInit {
             if(result.dismiss === Swal.DismissReason.timer){
                /* Read more about handling dismissals below */
               //this.router.navigate(['/otherUser/Home'], {queryParams: {pernr:this.numeroEmpleado}})
-               window.location.href="/otherUser/Home?pernr="+this.numeroEmpleado
+               //window.location.href="/otherUser/Home?pernr="+this.numeroEmpleado
+
+               const data = {pernr: this.numeroEmpleado};
+
+                this.sharedDataService.setData(data);
+
+                localStorage.setItem('DataHomeChangeUser-Viajero', JSON.stringify(data));
+
+                //this.router.navigate(['/Viajero/Gastos'], {queryParams: {id: id, authCloseTrip: authCloseTrip} });
+                this.router.navigate(['/otherUser/Home'])
             }
           });
 

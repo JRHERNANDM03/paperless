@@ -23,18 +23,18 @@
   <div class="offcanvas-body">
     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
       <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/otherUser/Home?pernr={{pernr}}">Home</a>
+        <a class="nav-link active" aria-current="page" href="/otherUser/Home">Home</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Filtrar viaje
         </a>
         <ul class="dropdown-menu dropdown-menu-light">
-          <li><a class="dropdown-item" href="/otherUser/Filtros/NumeroViaje?pernr={{pernr}}">Número de viaje</a></li>
-            <hr class="dropdown-divider">
-          <li><a class="dropdown-item" href="/otherUser/Filtros/Fecha?pernr={{pernr}}">Fecha</a></li>
-          <hr class="dropdown-divider">
-        <li><a class="dropdown-item" href="/otherUser/Filtros/Estado?pernr={{pernr}}">Estado</a></li>
+          <li><a (click)="filter1(pernr)" class="dropdown-item">Número de viaje</a></li>
+                <hr class="dropdown-divider">
+              <li><a (click)="filter2(pernr)" class="dropdown-item">Fecha</a></li>
+              <hr class="dropdown-divider">
+            <li><a (click)="filter3(pernr)" class="dropdown-item">Estado</a></li>
         </ul>
       </li>
     </ul>

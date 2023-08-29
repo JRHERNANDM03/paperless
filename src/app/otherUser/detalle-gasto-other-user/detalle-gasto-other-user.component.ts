@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 interface trip
 {
@@ -68,7 +69,9 @@ comentarioGeneral!: string;
 uuidGeneral!: string;
 authGeneral!: string;
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+recivedData: any;
+
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -76,14 +79,44 @@ authGeneral!: string;
       {
         this.router.navigate(['login'])
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+
+        document.querySelector('#contenerdorCentrador')?.scrollIntoView()
+        /*this.route.queryParams.subscribe(params => {
           this.idGeneral = params['id'];
           this.head = params['head'];
           this.pernr = params['pernr'];
           this.getDataTrip(this.head)
           this.getDataUser(this.pernr)
           this.getData(this.idGeneral);
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.idGeneral = this.recivedData.id;
+          this.head = this.recivedData.head;
+          this.pernr = this.recivedData.pernr;
+
+          this.getDataTrip(this.head)
+          this.getDataUser(this.pernr)
+          this.getData(this.idGeneral)
+        }else{
+          const localStorageData = localStorage.getItem('DataMostrarGasto-otherUser');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.idGeneral = parsedData.id;
+          this.head = parsedData.head;
+          this.pernr = parsedData.pernr;
+
+          this.getDataTrip(this.head)
+          this.getDataUser(this.pernr)
+          this.getData(this.idGeneral)
+        
+        }}
+
       }
     })
   }
