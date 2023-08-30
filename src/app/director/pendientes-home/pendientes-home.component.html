@@ -108,7 +108,7 @@
                 </p>
                 <div class="">
                   <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje?id={{item.id}}" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
+                      <a (click)="showExpense(item.id)" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
                       <a (click)="aprobar(item.reinr, item.pernr, item.AREA_ID, item.id, item.schem, item.id_auth, item.pernr_auth1, item.pernr_auth2, item.date1, item.time1)" style="text-decoration: none;"><button class="btn btn-outline-success">APROBAR</button></a>
                     </div>
                   </div>

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
 
 interface dataGeneral
@@ -77,7 +78,9 @@ export class EditarGastoDirectorComponent implements OnInit{
 
 authCloseTrip!: number;
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+recivedData: any;
+
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -85,12 +88,35 @@ authCloseTrip!: number;
       {
         this.auth.logout()
       }else if(isAuthenticate) {
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.authCloseTrip = params['authCloseTrip'];
           this.receiptno = params['id'];
           this.getData(this.receiptno);
           this.head = params['head'];
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.authCloseTrip = this.recivedData.autCloseTrip;
+          this.receiptno = this.recivedData.id;
+          this.head = this.recivedData.head;
+
+          this.getData(this.receiptno)
+
+        }else{
+          const localStorageData = localStorage.getItem('DataEditarGasto-Director');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.authCloseTrip = parsedData.autCloseTrip;
+          this.receiptno = parsedData.id;
+          this.head = parsedData.head;
+
+          this.getData(this.receiptno)
+        }}
 
         this.auth.user$.subscribe(info => {
           this.nickname = String(info?.nickname);
@@ -137,7 +163,7 @@ authCloseTrip!: number;
    }).then((result) => {
     if(result.isConfirmed)
     {
-      this.router.navigate(["/Director/Mis-Gastos"], {queryParams: {id: this.head}})
+      this.router.navigate(["/Director/Mis-Gastos"])
     }
    })
   

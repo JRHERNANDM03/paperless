@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -107,7 +108,9 @@ export class MostrarMiviajeDirectorComponent implements OnInit {
   fechaActual!: string;
   horaActual!: string;
 
-  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe){}
+  recivedData: any;
+
+  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -115,9 +118,24 @@ export class MostrarMiviajeDirectorComponent implements OnInit {
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        
+        /*this.route.queryParams.subscribe(params => {
           this.idHead = params['id'];
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.idHead = this.recivedData.id;
+
+        }else{
+          const localStorageData = localStorage.getItem('DataHome-Director');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        this.idHead = parsedData.id;
+        }}
 
         this.auth.user$.subscribe(infoUser => {
           this.completeName = String(infoUser?.name)
@@ -352,7 +370,7 @@ export class MostrarMiviajeDirectorComponent implements OnInit {
           {
             //console.log('Llenar los campos requeridos dentro de la tabla authorized y redactar msj para la segunda aprobación')
             
-            const messageD = 'El viaje interncacional: ' + this.reinr + ' del usuario: ' + this.pernr + ' fue aprobado en la primera autorización, ahora el viaje se encuentra en espera de la segunda aprobación.';
+            const messageD = 'El viaje internacional: ' + this.reinr + ' del usuario: ' + this.pernr + ' fue aprobado en la primera autorización, ahora el viaje se encuentra en espera de la segunda aprobación.';
 
             this.ptrv_head = {
               closeTrip: 1
@@ -527,7 +545,17 @@ export class MostrarMiviajeDirectorComponent implements OnInit {
 
   details(id: number, authCloseTrip: number)
 {
-  this.router.navigate(['/Director/Mis-Gastos'], {queryParams: {id: id, authCloseTrip: authCloseTrip} });
+  //this.router.navigate(['/Director/Mis-Gastos'], {queryParams: {id: id, authCloseTrip: authCloseTrip} });
+
+  const data = {id: id, authCloseTrip: authCloseTrip};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataMiViaje-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Mis-Gastos';
 }
 
 failed()

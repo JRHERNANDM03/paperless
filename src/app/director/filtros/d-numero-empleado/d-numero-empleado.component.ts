@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -50,7 +51,7 @@ export class DNumeroEmpleadoComponent implements OnInit {
   nickname!: string;
   area_id!: number;
 
-constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient){}
+constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 ngOnInit(): void {
   this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -140,6 +141,18 @@ getEstado(auth: number): string {
     this.styleDisplay='block';
   }
 
+  showExpense(id: number)
+  {
+    const data = {id: id};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHomePendientes-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Viaje';
+  }
 
 
   errLog()

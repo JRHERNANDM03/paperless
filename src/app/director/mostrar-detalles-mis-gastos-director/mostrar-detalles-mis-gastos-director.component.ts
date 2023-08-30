@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -58,7 +59,9 @@ export class MostrarDetallesMisGastosDirectorComponent implements OnInit{
 
   authCloseTrip!: number;
 
-  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient){}
+  recivedData: any;
+
+  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -66,13 +69,34 @@ export class MostrarDetallesMisGastosDirectorComponent implements OnInit{
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+       /* this.route.queryParams.subscribe(params => {
           this.authCloseTrip = params['authCloseTrip'];
           const id = params['id'];
           //console.log(params['head'])
            this.getData(id);
            this.id_head = (params['head']);
-        });
+        });*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.authCloseTrip = this.recivedData.autCloseTrip;
+          const id = this.recivedData.id;
+          this.getData(id);
+          this.id_head = this.recivedData.head;
+
+        }else{
+          const localStorageData = localStorage.getItem('DataMostrarGasto-Director');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.authCloseTrip = parsedData.autCloseTrip;
+          const id = parsedData.id;
+          this.getData(id);
+          this.id_head = parsedData.head;
+        }}
       }
     })
   }

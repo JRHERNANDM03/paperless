@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -83,7 +84,9 @@ export class RegistrarGastoDirectorComponent implements OnInit {
   
 authCloseTrip!: number;
 
-  constructor(private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute){}
+recivedData: any;
+
+  constructor(private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -91,7 +94,7 @@ authCloseTrip!: number;
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.authCloseTrip = params['authCloseTrip']
           const id_head = params['id'];
           this.id_head = params['id'];
@@ -100,7 +103,38 @@ authCloseTrip!: number;
           this.auth.user$.subscribe(info => {
             this.nickname = String(info?.nickname);
           })
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.authCloseTrip = this.recivedData.authCloseTrip;
+          const id_head = this.recivedData.id;
+          this.id_head = this.recivedData.id;
+
+          this.getData(id_head)
+
+          this.auth.user$.subscribe(info => {
+            this.nickname = String(info?.nickname);
+          })
+
+        }else{
+          const localStorageData = localStorage.getItem('DataCrearGasto-Director');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.authCloseTrip = parsedData.authCloseTrip;
+          const id_head = parsedData.id;
+          this.id_head = parsedData.id;
+
+          this.getData(id_head)
+
+          this.auth.user$.subscribe(info => {
+            this.nickname = String(info?.nickname);
+          })
+        }}
       }
     })
   }
@@ -132,7 +166,7 @@ authCloseTrip!: number;
     }).then((result) => {
      if(result.isConfirmed)
      {
-       this.router.navigate(["/Director/Mis-Gastos"], {queryParams: {id:this.id_head}})
+       this.router.navigate(["/Director/Mis-Gastos"])
      }
     })
    

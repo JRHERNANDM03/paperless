@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { isEmpty } from 'rxjs';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -117,7 +118,9 @@ export class MostrarViajeDirectorComponent implements OnInit{
   fechaActual!: string;
   horaActual!: string;
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe){}
+  recivedData: any;
+
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -125,9 +128,25 @@ export class MostrarViajeDirectorComponent implements OnInit{
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.getInfoTrip(params['id'])
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.getInfoTrip(this.recivedData.id)           
+
+        }else{
+          const localStorageData = localStorage.getItem('DataHomePendientes-Director');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.getInfoTrip(parsedData.id)           
+
+        }}
 
         this.auth.user$.subscribe(userData => {
           this.nameDirector = String(userData?.name)
@@ -314,6 +333,10 @@ export class MostrarViajeDirectorComponent implements OnInit{
               message: messageA,
               title: tituloA,
               subtitle: subtituloA
+            }
+
+            this.ptrv_head = {
+              auth: 1
             }
 
           const fechaHoraActual = new Date();
@@ -820,7 +843,17 @@ export class MostrarViajeDirectorComponent implements OnInit{
 
   gastos(idHead: number)
   {
-    this.router.navigate(["/Director/Gastos"], {queryParams: {id:idHead}})
+    //this.router.navigate(["/Director/Gastos"], {queryParams: {id:idHead}})
+
+    const data = {id: idHead};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataViaje-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Gastos';
   }
 
   aprobar2()

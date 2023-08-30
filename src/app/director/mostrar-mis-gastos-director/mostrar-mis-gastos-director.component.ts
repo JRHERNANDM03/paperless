@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -60,7 +61,9 @@ export class MostrarMisGastosDirectorComponent implements OnInit {
 
   authCloseTrip!: number;
 
-  constructor(private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute){}
+  recivedData: any;
+
+  constructor(private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -68,12 +71,33 @@ export class MostrarMisGastosDirectorComponent implements OnInit {
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.authCloseTrip = +params['authCloseTrip'] || 0;
           const idHead = params['id'];
         const id = idHead;
         this.getData(id)
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.authCloseTrip = +this.recivedData.authCloseTrip || 0;
+          const idHead = this.recivedData.id;
+          const id = idHead;
+          this.getData(id)
+
+        }else{
+          const localStorageData = localStorage.getItem('DataMiViaje-Director');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.authCloseTrip = +parsedData.authCloseTrip || 0;
+          const idHead = parsedData.id;
+          const id = idHead;
+          this.getData(id)
+        }}
       }
     })
   }
@@ -162,7 +186,9 @@ export class MostrarMisGastosDirectorComponent implements OnInit {
               confirmButtonText: 'Aceptar',
             }
           ).then((result) => {
-            this.router.navigate(["/Director/Mi-Viaje"], {queryParams: {id:id_head}})
+            //this.router.navigate(["/Director/Mi-Viaje"], {queryParams: {id:id_head}})
+
+            location.reload()
           })
         })
       }
@@ -228,6 +254,41 @@ export class MostrarMisGastosDirectorComponent implements OnInit {
           this.auth.logout()
       }
     })
+  }
+
+  createExpense(id_head: number, authCloseTrip: number)
+  {
+    const data = {id: id_head, authCloseTrip: authCloseTrip};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataCrearGasto-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Registrar/Gasto';
+  }
+
+  showExpense(receiptno: number, id_head: number, authCloseTrip: number)
+  {
+    const data = {id: receiptno, head: id_head, autCloseTrip: authCloseTrip};
+
+    this.sharedDataService.setData(data);
+
+    localStorage.setItem('DataMostrarGasto-Director', JSON.stringify(data));
+
+    window.location.href='/Director/Detalles/Mis-Gastos';
+  }
+
+  editExpense(receiptno: number, id_head: number, authCloseTrip: number)
+  {
+    const data = {id: receiptno, head: id_head, autCloseTrip: authCloseTrip};
+
+    this.sharedDataService.setData(data);
+
+    localStorage.setItem('DataEditarGasto-Director', JSON.stringify(data));
+
+    window.location.href='/Director/Editar/Gasto';
   }
  
 }

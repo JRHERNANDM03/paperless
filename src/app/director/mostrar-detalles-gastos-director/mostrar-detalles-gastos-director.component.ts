@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -66,7 +67,9 @@ export class MostrarDetallesGastosDirectorComponent implements OnInit{
   authGeneral!: string;
 
   idHead!: number;
-constructor(public auth:AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient){}
+
+  recivedData: any;
+constructor(public auth:AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -74,11 +77,32 @@ constructor(public auth:AuthService, private router: Router, private route: Acti
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.idHead = params['id']
           this.getDataTrip(params['id'])
           this.getDataSpent(params['receiptno'])
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.idHead = this.recivedData.id;
+          this.getDataTrip(this.recivedData.id)
+          this.getDataSpent(this.recivedData.receiptno)           
+
+        }else{
+          const localStorageData = localStorage.getItem('DataMostrarViaje2-Director');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.idHead = parsedData.id;
+          this.getDataTrip(parsedData.id)
+          this.getDataSpent(parsedData.receiptno)            
+
+        }}
+
       }
     })
   }

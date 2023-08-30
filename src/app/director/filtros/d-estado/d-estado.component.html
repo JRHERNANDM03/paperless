@@ -116,7 +116,7 @@
                 <p class="card-text card border-secondary mb-3 text-center" style="color: gray;">Estado: PENDIENTE</p>
                 <div class="">
                   <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje?id={{item.id}}" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
+                      <a (click)="showExpense1(item.id)" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
                     </div>
                   </div>
               </div>
@@ -173,7 +173,7 @@
                 <p class="card-text card border-success mb-3 text-center" style="color: green;">Estado: APROBADO</p>
                 <div class="">
                   <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje?id={{item.id}}" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
+                      <a (click)="showExpense2(item.id)" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
                     </div>
                   </div>
               </div>
@@ -230,7 +230,7 @@
                 <p class="card-text card border-danger mb-3 text-center" style="color: red;">Estado: RECHAZADO</p>
                 <div class="">
                   <div id="contenerdorCentrador" style="justify-content: space-between;">
-                      <a href="/Director/Viaje?id={{item.id}}" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
+                      <a (click)="showExpense3(item.id)" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
                     </div>
                   </div>
               </div>

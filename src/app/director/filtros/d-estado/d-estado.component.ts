@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
 
 interface user
@@ -61,7 +62,7 @@ export class DEstadoComponent implements OnInit{
   authorized!: number[];
 
 
-  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient){}
+  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -93,7 +94,7 @@ export class DEstadoComponent implements OnInit{
       var cardsP = document.querySelector('#cardsP');
 
     var htmlBtn = btnPendient?.textContent;
-    console.log(htmlBtn);
+    //console.log(htmlBtn);
 
     if(titleList && htmlBtn)
     {
@@ -123,7 +124,7 @@ export class DEstadoComponent implements OnInit{
       var titleList = document.querySelector('.titleList');
 
       var htmlBtn = btnAprovate?.textContent;
-      console.log(htmlBtn);
+    //  console.log(htmlBtn);
 
       if(titleList && htmlBtn)
     {
@@ -153,7 +154,7 @@ export class DEstadoComponent implements OnInit{
       var titleList = document.querySelector('.titleList');
 
       var htmlBtn = btnDeclain?.textContent;
-      console.log(htmlBtn);
+    //  console.log(htmlBtn);
 
       if(titleList && htmlBtn)
     {
@@ -185,6 +186,51 @@ notdata()
     title: 'No hay registros'
   })
 }
+
+showExpense1(id: number)
+  {
+    //this.router.navigate(['/Director/Viaje'], {queryParams: {id: id} });
+
+    const data = {id: id};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHomePendientes-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Viaje';
+  }
+
+  showExpense2(id: number)
+  {
+    //this.router.navigate(['/Director/Viaje'], {queryParams: {id: id} });
+
+    const data = {id: id};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHomePendientes-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Viaje';
+  }
+
+  showExpense3(id: number)
+  {
+    //this.router.navigate(['/Director/Viaje'], {queryParams: {id: id} });
+
+    const data = {id: id};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHomePendientes-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Viaje';
+  }
 
 
   errLog()

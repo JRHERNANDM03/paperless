@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -87,9 +88,9 @@ export class MostrarGastosDirectorComponent implements OnInit{
   zort1!: string;
   area!: string;
 
+recivedData: any;
 
-
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -97,9 +98,26 @@ export class MostrarGastosDirectorComponent implements OnInit{
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.getInfoTrip(params['id'])
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+          this.getInfoTrip(this.recivedData.id)           
+
+        }else{
+          const localStorageData = localStorage.getItem('DataViaje-Director');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.getInfoTrip(parsedData.id)           
+
+        }}
+        
       }
     })
   }
@@ -225,7 +243,17 @@ getEstado(auth: number): string {
 
   showSpent(receiptno: number)
   {
-    this.router.navigate(['/Director/Detalles/Gastos'], {queryParams: {receiptno: receiptno, id: this.idHead}})
+    //this.router.navigate(['/Director/Detalles/Gastos'], {queryParams: {receiptno: receiptno, id: this.idHead}})
+
+    const data = {receiptno: receiptno, id: this.idHead};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataMostrarViaje2-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Detalles/Gastos';
   }
 
 

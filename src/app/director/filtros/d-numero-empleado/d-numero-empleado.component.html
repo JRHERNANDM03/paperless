@@ -118,7 +118,7 @@
               Estado: {{ getEstado(authorized[i]) }}
             </p>
             <div id="contenerdorCentrador" style="justify-content: space-between;">
-              <a href="/Director/Viaje?id={{item.id}}" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
+              <a (click)="showExpense(item.id)" style="text-decoration: none;"><button class="btn btn-outline-primary">VISUALIZAR</button></a>
             </div>
           </div>
         </div>

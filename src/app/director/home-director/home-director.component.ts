@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -112,7 +113,7 @@ emailsAmount: number = 0;
 
 pernrDirector!: number;
 
-  constructor(private router:Router, public auth: AuthService, private http: HttpClient, private datePipe: DatePipe){}
+  constructor(private router:Router, public auth: AuthService, private http: HttpClient, private datePipe: DatePipe, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -890,7 +891,16 @@ getEmailsD(pernr: number)
 
   tripDetail(id: number)
 {
-  this.router.navigate(['/Director/Mi-Viaje'], {queryParams: {id: id} });
+  //this.router.navigate(['/Director/Mi-Viaje'], {queryParams: {id: id} });
+  const data = {id: id};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHome-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Mi-Viaje';
 }
 
 failed()
