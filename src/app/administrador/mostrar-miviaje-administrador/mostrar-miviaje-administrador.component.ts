@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -51,7 +52,7 @@ interface dataAuth{
 })
 export class MostrarMiviajeAdministradorComponent implements OnInit{
 
-  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   closeTrip = 'block'
 
@@ -82,6 +83,8 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
   emailD: any = {}
   updHead: any = {}
 
+  recivedData: any;
+
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -89,9 +92,28 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+       /* this.route.queryParams.subscribe(params => {
           this.getDataTrip(params['id'])
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+
+          this.getDataTrip(this.recivedData.id)
+
+        }else{
+          const localStorageData = localStorage.getItem('DataMisViajes-Administrador');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.getDataTrip(parsedData.id)           
+
+        }}
+
+
         this.auth.user$.subscribe(dataUser => {
           this.complete_name = String(dataUser?.name)
         })
@@ -281,6 +303,19 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
         this.reload()
       }
     })
+  }
+
+  showExpense(id: number, reinr: string, authCloseTrip: number)
+  {
+    const data = {id: id, reinr: reinr, authCloseTrip: authCloseTrip}
+
+    this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+          
+    localStorage.setItem('DataMiViaje-Administrador', JSON.stringify(data)); // Guardar en localStorage
+          
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Administrador/Mis-Gastos';
   }
 
   

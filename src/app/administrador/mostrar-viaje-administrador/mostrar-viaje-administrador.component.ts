@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -45,7 +46,7 @@ interface dataTrip{
 })
 export class MostrarViajeAdministradorComponent implements OnInit {
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 idHead!: number;
 
@@ -82,6 +83,8 @@ idHead!: number;
   reloadParam!: number;
   idHeadParam!: number;
 
+  recivedData: any;
+
 ngOnInit(): void {
   this.auth.isAuthenticated$.subscribe(isAuthentica => {
     if(!isAuthentica)
@@ -89,10 +92,29 @@ ngOnInit(): void {
       this.auth.logout()
     }else if(isAuthentica){
 
-      this.route.queryParams.subscribe(params => {
+      /*this.route.queryParams.subscribe(params => {
         this.idHeadParam = params['id']
         this.getDataTrip(params['id'])
-      })
+      })*/
+
+      this.recivedData = this.sharedDataService.getData()
+
+      if(this.recivedData)
+      {
+
+        this.idHeadParam = this.recivedData.id;
+        this.getDataTrip(this.recivedData.id)
+
+      }else{
+        const localStorageData = localStorage.getItem('DataAnswer-Administrador');
+
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      
+      this.idHeadParam = parsedData.id;
+        this.getDataTrip(parsedData.id)          
+
+      }}
     }
   })
 }
@@ -189,7 +211,18 @@ status(authorized: number)
 
   gastos()
   {
-    this.router.navigate(["/Administrador/Gastos"], {queryParams: {idHead: this.id, reinr: this.reinr}})
+    //this.router.navigate(["/Administrador/Gastos"], {queryParams: {idHead: this.id, reinr: this.reinr}})
+    
+    const data = {idHead: this.id, reinr: this.reinr}
+
+  this.sharedDataService.setData(data);
+  //console.log('Datos establecidos en el servicio:', data);
+        
+  localStorage.setItem('DataMostrarViaje-Administrador', JSON.stringify(data)); // Guardar en localStorage
+        
+  // Navegar a la otra vista después de establecer los datos
+  window.location.href='/Administrador/Gastos';
+  
   }
 
 

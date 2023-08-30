@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -86,7 +87,7 @@ interface info_user{
 })
 export class MostrarDetallesGastosAdministradorComponent implements OnInit{
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe){}
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe, private sharedDataService: SharedDataService){}
 
 displayChange = 'block';
 
@@ -145,6 +146,7 @@ complete_name!: string;
   upd_zfi_gv_paper_general: any = {}
   emailV: any = {}
 
+  recivedData: any;
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -152,7 +154,7 @@ complete_name!: string;
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.idHead = params['idHead'];
           this.reinrHead = params['reinr'];
           this.idReceiptno = params['receiptno'];
@@ -160,7 +162,34 @@ complete_name!: string;
           this.getDataTrip(params['reinr'])
           this.getDataExpenses(params['receiptno'])
 
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+      if(this.recivedData)
+      {
+
+        this.idHead = this.recivedData.idHead;
+        this.reinrHead = this.recivedData.reinr;
+        this.idReceiptno = this.recivedData.receiptno;
+
+        this.getDataTrip(this.recivedData.reinr)
+        this.getDataExpenses(this.recivedData.receiptno)
+
+      }else{
+        const localStorageData = localStorage.getItem('DataMostrarGasto-Administrador');
+
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      
+      this.idHead = parsedData.idHead;
+        this.reinrHead = parsedData.reinr;
+        this.idReceiptno = parsedData.receiptno;
+
+        this.getDataTrip(parsedData.reinr)
+        this.getDataExpenses(parsedData.receiptno)       
+
+      }}
 
         this.auth.user$.subscribe(infoUser => {
           this.complete_name = String(infoUser?.name)

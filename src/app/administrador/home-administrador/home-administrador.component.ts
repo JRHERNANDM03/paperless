@@ -6,6 +6,7 @@ import { AfterViewInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { AuthService } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 interface UserData {
   PERNR: string;
@@ -64,7 +65,7 @@ export class HomeAdministradorComponent implements OnInit {
   date1: string = '';
   date2: string = '';
 
-  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -144,13 +145,33 @@ const idHead = trip.id;
         if(upd)
         {
           //this.router.navigate(['/Administrador/Viaje'], {queryParams: {id: idHead, reload: 1}})
-          window.location.href="/Administrador/Viaje?id="+idHead+""
+          //window.location.href="/Administrador/Viaje?id="+idHead+""
+
+          const data = {id: idHead}
+
+          this.sharedDataService.setData(data);
+          //console.log('Datos establecidos en el servicio:', data);
+                
+          localStorage.setItem('DataAnswer-Administrador', JSON.stringify(data)); // Guardar en localStorage
+                
+          // Navegar a la otra vista después de establecer los datos
+          window.location.href='/Administrador/Viaje';
         }
       })
 
     }else{
       //this.router.navigate(['/Administrador/Viaje'], {queryParams: {id: idHead, reload: 1}})
-      window.location.href="/Administrador/Viaje?id="+idHead+""
+      //window.location.href="/Administrador/Viaje?id="+idHead+""
+
+      const data = {id: idHead}
+
+      this.sharedDataService.setData(data);
+      //console.log('Datos establecidos en el servicio:', data);
+            
+      localStorage.setItem('DataAnswer-Administrador', JSON.stringify(data)); // Guardar en localStorage
+            
+      // Navegar a la otra vista después de establecer los datos
+      window.location.href='/Administrador/Viaje';
     }
 
     }else if(result.isDismissed)
@@ -329,7 +350,17 @@ getVisibility(visibility: number): number {
         }).then((result) => {
           if(result.dismiss === Swal.DismissReason.timer)
           {
-            this.router.navigate(['/Administrador/Answer'], {queryParams: {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}});
+            //this.router.navigate(['/Administrador/Answer'], {queryParams: {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}});
+          
+            const data = {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}
+
+            this.sharedDataService.setData(data);
+            //console.log('Datos establecidos en el servicio:', data);
+        
+            localStorage.setItem('DataHomeAnswer-Administrador', JSON.stringify(data)); // Guardar en localStorage
+        
+            // Navegar a la otra vista después de establecer los datos
+            window.location.href='/Administrador/Answer';
           }
         })
        }else if((a==1 || a==0) && (b==1 || b==0) && (c==1 || c==0) ){
@@ -350,7 +381,16 @@ getVisibility(visibility: number): number {
         }).then((result) => {
           if(result.dismiss === Swal.DismissReason.timer)
           {
-            this.router.navigate(['/Administrador/Answer2'], {queryParams: {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}});
+            //this.router.navigate(['/Administrador/Answer2'], {queryParams: {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}});
+            const data = {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c};
+
+            this.sharedDataService.setData(data);
+             //console.log('Datos establecidos en el servicio:', data);
+         
+             localStorage.setItem('DataHomeAnswer2-Administrador', JSON.stringify(data)); // Guardar en localStorage
+         
+             // Navegar a la otra vista después de establecer los datos
+             window.location.href='/Administrador/Answer2';
           }
         })
        }else if((a>1 || a==0) && (b>1 || b==0) && (c>1 || c==0))
@@ -373,7 +413,18 @@ getVisibility(visibility: number): number {
         }).then((result) => {
           if(result.dismiss === Swal.DismissReason.timer)
           {
-            this.router.navigate(['/Administrador/Answer'], {queryParams: {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}});
+            //this.router.navigate(['/Administrador/Answer'], {queryParams: {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}});
+          
+            const data = {n_empArray: n_empArray, n_viajeArray: n_viajeArray, sociedadArray: sociedadArray, status: this.status, date1: this.date1, date2: this.date2, lengthPERNR: a, lengthREINR: b, lengthSOCIETY: c}
+
+            this.sharedDataService.setData(data);
+            //console.log('Datos establecidos en el servicio:', data);
+        
+            localStorage.setItem('DataHomeAnswer-Administrador', JSON.stringify(data)); // Guardar en localStorage
+        
+            // Navegar a la otra vista después de establecer los datos
+            window.location.href='/Administrador/Answer';
+          
           }
         })
 

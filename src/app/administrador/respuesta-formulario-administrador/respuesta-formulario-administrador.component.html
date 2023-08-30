@@ -101,7 +101,7 @@
         <p class="card-text mb-3 text-center" [style.color]="getEstado(authorized[i]) === 'Aprobado' ? 'green' : (getEstado(authorized[i]) === 'Rechazado' ? 'red' : 'grey')">
           Estado: {{ getEstado(authorized[i]) }}
         </p>
-    <a href='/Administrador/Viaje?id={{item.id}}' style="text-decoration: none;">
+    <a (click)="detailTrip(item.id)" style="text-decoration: none;">
         <button class="btn btn-outline-primary">Visualizar</button>
       </a>
       </div>

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -47,7 +48,7 @@ interface tripExpenses{
 })
 export class MostrarDetallesMisGastosAdministradorComponent implements OnInit{
 
-  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient){}
+  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   idReceiptno!: number;
   idHead!: number;
@@ -90,20 +91,49 @@ export class MostrarDetallesMisGastosAdministradorComponent implements OnInit{
 
   authGeneral: string = '';
 
+  recivedData: any;
+
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+       /* this.route.queryParams.subscribe(params => {
           this.idReceiptno = params['id'];
           this.idHead = params['idHead'];
           this.reinrHead = params['reinr'];
           this.authCloseTrip = params['authCloseTrip'];
 
           this.getDataExpenses(params['id'])
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+
+          this.idReceiptno = this.recivedData.id;
+          this.idHead = this.recivedData.idHead;
+          this.reinrHead = this.recivedData.reinr;
+          this.authCloseTrip = this.recivedData.authCloseTrip;
+
+          this.getDataExpenses(this.recivedData.id)
+
+        }else{
+          const localStorageData = localStorage.getItem('DataMostrarGasto-Administrador');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.idReceiptno = parsedData.id;
+          this.idHead = parsedData.idHead;
+          this.reinrHead = parsedData.reinr;
+          this.authCloseTrip = parsedData.authCloseTrip;
+
+          this.getDataExpenses(parsedData.id)           
+
+        }}
       }
     })
   }

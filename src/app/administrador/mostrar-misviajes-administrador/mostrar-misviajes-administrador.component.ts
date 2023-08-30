@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -45,7 +46,7 @@ interface dataTrip{
 })
 export class MostrarMisviajesAdministradorComponent implements OnInit{
 
-  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient){}
+  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   pernr!: number;
 
@@ -96,7 +97,17 @@ export class MostrarMisviajesAdministradorComponent implements OnInit{
 
   details(id: number)
   {
-    this.router.navigate(['/Administrador/Detalle/Viaje'], {queryParams: {id: id}})
+    //this.router.navigate(['/Administrador/Detalle/Viaje'], {queryParams: {id: id}})
+
+    const data = {id: id}
+
+    this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+          
+    localStorage.setItem('DataMisViajes-Administrador', JSON.stringify(data)); // Guardar en localStorage
+          
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Administrador/Detalle/Viaje';
   }
 
   errLog()

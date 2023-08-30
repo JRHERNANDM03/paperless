@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -26,7 +27,7 @@ interface dataGeneral
 })
 export class EditarGastoAdministradorComponent implements OnInit{
 
-  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   idReceiptno!: number;
   idHead!: number;
@@ -68,19 +69,48 @@ export class EditarGastoAdministradorComponent implements OnInit{
 
   Updategastos: any = {}
 
+  recivedData: any;
+
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.idReceiptno = params['id'];
           this.idHead = params['idhead'];
           this.reinrHead = params['reinr'];
           this.authCloseTrip = params['authCloseTrip'];
           this.getData(params['id']);
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+
+          this.idReceiptno = this.recivedData.id;
+          this.idHead = this.recivedData.idHead;
+          this.reinrHead = this.recivedData.reinr;
+          this.authCloseTrip = this.recivedData.authCloseTrip;
+          
+          this.getData(this.recivedData.id)
+
+        }else{
+          const localStorageData = localStorage.getItem('DataEditarGasto-Administrador');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.idReceiptno = parsedData.id;
+          this.idHead = parsedData.idHead;
+          this.reinrHead = parsedData.reinr;
+          this.authCloseTrip = parsedData.authCloseTrip;
+          
+          this.getData(parsedData.id)        
+
+        }}
 
         this.auth.user$.subscribe(infoUser => {
           this.nickname = String(infoUser?.nickname);
@@ -128,7 +158,7 @@ export class EditarGastoAdministradorComponent implements OnInit{
     }).then((result) => {
      if(result.isConfirmed)
      {
-       this.router.navigate(["/Administrador/Mis-Gastos"], {queryParams: {id: this.idHead, reinr: this.reinrHead, authCloseTrip: this.authCloseTrip}})
+       this.router.navigate(["/Administrador/Mis-Gastos"])
      }
     })
    

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
@@ -20,7 +21,7 @@ interface data_PTRV_HEAD
 })
 export class RegistrarGastoAdministradorComponent implements OnInit{
 
-  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 idHead!: number;
 reinrHead!: string;
@@ -57,18 +58,43 @@ selectedFile: File | undefined;
 
 gastos: any = {}
 
+recivedData: any;
+
 ngOnInit(): void {
   this.auth.isAuthenticated$.subscribe(isAuthenticate => {
     if(!isAuthenticate)
     {
       this.auth.logout()
     }else if(isAuthenticate){
-      this.route.queryParams.subscribe(params => {
+     /* this.route.queryParams.subscribe(params => {
         this.idHead = params['id'];
         this.reinrHead = params['reinr'];
         this.authCloseTripHead = params['authCloseTrip'];
         this.getData(params['id'])
-      })
+      })*/
+
+      this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+
+          this.idHead = this.recivedData.id;
+          this.reinrHead = this.recivedData.reinr;
+          this.authCloseTripHead = this.recivedData.authCloseTrip;
+          this.getData(this.recivedData.id)
+
+        }else{
+          const localStorageData = localStorage.getItem('DataCrearGasto-Administrador');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.idHead = parsedData.id;
+          this.reinrHead = parsedData.reinr;
+          this.authCloseTripHead = parsedData.authCloseTrip;
+          this.getData(parsedData.id)          
+
+        }}
 
       this.auth.user$.subscribe(dataUser => {
         this.nickname = String(dataUser?.nickname)
@@ -98,7 +124,7 @@ success()
   }).then((result) => {
     if(result.isConfirmed)
     {
-      this.router.navigate(['/Administrador/Mis-Gastos'], {queryParams: {id: this.idHead, reinr: this.reinrHead, authCloseTrip: this.authCloseTripHead}})
+      this.router.navigate(['/Administrador/Mis-Gastos'])
     }
   })
 }
@@ -191,8 +217,8 @@ submitForm() {
   hora_mod:'...',
   auth:0
 }
-console.log('------------------------------------------------')
-console.log(this.gastos)
+//console.log('------------------------------------------------')
+//console.log(this.gastos)
 this.http.post('http://localhost:3000/GENERAL', this.gastos).subscribe(res => {
 this.success()
 }) 

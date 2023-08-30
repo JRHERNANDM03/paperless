@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
 
 interface travelExpenses{
@@ -54,7 +55,7 @@ interface ptrv_head
 })
 export class MostrarMisGastosAdministradorComponent implements OnInit{
 
-  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient){}
+  constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 idHead!: number;
 reinrHead!: string;
@@ -68,19 +69,46 @@ styleDelete = 'none';
 
 authCloseTrip!: number;
 
+recivedData: any;
+
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.auth.logout()
       }else if(isAuthenticate){
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.idHead = params['id'];
           this.reinrHead = params['reinr']
           this.authCloseTrip = +params['authCloseTrip'] || 0;
           this.getTravelExpenses(params['reinr'])
           this.getData(params['id'])
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+
+          this.idHead = this.recivedData.id;
+          this.reinrHead = this.recivedData.reinr;
+          this.authCloseTrip = +this.recivedData.authCloseTrip || 0;
+          this.getTravelExpenses(this.recivedData.reinr)
+          this.getData(this.recivedData.id)
+
+        }else{
+          const localStorageData = localStorage.getItem('DataMiViaje-Administrador');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.idHead = parsedData.id;
+          this.reinrHead = parsedData.reinr;
+          this.authCloseTrip = +parsedData.authCloseTrip || 0;
+          this.getTravelExpenses(parsedData.reinr)
+          this.getData(parsedData.id)          
+
+        }}
       }
     })
   }
@@ -168,7 +196,48 @@ authCloseTrip!: number;
     })
    
    }
+
+   createExpense(idHead: number, reinrHead: string, authCloseTrip: number)
+   {
+    const data = {id: idHead, reinr: reinrHead, authCloseTrip: authCloseTrip}
+
+    this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+          
+    localStorage.setItem('DataCrearGasto-Administrador', JSON.stringify(data)); // Guardar en localStorage
+          
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Administrador/Registrar/Gasto';
+   }
  
+   showExpense(receiptno: number, idHead: number, reinrHead: string, authCloseTrip: number)
+   {
+    const data = {id: receiptno, idHead: idHead, reinr: reinrHead, authCloseTrip: authCloseTrip}
+
+    this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+          
+    localStorage.setItem('DataMostrarGasto-Administrador', JSON.stringify(data)); // Guardar en localStorage
+          
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Administrador/Detalles/Mis-Gastos';
+   }
+
+   editExpense(receiptno: number, idHead: number, reinrHead: string, authCloseTrip: number)
+   {
+    const data = {id: receiptno, idHead: idHead, reinr: reinrHead, authCloseTrip: authCloseTrip}
+
+    this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+          
+    localStorage.setItem('DataEditarGasto-Administrador', JSON.stringify(data)); // Guardar en localStorage
+          
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Administrador/Editar/Gasto';
+   }
+
+
+
    info()
    {
      Swal.fire({

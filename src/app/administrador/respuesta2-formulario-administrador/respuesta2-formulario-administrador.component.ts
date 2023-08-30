@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
 
 interface ptrv_head{
@@ -43,7 +44,7 @@ interface ptrv_head{
 })
 export class Respuesta2FormularioAdministradorComponent implements OnInit  {
 
-  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient){}
+  constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 value_pernr!: string;
 value_reinr!: string;
@@ -67,6 +68,7 @@ authorized!: number[];
 
 amountTrip!: number;
 
+recivedData: any; 
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -75,7 +77,7 @@ amountTrip!: number;
         this.auth.logout;
       }else if(isAuthenticate)
       {
-        this.route.queryParams.subscribe(params => {
+        /*this.route.queryParams.subscribe(params => {
           this.value_pernr = params['n_empArray'];
           this.value_reinr = params['n_viajeArray'];
           this.value_society = params['sociedadArray'];
@@ -86,7 +88,40 @@ amountTrip!: number;
           this.lengthREINR = params['lengthREINR'];
           this.lengthSOCIETY = params['lengthSOCIETY'];
 
-        })
+        })*/
+
+        this.recivedData = this.sharedDataService.getData()
+
+        if(this.recivedData)
+        {
+
+          this.value_pernr = this.recivedData.n_empArray;
+          this.value_reinr = this.recivedData.n_viajeArray;
+          this.value_society = this.recivedData.sociedadArray;
+          this.status = this.recivedData.status;
+          this.date1 = this.recivedData.date1;
+          this.date2 = this.recivedData.date2;
+          this.lengthPERNR = this.recivedData.lengthPERNR;
+          this.lengthREINR = this.recivedData.lengthREINR;
+          this.lengthSOCIETY = this.recivedData.lengthSOCIETY;
+
+        }else{
+          const localStorageData = localStorage.getItem('DataHomeAnswer2-Administrador');
+
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        
+        this.value_pernr = parsedData.n_empArray;
+          this.value_reinr = parsedData.n_viajeArray;
+          this.value_society = parsedData.sociedadArray;
+          this.status = parsedData.status;
+          this.date1 = parsedData.date1;
+          this.date2 = parsedData.date2;
+          this.lengthPERNR = parsedData.lengthPERNR;
+          this.lengthREINR = parsedData.lengthREINR;
+          this.lengthSOCIETY = parsedData.lengthSOCIETY;            
+
+        }}
 
         this.obtenerFecha()
         this.obtenerFechaHaceUnaSemana()
@@ -298,6 +333,20 @@ getEstado(auth: number): string {
   } else {
     return 'Desconocido';
   }
+}
+
+detailTrip(id: number)
+{
+
+  const data = {id: id}
+
+  this.sharedDataService.setData(data);
+  //console.log('Datos establecidos en el servicio:', data);
+        
+  localStorage.setItem('DataAnswer-Administrador', JSON.stringify(data)); // Guardar en localStorage
+        
+  // Navegar a la otra vista después de establecer los datos
+  window.location.href='/Administrador/Viaje';
 }
 
 errLog()

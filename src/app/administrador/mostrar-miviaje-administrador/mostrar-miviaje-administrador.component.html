@@ -67,7 +67,7 @@
 </div>
 
 <div id="contenerdorCentrador" class="text-center" style="justify-content: space-between; padding-top: 3%;">
-<a href="/Administrador/Mis-Gastos?id={{idHead}}&reinr={{reinrHead}}&authCloseTrip={{closeTripHead}}" class="btn btn-primary btn-lg" title="Visualizar informes de gastos">Informes de gastos</a>
+<a (click)="showExpense(idHead, reinrHead, closeTripHead)" class="btn btn-primary btn-lg" title="Visualizar informes de gastos">Informes de gastos</a>
 <a (click)="close()" class="btn btn-danger btn-lg" title="Cerrar Viaje" [style.display]="closeTrip">Cerrar Viaje</a>
 </div>
 

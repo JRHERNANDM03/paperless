@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
+import { SharedDataService } from 'src/app/shared-data.service';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -81,7 +82,7 @@ interface ptrv_head {
 })
 export class MostrarGastosAdministradorComponent implements OnInit{
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe){}
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe, private sharedDataService: SharedDataService){}
 
 idHead!: number;
 reinrHead!: string;
@@ -114,17 +115,40 @@ upd_ptrv_head: any = {}
 
 complete_name!: string;
 
+recivedData: any;
+
 ngOnInit(): void {
   this.auth.isAuthenticated$.subscribe(isAuthenticate => {
     if(!isAuthenticate)
     {
       this.auth.logout()
     }else if(isAuthenticate){
-      this.route.queryParams.subscribe(params => {
+      /*this.route.queryParams.subscribe(params => {
         this.idHead = params['id'];
         this.reinrHead = params['reinr'];
         this.getDataTrip_and_User(params['reinr'])
-      })
+      })*/
+
+      this.recivedData = this.sharedDataService.getData()
+
+      if(this.recivedData)
+      {
+
+        this.idHead = this.recivedData.id;
+        this.reinrHead = this.recivedData.reinr;
+        this.getDataTrip_and_User(this.recivedData.reinr)
+
+      }else{
+        const localStorageData = localStorage.getItem('DataMostrarViaje-Administrador');
+
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      
+      this.idHead = parsedData.id;
+        this.reinrHead = parsedData.reinr;
+        this.getDataTrip_and_User(parsedData.reinr)         
+
+      }}
 
       this.auth.user$.subscribe(infoUser => {
         this.complete_name = String(infoUser?.name)
@@ -562,6 +586,19 @@ getEstado(auth: number): string {
     })
       }
     })
+  }
+
+  showExpense(id: number, reinrHead: string, receiptno: number)
+  {
+    const data = {idHead: id, reinr: reinrHead, receiptno: receiptno}
+
+  this.sharedDataService.setData(data);
+  //console.log('Datos establecidos en el servicio:', data);
+        
+  localStorage.setItem('DataMostrarGasto-Administrador', JSON.stringify(data)); // Guardar en localStorage
+        
+  // Navegar a la otra vista después de establecer los datos
+  window.location.href='/Administrador/Detalles/Gastos';
   }
 
 
