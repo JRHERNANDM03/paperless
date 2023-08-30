@@ -757,14 +757,34 @@ getEmailsD(pernr: number)
             if(upd_emailD)
             {
               //this.router.navigate(['/Director/Viaje'], {queryParams: {id: idHead}})
-              window.location.href="/Director/Viaje?id="+idHead+""
+              //window.location.href="/Director/Viaje?id="+idHead+""
+
+              const data = {id: idHead};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHomePendientes-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Viaje';
             }
           })
         }
         else if(visibility == 1)
         {
           //this.router.navigate(['/Director/Viaje'], {queryParams: {id: idHead}})
-          window.location.href="/Director/Viaje?id="+idHead+""
+          //window.location.href="/Director/Viaje?id="+idHead+""
+
+          const data = {id: idHead};
+
+   this.sharedDataService.setData(data);
+    //console.log('Datos establecidos en el servicio:', data);
+
+    localStorage.setItem('DataHomePendientes-Director', JSON.stringify(data)); // Guardar en localStorage
+
+    // Navegar a la otra vista después de establecer los datos
+    window.location.href='/Director/Viaje';
         }
       }else if(result.dismiss)
       {
