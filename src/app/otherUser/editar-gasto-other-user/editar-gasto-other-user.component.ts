@@ -30,6 +30,12 @@ interface dataGeneral
   uuid: string;
 }
 
+interface zfi_gv_paper_general
+{
+  pernr: string;
+  reinr: string;
+}
+
 @Component({
   selector: 'app-editar-gasto-other-user',
   templateUrl: './editar-gasto-other-user.component.html',
@@ -90,6 +96,12 @@ Updategastos:any =
   hora_mod:this.horaActual
 }
 
+Updategastos2: any = {};
+
+sendEmailA: any = {}
+
+authExpense!: number;
+
 recivedData: any;
   constructor (private router:Router, public auth:AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
@@ -121,6 +133,7 @@ ngOnInit(): void {
           this.receiptno = this.recivedData.id;
           this.idHead = this.recivedData.head;
           this.pernr = this.recivedData.pernr;
+          this.authExpense = this.recivedData.authExpense;
 
           this.getInfoUser(this.pernr)
           this.getInfoHead(this.idHead)
@@ -139,6 +152,7 @@ ngOnInit(): void {
         this.receiptno = parsedData.id;
           this.idHead = parsedData.head;
           this.pernr = parsedData.pernr;
+          this.authExpense = parsedData.authExpense;
 
           this.getInfoUser(this.pernr)
           this.getInfoHead(this.idHead)
@@ -260,9 +274,63 @@ getData(receiptno: number)
 
     }
 
-    this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
+  /*  this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
     this.update()
-}) 
+}) */
+
+this.Updategastos2=
+    {
+      multipli:this.multipliN,
+      descript:this.descriptN,
+      bus_purpo:this.busPurpoN,
+      exp_type:this.exp_typeN,
+      rec_date:this.dateN,
+      loc_amount:this.locAmountN,
+      loc_curr:this.locCurrN,
+      tax_code:this.taxCodeN,
+      pdf:this.pdfN,
+      xml:this.xmlN,
+      uuid:this.documentoN,
+      user_mod:this.nickname,
+      fec_mod:this.fechaActual,
+      hora_mod:this.horaActual,
+      auth: 0
+
+    }
+
+    /* */
+
+    if(this.authExpense == 0)
+    {
+
+      this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
+    this.update()
+      })
+
+    }else if(this.authExpense == 2)
+    {
+
+      this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos2).subscribe(res => {
+    this.update2()
+      })
+
+    }else{
+
+      Swal.fire({
+        icon: 'warning',
+        iconColor: 'purple',
+        title: 'Ocurrio un error durante el proceso, contacta a soporte',
+        showCancelButton: false,
+        showConfirmButton: true,
+        confirmButtonColor: 'orange'
+      }).then(result => {
+        if(result.isConfirmed)
+        {
+          window.location.href="/otherUser/Gastos"
+        }
+      })
+
+    }
   }
 
   
@@ -289,5 +357,54 @@ getData(receiptno: number)
       })
      
      }
+
+     update2()
+  {
+
+    //console.log(this.receiptno)
+
+    this.http.get<zfi_gv_paper_general>('http://localhost:3000/GENERAL/' + this.receiptno).subscribe(data => {
+      
+      
+      const titleA = 'Nuevo gasto actualizado.';
+      const subtitleA = 'Viaje: '+ data.reinr;
+      const messageA = 'El usuario '+ this.nickname +' ha actualizado un gasto que se encontraba como rechazado para una nueva aprobación.';
+      
+      this.sendEmailA = {
+        pernr: data.pernr,
+        reinr: data.reinr,
+        message: messageA,
+        title: titleA,
+        subtitle: subtitleA
+      }
+
+      this.http.post('http://localhost:3000/EmailA', this.sendEmailA).subscribe(emailA => {
+        if(emailA)
+        {
+          let timerInterval = 0;
+
+          Swal.fire({
+            icon: 'success',
+            iconColor: 'yellow',
+            title: 'Gasto actualizado',
+            text: 'Informando al administrador de tu cambio',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+
+            willClose: () => {
+              clearInterval(timerInterval)
+            }
+          }).then((result) => {
+            if(result.dismiss === Swal.DismissReason.timer)
+            {
+              window.location.href='/otherUser/Gastos'
+            }
+          })
+        }
+      })
+
+    })
+  }
 
 }

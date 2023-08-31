@@ -277,7 +277,18 @@ getEmailsD(pernr: number)
 
                   this.http.get<authorized>('http://localhost:3000/one_authorized/' + reinr).subscribe(infAuth => {
               
-                  
+                  const tituloA = 'Nuevo viaje NACIONAL aprobado por el director correspondiente';
+                  const subtituloA = 'Viaje: ' + reinr;
+                  const messageA = 'El viaje nacional ' + reinr + ' ya fue aprobado por el director del area correspondiente. Ya puedes aprobar sus gastos de viaje';
+
+                this.emailA = {
+                    pernr: this.pernr,
+                    reinr: reinr,
+                    message: messageA,
+                    title: tituloA,
+                    subtitle: subtituloA
+                      }
+                
                   const titulo = 'Viaje aprobado!';
                   const subtitulo = 'Viaje: ' + reinr;
                   const messageV = 'Tu viaje ' + reinr +' fue aprobado a nivel cabecera por ' + this.nameDirector + ', ahora tu viaje se encuentra en proceso de autorización de gastos de viaje.';
@@ -313,6 +324,10 @@ getEmailsD(pernr: number)
 
            try{
 
+            this.http.post('http://localhost:3000/EmailA', this.emailA).subscribe(emailAdm => {
+
+            if(emailAdm){
+
                 this.http.patch('http://localhost:3000/PTRV_HEADS/' + idHead, this.updateHead).subscribe(head => {
                   if(head)
                   {
@@ -342,6 +357,8 @@ getEmailsD(pernr: number)
                     })
                   }else { console.log("ERROR en HEAD") }
                 })
+               } else { console.log('ERROR en EMAILADM') }
+              })
 
               }catch(err)
               {

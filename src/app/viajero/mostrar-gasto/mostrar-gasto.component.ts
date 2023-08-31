@@ -56,6 +56,7 @@ export class MostrarGastoComponent implements OnInit {
   auth_general!: string;
 
   authCloseTrip!: number;
+  authTrip!: number; 
 
   recivedData: any;
 
@@ -192,9 +193,9 @@ showExpenses(receiptno: number, id_head: number, authCloseTrip: number)
    this.router.navigate(['/Viajero/Detalles/Gasto']);
 }
 
-editeExpenses(receiptno: number, id_head: number, authCloseTrip: number)
+editeExpenses(receiptno: number, id_head: number, authCloseTrip: number, authExpense: number)
 {
-  const data = {id: receiptno, head: id_head, authCloseTrip: authCloseTrip};
+  const data = {id: receiptno, head: id_head, authCloseTrip: authCloseTrip, authExpense: authExpense};
 
   this.sharedDataService.setData(data);
 

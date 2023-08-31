@@ -274,9 +274,9 @@ getEstado(auth: number): string {
 
   }
 
-  editExpense(receiptno: number, id_head: number, pernr: number, authCloseTrip: number)
+  editExpense(receiptno: number, id_head: number, pernr: number, authCloseTrip: number, authExpense: number)
   {
-    const data = {id: receiptno, head: id_head, pernr: pernr, authCloseTrip: authCloseTrip}
+    const data = {id: receiptno, head: id_head, pernr: pernr, authCloseTrip: authCloseTrip, authExpense: authExpense}
 
     this.sharedDataService.setData(data);
 

@@ -280,9 +280,9 @@ export class MostrarMisGastosDirectorComponent implements OnInit {
     window.location.href='/Director/Detalles/Mis-Gastos';
   }
 
-  editExpense(receiptno: number, id_head: number, authCloseTrip: number)
+  editExpense(receiptno: number, id_head: number, authCloseTrip: number, authExpense: number)
   {
-    const data = {id: receiptno, head: id_head, autCloseTrip: authCloseTrip};
+    const data = {id: receiptno, head: id_head, autCloseTrip: authCloseTrip, authExpense: authExpense};
 
     this.sharedDataService.setData(data);
 

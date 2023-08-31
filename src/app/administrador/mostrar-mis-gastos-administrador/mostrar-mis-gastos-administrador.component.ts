@@ -223,9 +223,9 @@ recivedData: any;
     window.location.href='/Administrador/Detalles/Mis-Gastos';
    }
 
-   editExpense(receiptno: number, idHead: number, reinrHead: string, authCloseTrip: number)
+   editExpense(receiptno: number, idHead: number, reinrHead: string, authCloseTrip: number, authExpense: number)
    {
-    const data = {id: receiptno, idHead: idHead, reinr: reinrHead, authCloseTrip: authCloseTrip}
+    const data = {id: receiptno, idHead: idHead, reinr: reinrHead, authCloseTrip: authCloseTrip, authExpense: authExpense}
 
     this.sharedDataService.setData(data);
     //console.log('Datos establecidos en el servicio:', data);
