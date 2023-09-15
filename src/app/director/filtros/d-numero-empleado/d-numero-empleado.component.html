@@ -54,7 +54,7 @@
 </div>
 
 <div class="text-center">
-<h3 style="color: black;">Búsqueda por número de empleado</h3>
+<h3 class="titulo-ext">Búsqueda por número de empleado</h3>
 </div>
 
 <div class="container" style="padding-top: 3%;">
@@ -75,7 +75,7 @@
     <div class="row row-cols-1 row-cols-md-3 g-4">
 
       <div class="col" *ngFor="let item of responseArray; let i = index">
-        <div class="card">
+        <div class="card" id="card">
           <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
           <div class="card-body">
             <h5 class="card-title">{{item.zort1}}</h5>

@@ -17,6 +17,7 @@ interface dataGeneral
   bus_purpo: string;
   descript: string;
   uuid: string;
+  comentario: string;
 }
 
 interface zfi_gv_paper_general
@@ -45,6 +46,7 @@ export class EditarGastoDirectorComponent implements OnInit{
   bus_purpo!: string;
   descript!: string;
   uuid!: string;
+  comentario!: string;
 
   nickname!: string;
   fechaActual!: string;
@@ -74,7 +76,6 @@ export class EditarGastoDirectorComponent implements OnInit{
   loc_amount:this.locAmountN,
   loc_curr:this.locCurrN,
   tax_code:this.taxCodeN,
-  uuid:this.documentoN,
   pdf:'...',
   xml:'...',
   user_mod:this.nickname,
@@ -151,6 +152,7 @@ recivedData: any;
       this.bus_purpo = data.bus_purpo;
       this.descript = data.descript;
       this.uuid = data.uuid;
+      this.comentario = data.comentario;
 
       this.exp_typeN = this.exp_type;
       this.locAmountN = this.loc_amount;
@@ -238,11 +240,9 @@ recivedData: any;
       this.locAmountN &&
       this.locCurrN &&
       this.dateN &&
-      this.taxCodeN &&
       this.multipliN &&
       this.busPurpoN &&
-      this.descriptN &&
-      this.documentoN
+      this.descriptN
     ) {
       return true; // Todos los campos están llenados
     } else {
@@ -265,20 +265,35 @@ recivedData: any;
     const minutos = fecha.getMinutes().toString().padStart(2, '0');
     const segundos = fecha.getSeconds().toString().padStart(2, '0');
     this.horaActual = `${hora}:${minutos}:${segundos}`;
-  
 
-    if (this.selectedFile && this.selectedFile.name.endsWith('.pdf')) {
-      this.pdfN = 1;
-      this.xmlN = 0;
-      this.documentoN = (this.selectedFile.name)
-    } else if (this.selectedFile && this.selectedFile.name.endsWith('.xml')) {
-      this.pdfN = 0;
-      this.xmlN = 1;
-      this.documentoN = (this.selectedFile.name)
-    } else {
-      console.log('No se seleccionó ningún archivo o el archivo no tiene una extensión permitida.');
-      // Realizar acciones para otros tipos de archivo o cuando no se selecciona ningún archivo
+    if(this.exp_typeN == 'ALID'  || this.exp_typeN == 'ALIE'  || this.exp_typeN == 'ALIL'  || this.exp_typeN == 'AVIP'  || this.exp_typeN == 'AVIR'  || 
+    this.exp_typeN == 'CABE'  || this.exp_typeN == 'CABL'  || this.exp_typeN == 'CASE'  || this.exp_typeN == 'CASL'  || this.exp_typeN == 'CDEL'  || this.exp_typeN == 'ESTE'  || this.exp_typeN == 'ESTL'  || this.exp_typeN == 'EVEE'  || this.exp_typeN == 'EVEL'  || this.exp_typeN == 'EXPE'  || this.exp_typeN == 'EXPL'  ||
+    this.exp_typeN == 'GASE'  || this.exp_typeN == 'GASL'  ||
+    this.exp_typeN == 'HOTE'  || this.exp_typeN == 'HOTL'  ||
+    this.exp_typeN == 'MEDE'  || this.exp_typeN == 'MEDL'  || this.exp_typeN == 'MUEE'  || this.exp_typeN == 'MUEL'  || this.exp_typeN == 'PAPE'  || this.exp_typeN == 'PAPL'  ||
+    this.exp_typeN == 'RAUE'  || this.exp_typeN == 'RAUL'  ||
+    this.exp_typeN == 'TELE'  || this.exp_typeN == 'TELL'  || this.exp_typeN == 'TINE'  || this.exp_typeN == 'TINL'  ||
+    this.exp_typeN == 'ZAVN'  || this.exp_typeN == 'ZAVU'  )
+    {
+      this.taxCodeN = 'F2';
     }
+    else if(this.exp_typeN == 'BUSE'  || this.exp_typeN == 'BUSL'  ||
+    this.exp_typeN == 'GSCE'  || this.exp_typeN == 'GSCL'  ||
+    this.exp_typeN == 'IHOE'  || this.exp_typeN == 'IHOL'  || this.exp_typeN == 'IMIE'  || this.exp_typeN == 'IMIL'  ||
+    this.exp_typeN == 'PROE'  || this.exp_typeN == 'PROL'  ||
+    this.exp_typeN == 'TACE'  || this.exp_typeN == 'TASE'  || this.exp_typeN == 'TASL'  ||
+    this.exp_typeN == 'TUAP'  || this.exp_typeN == 'TUAR'  ||
+    this.exp_typeN == 'ZALE'  || this.exp_typeN == 'ZALL'  || this.exp_typeN == 'ZALP'  ||
+    this.exp_typeN == 'ZCOE'  || this.exp_typeN == 'ZGND'  || this.exp_typeN == 'ZGNL'  || this.exp_typeN == 'ZGSD'  || this.exp_typeN == 'ZHET'  || this.exp_typeN == 'ZPRE'  || this.exp_typeN == 'ZPRL'  || this.exp_typeN == 'ZSCL'  || this.exp_typeN == 'ZTAE'  || this.exp_typeN == 'ZTAL'  || this.exp_typeN == 'ZTUN'  || this.exp_typeN == 'ZTUU' )
+    {
+      this.taxCodeN = 'E3';
+    }
+    else if(this.exp_typeN == 'FAK'  ||
+    this.exp_typeN == 'UBPA'  || this.exp_typeN == 'VERP'  || this.exp_typeN == 'VORK'  || this.exp_typeN == 'VORS' )
+    {
+      this.taxCodeN = 'E0';
+    }
+  
 
     this.Updategastos=
     {
@@ -292,7 +307,6 @@ recivedData: any;
       tax_code:this.taxCodeN,
       pdf:this.pdfN,
       xml:this.xmlN,
-      uuid:this.documentoN,
       user_mod:this.nickname,
       fec_mod:this.fechaActual,
       hora_mod:this.horaActual
@@ -311,7 +325,6 @@ recivedData: any;
       tax_code:this.taxCodeN,
       pdf:this.pdfN,
       xml:this.xmlN,
-      uuid:this.documentoN,
       user_mod:this.nickname,
       fec_mod:this.fechaActual,
       hora_mod:this.horaActual,
@@ -359,6 +372,30 @@ if(this.authExpense == 0)
   
     onFileSelected(event: any) {
       this.selectedFile = event.target.files[0];
+    }
+
+    editFile()
+    {
+      Swal.fire({
+        icon: 'info',
+        title: 'Editar archivo',
+        text: 'Esta función solo sirve para modificar el archivo registrado, deseas continuar?',
+        showCancelButton: true,
+        showConfirmButton: true,
+        confirmButtonColor: '#F25F29'
+      }).then(res => {
+        if(res.isConfirmed)
+        {
+          //console.log(this.receiptno, this.head, this.authCloseTrip)
+          const data = {id: this.receiptno, head: this.head, authCloseTrip: this.authCloseTrip};
+  
+          this.sharedDataService.setData(data);
+  
+          localStorage.setItem('DataEditarDocumento-Director', JSON.stringify(data))
+  
+          this.router.navigate(['/Director/Editar/Documento']);
+        }
+      })
     }
 
   errLog()

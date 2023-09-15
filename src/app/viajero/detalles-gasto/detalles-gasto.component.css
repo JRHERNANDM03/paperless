@@ -30,6 +30,25 @@
 }
 
 
+#justificacion {
+    margin-bottom: 10px; /* Ajusta el valor según tus preferencias */
+  }
+
+.titulo-ext{
+    color: #AD4782;
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#contenedor{
+    padding-top: 2%;
+    padding: 1%;
+    box-shadow: 5px 5px 5px gray;
+    background-color: #73246c3b;
+}
+
+
 @media all and (max-width: 775px)
 {
 

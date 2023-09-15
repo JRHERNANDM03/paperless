@@ -1,0 +1,101 @@
+#contenerdorCentrador
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction:row;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#logo
+{
+    width: 25%;
+    height: 5%;
+    box-shadow: 5px 5px 5px gray;
+}
+
+#div1
+{
+    padding-top: 15px;
+    background-color: #73246D;
+}
+
+#div2
+{
+    padding-top: 15px;
+    background-color: #F25F29;
+}
+
+.drop-container {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px dashed #555;
+  color: #444;
+  cursor: pointer;
+  transition: background .2s ease-in-out, border .2s ease-in-out;
+}
+
+.drop-container:hover {
+  background: #eee;
+  border-color: #111;
+}
+
+.drop-container:hover .drop-title {
+  color: #222;
+}
+
+.drop-title {
+  color: #444;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  transition: color .2s ease-in-out;
+}
+
+.centrarInput{
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    min-height: 15px;
+    overflow: hidden;
+    padding: 10px;
+    position: absolute; /* Cambio de relative a absolute */
+    text-align: center;
+    width: 400px;
+    left: 50%; /* Centrar horizontalmente */
+    top: 50%; /* Centrar verticalmente */
+    transform: translate(-50%, -50%); 
+}
+
+.titulo-ext{
+  color: #AD4782;
+  font-size: 25px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#contenedor{
+  padding-top: 1%;
+  padding: 1%;
+  box-shadow: 5px 5px gray;
+  background-color: #73246c0a;
+}
+
+@media all and (max-width: 775px)
+{
+
+#logo
+    {
+        width: 230px;
+        height: 40px;
+    }
+}

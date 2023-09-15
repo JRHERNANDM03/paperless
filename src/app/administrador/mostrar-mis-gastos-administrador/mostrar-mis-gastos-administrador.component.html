@@ -40,11 +40,11 @@
   </nav>
 
 <div class="text-center" style="padding-top: 2%;">
-<h3 style="color: black;">REGISTRO DE GASTOS DE VIAJE</h3>
+<h3 class="titulo-ext" style="">REGISTRO DE GASTOS DE VIAJE</h3>
 </div>
 
 <div class="container" style="padding-top: 1%;">
-<h5 style="color: black;">Viaje: {{reinrHead}}</h5>
+<h5 class="titulo-ext" style="">Viaje: {{reinrHead}}</h5>
 
 <div id="contenerdorCentrador" style="justify-content: space-between; padding-top: 3%;">
   <a (click)="createExpense(idHead, reinrHead, authCloseTrip)" class="btn btn-success" title="Mostrar gastos" [style.display]="styleCreate">REGISTRAR NUEVO GASTO</a>
@@ -53,12 +53,12 @@
 
 
 <div class="container" style="padding-top: 4%; padding-bottom: 5%;">
-  <div class="row row-cols-1 row-cols-md-4 g-4">
+  <div class="row row-cols-1 row-cols-md-3 g-3">
 
       <div class="col" *ngFor="let item of responseArray; let i = index">
-        <div class="card border-primary mb-3" style="width: 100%; height: 89%; ">
+        <div class="card mb-3" id="card">
           <div class="card-body" style="width: 100%; height: 90%;">
-          <div class="card-header bg-transparent border-primary">
+          <div class="card-header bg-transparent" id="lineCard">
             <h5 class="card-title text-center">{{item.exp_type}}</h5>
           </div>  
 
@@ -81,7 +81,7 @@
             
             </div> 
 
-            <div class="card-footer bg-transparent border-primary">
+            <div class="card-footer bg-transparent" id="lineCard">
             <div id="contenerdorCentrador" style="justify-content: space-between;">
               <a (click)="showExpense(item.receiptno, idHead, reinrHead, authCloseTrip)" style="text-decoration: none; color: #295bd9;" title="Visualizar gasto"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                   <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>

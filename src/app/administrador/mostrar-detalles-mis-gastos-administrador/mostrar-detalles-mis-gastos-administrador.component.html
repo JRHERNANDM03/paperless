@@ -41,14 +41,14 @@
 </div>
 
 <div class="text-center">
-<h2 style="color: black;">Detalles de gasto seleccionado</h2>
+<h2 class="titulo-ext">Detalles de gasto seleccionado</h2>
 </div>
 
 <div id="contenerdorCentrador" class="container" style="justify-content: space-between;">
-  <a style="color: black; font-size: x-large;">Viaje: {{reinrHead}}</a>
+  <a class="titulo-ext" style=" font-size: x-large;">Viaje: {{reinrHead}}</a>
 </div>
 
-<div class="container" style="padding: 1%;">
+<div class="container" id="contenedor">
 <form class="row g-3" style="padding-top: 3%; padding-bottom: 8%;">
 
   <div class="col-md-12">
@@ -62,7 +62,7 @@
       <label for="floatingInput">Estado</label>
     </div>
     <div class="col form-floating mb-3" >
-      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{exp_type}}" aria-label="First name" readonly>
+      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{exp_typeGeneral}}" aria-label="First name" readonly>
       <label for="floatingInput">Tipo de gasto</label>
     </div>
   </div>
@@ -89,7 +89,7 @@
     <label for="floatingInput">Fecha de gasto</label>
   </div>
   <div class="col form-floating mb-3" >
-   <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{tax_code}}" aria-label="First name" readonly>
+   <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{tax_codeGeneral}}" aria-label="First name" readonly>
    <label for="floatingInput">Indicador de impuestos</label>
  </div>
  </div> 
@@ -104,11 +104,14 @@
    <label for="floatingTextarea">Descripción</label>
  </div>
 
- <div class="col-md-2">
-  <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
-  <a href="/showFile" name="file" class="form-control card border-dark mb-3" id="inputPassword4" style="text-decoration: none;">file.pdf</a>
+ <div id="justificacion">
+   <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
+   <a *ngIf="fileDownloadURL" [href]="fileDownloadURL" target="_blank" class="form-control card border-dark mb-3" id="inputPassword4" style="text-decoration: none;">{{uuid}}</a>
  </div>
+
 </form>
+
 
 </div>
  
+<br>

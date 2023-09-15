@@ -43,30 +43,91 @@
 </div>
 
 <div class="text-center">
-    <h2 style="color: black;">FORMULARIO PARA EL REGISTRO DE GASTO NUEVO</h2>
+    <h2 class="titulo-ext">FORMULARIO PARA EL REGISTRO DE GASTO NUEVO</h2>
 </div>
 
 <div class="container" style="padding: 1%;">
-<h5 style="color: black;">Viaje: {{reinrG}}</h5>
+<h5 class="titulo-ext">Viaje: {{reinrG}}</h5>
 </div>
 
-<div class="container card border-dark mb-3"> 
+<div class="container card mb-3" id="contenedor"> 
     <div class="container" style="padding: 1%;">
 
-        <form class="row g-3" (ngSubmit)="submitForm()" enctype="multipart/form-data" style="padding-top: 5%; padding-bottom: 2%;">
+        <form class="row g-3" (ngSubmit)="submitForm()" enctype="multipart/form-data" id="form">
 
     
               <div class="form-floating">
                 <select class="form-select card border-dark mb-3" [(ngModel)]="exp_type" name="exp_type" id="floatingSelect" aria-label="Floating label select example" required>
                   <option selected>Choose...</option>
-                  <option value="ALID">ALID ALIM REST LIVER P/COMPLEMENTAR</option>
-                  <option value="ALIL">ALIL ALIMENTO P/LPC</option>
-                  <option value="ALIE">ALIE ALIMENTO p/EMPLEADO</option>
-                  <option value="ZAVN">ZAVN AVION NO UTILIZADO P//EMPRESA</option>
-                  <option value="AVIR">AVIR AVION P/EMPR.REUTILIZADO</option>
-                  <option value="AVIP">AVIP AVION P/EMPRESA</option>
-                  <option value="ZAVU">ZAVU AVION UTILIZADO P/EMPRESA</option>
-                  <option value="CASE">CASE CASETA P/EMPLEADO</option>
+                  <option value="ALID">Alim Rest Liver P/Complementar</option>
+                  <option value="ALIE">Alimento P/Empleado</option>
+                  <option value="ALIL">Alimento P/ Lpc</option>
+                  <option value="AVIP">Avion P/Empresa</option>
+                  <option value="AVIR">Avion P/Empr.Reutilizado</option>
+                  <option value="BUSE">Transp. P/Empleado</option>
+                  <option value="BUSL">Transp. P/Lpc</option>
+                  <option value="CABE">Cgo Canc/Camb Avion Empleado</option>
+                  <option value="CABL">Cgo Canc/Camb Avion Lpc</option>
+                  <option value="CASE">Caseta P/Empleado</option>
+                  <option value="CASL">Caseta Pagada C/Lpc</option>
+                  <option value="CDEL">Comision X Disp Efvo Lpc</option>
+                  <option value="ESTE">Estac. P/Empleado</option>
+                  <option value="ESTL">Estac. P/Lpc</option>
+                  <option value="EVEE">Evento P/Empleado</option>
+                  <option value="EVEL">Evento P/Lpc</option>
+                  <option value="EXPE">Expo P/Empleado</option>
+                  <option value="EXPL">Expo P/Lpc</option>
+                  <option value="FAK">Dieta Kilómetros</option>
+                  <option value="GASE">Gasolina P/Empleado</option>
+                  <option value="GASL">Gasolina P/Lpc</option>
+                  <option value="GSCE">Gasto Sin Compr. P/Empleado</option>
+                  <option value="GSCL">Gasto Sin Compr. P/Lpc</option>
+                  <option value="HOTE">Hotel P/Empleado</option>
+                  <option value="HOTL">Hotel P/Lpc</option>
+                  <option value="IHOE">Imp. Hotel P/Empleado</option>
+                  <option value="IHOL">Imp. Hotel P/Lpc</option>
+                  <option value="IMIE">Imp. Migra P/Empleado</option>
+                  <option value="IMIL">Imp. Migra Pagado Lpc</option>
+                  <option value="MEDE">Medico P/Empleado</option>
+                  <option value="MEDL">Medico P/Lpc</option>
+                  <option value="MUEE">Muestra P/Empleado</option>
+                  <option value="MUEL">Muestra P/Lpc</option>
+                  <option value="PAPE">Papeleria P/Empleado</option>
+                  <option value="PAPL">Papeleria P/Lpc</option>
+                  <option value="PROE">Propina P/Empleado</option>
+                  <option value="PROL">Propina P/Lpc</option>
+                  <option value="RAUE">Renta Auto P/Empleado</option>
+                  <option value="RAUL">Renta Auto P/Lpc</option>
+                  <option value="TACE">Taxi C/Comp P/Empleado</option>
+                  <option value="TASE">Taxi S/Comp P/Empleado</option>
+                  <option value="TASL">Taxi S/Comp Pagado Lpc</option>
+                  <option value="TELE">Telefono P/Empleado</option>
+                  <option value="TELL">Telefono P/Lpc</option>
+                  <option value="TINE">Tintoreria P/Empleado</option>
+                  <option value="TINL">Tintoreria P/Lpc</option>
+                  <option value="TUAP">Tua. Pagado Empresa</option>
+                  <option value="TUAR">Der. Aer. P/Empr. Reutil.</option>
+                  <option value="UBPA">Dieta Alojamiento</option>
+                  <option value="VERP">Dieta Manutención</option>
+                  <option value="VORK">Adelanto Caja</option>
+                  <option value="VORS">Anticipo</option>
+                  <option value="ZALE">Zalim P/Emp No Ded Exc T.F.</option>
+                  <option value="ZALL">Zalim P/Lpc No Ded Exc T.F.</option>
+                  <option value="ZALP">Zalim P/Liv No Ded Exc T.F.</option>
+                  <option value="ZAVN">Avion No Utilizado  P//Empresa</option>
+                  <option value="ZAVU">Avion Utilizado. P/Empresa</option>
+                  <option value="ZCOE">Z Costo Estimado</option>
+                  <option value="ZGND">Zgdv No Deducible Exc T.F.</option>
+                  <option value="ZGNL">Zgdv No Ded P/Lpc Exc T.F.</option>
+                  <option value="ZGSD">Zgasto Sin Comprobante</option>
+                  <option value="ZHET">Zhotel No Ded Exc T.F.</option>
+                  <option value="ZPRE">Zgsto S/Comp Prop P/Empleado</option>
+                  <option value="ZPRL">Zgsto S/Comp Prop P/Lpc</option>
+                  <option value="ZSCL">Zgsto S/Comp P/Lpc</option>
+                  <option value="ZTAE">Zgsto S/Comp Taxi P/Empleado</option>
+                  <option value="ZTAL">Zgsto S/Comp Taxi P/Lpc</option>
+                  <option value="ZTUN">Tua No Utilizado P/Empresa</option>
+                  <option value="ZTUU">Tua Utiizado P/Empresa</option>
                 </select>
                 <label for="floatingSelect">Tipo de Gasto</label>
               </div>
@@ -90,32 +151,19 @@
                 </select>
                 <label for="floatingSelect">Moneda</label>
               </div>
-            </div> 
-            
-            <div class="col-md-4">
-              <label for="" class="form-label" style="color: black;">Fecha de gasto:</label>
-              <input type="date" [(ngModel)]="date" name="date" class="form-control card border-dark mb-3" id="inputEmail4" required>
-            </div>
-            
-            <div class="row" style="padding-top: 3%;">
-              <div class="col form-floating mb-3">
-                <select class="form-select card border-dark mb-3" id="floatingSelect" aria-label="Floating label select example" [(ngModel)]="taxCode" name="tax_code" required>
-                  <option selected>Choose...</option>
-                  <option value="F2">F2 IVA ACREDITABLE 16%</option>
-                  <option value="E3">E3 IVA ACREDITABLE EXENTO</option>
-                  <option value="option3">OPTION3</option>
-                  <option value="option4">OPTION4</option>
-                  <option value="option5">OPTION5</option>
-                  <option value="option6">OPTION6</option>
-                  <option value="option7">OPTION7</option>
-                  <option value="option8">OPTION8</option>
-                </select>
-                <label for="floatingSelect">Indicador de impuestos</label>
-              </div>
               <div class="col form-floating mb-3" >
                 <input type="number" class="form-control card border-dark mb-3" [(ngModel)]="multipli" name="multipli" id="floatingInput" value="1" aria-label="First name" required>
                 <label for="floatingInput">Cantidad</label>
               </div>
+            </div> 
+            
+            
+            <div class="row" style="padding-top: 3%;">
+              <div class="col-md-4">
+                <label for="" class="form-label" style="color: black;">Fecha de gasto:</label>
+                <input type="date" [(ngModel)]="date" name="date" class="form-control card border-dark mb-3" id="inputEmail4" required>
+              </div>
+              
             </div>
       
             <div class="form-floating">
@@ -130,10 +178,9 @@
       
             <div class="col-md-12">
               <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
-              <input type="file" (change)="onFileSelected($event)"  [(ngModel)]="documento" name="documento" class="form-control card border-dark mb-3" id="inputPassword4" required accept=".pdf, .xml">
+              <input type="file" (change)="onFileSelected($event)"  [(ngModel)]="documento" name="documento" class="form-control card border-dark mb-3" id="inputPassword4" required accept=".pdf, .xml, .png, .jpg, .jpeg">
             </div>
 
-        
             <div class="col-md-4">
               <input type="submit" class="btn btn-outline-success" [disabled]="!formValid()" value="Guardar">
             </div>

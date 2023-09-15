@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 
+import { Storage, ref, listAll, getDownloadURL } from '@angular/fire/storage';
+
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
@@ -82,7 +84,7 @@ interface ptrv_head {
 })
 export class MostrarGastosAdministradorComponent implements OnInit{
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe, private sharedDataService: SharedDataService){}
+  constructor (private storage: Storage, private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe, private sharedDataService: SharedDataService){}
 
 idHead!: number;
 reinrHead!: string;
@@ -116,6 +118,9 @@ upd_ptrv_head: any = {}
 complete_name!: string;
 
 recivedData: any;
+
+  // Propiedad para almacenar el enlace de descarga del archivo
+  fileDownloadURL: string | null = null;
 
 ngOnInit(): void {
   this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -245,12 +250,45 @@ getEstado(auth: number): string {
 
   downloadFile(uuid: string)
   {
-    if(uuid.length > 0)
+    
+    if(uuid === '')
     {
-      window.open('../../assets/files/testFile.pdf');
-    }else if(uuid.length <=0){
       this.documentError()
+    }else{
+      //console.log(fileName)
+    const documentRef = ref(this.storage, 'files/');
+
+    listAll(documentRef)
+    .then(async response => {
+
+      let x = 0;
+
+      for(x=0; x < response.items.length; x++)
+      {
+        //console.log('\n' + response.items[x].name)
+        if(uuid == response.items[x].name)
+        {
+          //console.log(fileName + ' -- ' + response.items[x].name)
+          const url = await getDownloadURL(response.items[x])
+          //console.log(url)
+          this.fileDownloadURL = url;
+
+          if(url.length > 0)
+          {
+            window.open(url);
+
+          }else if(url.length <= 0)
+          {
+            this.documentError()
+          }
+        }
+      }
+    })
+    .catch(error => { 
+      console.log(error)
+    })
     }
+
   }
 
   final_approval()

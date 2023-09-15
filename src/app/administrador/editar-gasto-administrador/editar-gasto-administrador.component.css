@@ -29,6 +29,25 @@
     background-color: #F25F29;
 }
 
+.titulo-ext{
+    color: #AD4782;
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#contenedor{
+    padding-top: 2%;
+    padding: 1%;
+    box-shadow: 5px 5px gray;
+    background-color: #73246c0a;
+}
+
+#form{
+    padding-top: 1%; 
+    padding-bottom: 2%;
+}
+
 @media all and (max-width: 775px)
 {
 

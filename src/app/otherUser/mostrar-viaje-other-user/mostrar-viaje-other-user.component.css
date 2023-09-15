@@ -29,6 +29,22 @@
     background-color: #F25F29;
 }
 
+.titulo-ext{
+    color: #AD4782;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#form{
+    padding-top: 3%; 
+    padding-bottom: 8%; 
+    background-color: #FFFFFF;
+    box-shadow: 5px 5px 5px 5px gray;
+    box-decoration-break: initial;
+    box-sizing: border-box;
+}
+
 @media all and (max-width: 775px)
 {
 

@@ -29,6 +29,13 @@
     background-color: #F25F29;
 }
 
+.titulo-ext{
+    color: #AD4782;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
 @media all and (max-width: 775px)
 {
 

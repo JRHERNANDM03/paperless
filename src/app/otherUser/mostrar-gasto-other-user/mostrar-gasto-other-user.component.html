@@ -46,17 +46,17 @@
 </div>  
 
 <div class="text-center" style="padding-top: 2%;">
-    <h3 style="color: black;">REGISTRO DE GASTOS DE VIAJE</h3>
+    <h3 class="titulo-ext">REGISTRO DE GASTOS DE VIAJE</h3>
 </div>
 
 <div class="container" style="padding: 1%;">
-  <div id="contenerdorCentrador" style="justify-content: space-between;">
+  <div id="contenerdorCentrador" class="titulo-ext" style="justify-content: space-between;">
     <h4 style="text-decoration: none;" >Viaje: {{reinr_head}}</h4>
     <h4 style="text-decoration: underline; color: gray;" >{{name}} - {{pernr}}</h4>
   </div>
   </div>
 
-<div class="container" style="padding-top: 1%;">
+<div class="container" style="padding-top: 0%;">
 
     <div id="contenerdorCentrador" style="justify-content: space-between; padding-top: 3%;">
         <a (click)="createExpenses(id_head, pernr, authCloseTrip)" class="btn btn-success" title="Mostrar gastos" [style.display]="styleCreate">REGISTRAR NUEVO GASTO</a>
@@ -69,9 +69,9 @@
     <div class="row row-cols-1 row-cols-md-4 g-4">
 
         <div class="col" *ngFor="let item of responseArray; let i = index">
-          <div class="card border-primary mb-3" style="width: 100%; height: 89%; ">
+          <div class="card mb-3" id="card">
             <div class="card-body" style="width: 100%; height: 90%;">
-            <div class="card-header bg-transparent border-primary">
+            <div class="card-header" id="lineCard">
               <h5 class="card-title text-center">{{item.exp_type}}</h5>
             </div>  
 
@@ -94,17 +94,17 @@
               
               </div>
 
-              <div class="card-footer bg-transparent border-primary">
+              <div class="card-footer" id="lineCard">
               <div id="contenerdorCentrador" style="justify-content: space-between;">
                 <a (click)="showExpense(item.receiptno, id_head, pernr, authCloseTrip)" style="text-decoration: none; color: #295bd9;" title="Visualizar gasto"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                     <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
                   </svg></a>
-                <a (click)="editExpense(item.receiptno, id_head, pernr, authCloseTrip, item.auth)" style="text-decoration: none; color: #D9CE29;" title="Editar gasto" [style.display]="styleEdit"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <a (click)="editExpense(item.receiptno, id_head, pernr, authCloseTrip)" style="text-decoration: none; color: #D9CE29;" title="Editar gasto" [style.display]="styleEdit"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                   <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                   <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                 </svg></a>
-                <a (click)="delete(item.receiptno, id_head)" style="text-decoration: none; color: #D92929;" title="Eliminar gasto" [style.display]="styleDelete"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                <a (click)="delete(item.receiptno, id_head, item.uuid)" style="text-decoration: none; color: #D92929;" title="Eliminar gasto" [style.display]="styleDelete"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
                   <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                   <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                 </svg></a>

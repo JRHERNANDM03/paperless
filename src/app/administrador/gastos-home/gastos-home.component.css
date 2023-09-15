@@ -29,6 +29,24 @@
     background-color: #F25F29;
 }
 
+.titulo-ext{
+    color: #AD4782;
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  #cards{
+    padding-top: 2px;
+    padding-bottom: 2%;
+}
+
+#card{
+    background-color:#ffff;
+    box-shadow: 5px 5px 5px gray;
+
+}
+
 @media all and (max-width: 775px)
 {
 

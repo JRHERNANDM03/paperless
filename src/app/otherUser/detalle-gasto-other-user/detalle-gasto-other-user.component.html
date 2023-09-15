@@ -43,18 +43,18 @@
 
 
 <div class="text-center">
-    <h2 style="color: black;">Detalles de gasto seleccionado</h2>
+    <h2  class="titulo-ext">Detalles de gasto seleccionado</h2>
 </div>
 
 <div class="container" style="padding: 1%;">
-  <div id="contenerdorCentrador" style="justify-content: space-between;">
+  <div id="contenerdorCentrador" class="titulo-ext" style="justify-content: space-between;">
     <h4 style="text-decoration: none;" >Viaje: {{reinr}}</h4>
     <h4 style="text-decoration: underline; color: gray;" >{{name}} - {{pernr}}</h4>
   </div>
   </div>
 
-<div class="container" style="padding: 1%;">
-  <form class="row g-3" style="padding-top: 3%; padding-bottom: 2%;">
+<div class="container" id="contenedor">
+  <form class="row g-3" id="form">
   
     <div class="col-md-12">
       <label for="inputEmail4" class="form-label" style="color: black;">COMENTARIO:</label>
@@ -109,17 +109,15 @@
      <label for="floatingTextarea">Descripción</label>
    </div>
   
+   <div id="justificación">
+     <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
+     <a *ngIf="fileDownloadURL" [href]="fileDownloadURL" target="_blank" class="form-control card border-dark mb-3" id="inputPassword4" style="text-decoration: none;">{{uuidGeneral}}</a>
+   </div>
+
   </form>
 
-
-<div class="col-md-2">
- <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
- <a href="/showFile" name="file" class="form-control card border-dark mb-3" id="inputPassword4" style="text-decoration: none;">file.pdf</a>
 </div>
 
 
-
-
-</div>
-
+<br>
 

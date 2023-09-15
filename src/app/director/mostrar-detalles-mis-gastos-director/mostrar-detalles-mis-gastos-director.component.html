@@ -40,13 +40,15 @@
 </div>
 
 <div class="text-center">
-<h2 style="color: black;">Detalles de gasto seleccionado</h2>
+<h2 class="titulo-ext">Detalles de gasto seleccionado</h2>
 </div>
 
 <div class="container" style="padding: 1%;">
-<h5 style="color: black;">Viaje: 2000001826</h5>
+<h5 class="titulo-ext">Viaje: 2000001826</h5>
 
-<form class="row g-3" style="padding-top: 3%; padding-bottom: 2%;">
+<br>
+
+<form class="row g-3" id="contenedor">
   
   <div class="col-md-12">
     <label for="inputEmail4" class="form-label" style="color: black;">COMENTARIO:</label>
@@ -101,12 +103,13 @@
    <label for="floatingTextarea">Descripción</label>
  </div>
 
+ <div id="justificación">
+   <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
+   <a *ngIf="fileDownloadURL" [href]="fileDownloadURL" target="_blank" class="form-control card border-dark mb-3" id="inputPassword4" style="text-decoration: none;">{{uuidGeneral}}</a>
+ </div>
+
 </form>
 
-<div class="col-md-2">
-<label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
-<a href="/showFile" name="file" class="form-control card border-dark mb-3" id="inputPassword4" style="text-decoration: none;">file.pdf</a>
-</div>
 
 </div>
 

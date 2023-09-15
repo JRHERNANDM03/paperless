@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 
+import { Storage, ref, deleteObject} from '@angular/fire/storage';
+
 import  Swal  from 'sweetalert2'
 
 interface user
@@ -35,6 +37,7 @@ interface zfi_gv_paper_general
   rec_date: string;
   shorttxt: string;
   auth: number;
+  uuid: string;
 }
 
 @Component({
@@ -67,10 +70,11 @@ nickname!: string;
   rec_date_general!: string;
   shorttxt_general!: string;
   auth_general!: string;
+  uuidGeneral!: string;
 
   recivedData: any;
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
+  constructor (private storage: Storage, private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   styleCreate = 'none';
   styleEdit = 'none';
@@ -192,7 +196,7 @@ getEstado(auth: number): string {
 
 
 
-  delete(receiptno: number, id_head: number){
+  delete(receiptno: number, id_head: number, uuid: string){
    // this.router.navigate(["/ViajeroHome"])
    let timerInterval=0;
    Swal.fire({
@@ -209,20 +213,27 @@ getEstado(auth: number): string {
     if(result.isConfirmed)
     {
 
-      //console.log(this.id_head)
-      this.http.delete('http://localhost:3000/GENERAL/' + receiptno).subscribe(d => {
-        Swal.fire(
-          {
-            icon: 'success',
-            title: 'Gasto eliminado con exito',
-            showConfirmButton: true,
-            confirmButtonText: 'Aceptar',
-          }
-        ).then((result) => {
-          //this.router.navigate(["/otherUser/Viaje"], {queryParams: {id:id_head, pernr: this.pernr}})
-          location.reload()
+      const desertRef = ref(this.storage, `files/${uuid}`);
+
+      deleteObject(desertRef)
+      .then(response => {
+        //console.log(this.id_head)
+        this.http.delete('http://localhost:3000/GENERAL/' + receiptno).subscribe(d => {
+          Swal.fire(
+            {
+              icon: 'success',
+              title: 'Gasto eliminado con exito',
+              showConfirmButton: true,
+              confirmButtonText: 'Aceptar',
+            }
+          ).then((result) => {
+            location.reload()
+          })
         })
+        
       })
+      .catch(error => { console.log(error)} )
+      
     }
    })
   
@@ -274,9 +285,9 @@ getEstado(auth: number): string {
 
   }
 
-  editExpense(receiptno: number, id_head: number, pernr: number, authCloseTrip: number, authExpense: number)
+  editExpense(receiptno: number, id_head: number, pernr: number, authCloseTrip: number)
   {
-    const data = {id: receiptno, head: id_head, pernr: pernr, authCloseTrip: authCloseTrip, authExpense: authExpense}
+    const data = {id: receiptno, head: id_head, pernr: pernr, authCloseTrip: authCloseTrip}
 
     this.sharedDataService.setData(data);
 

@@ -43,11 +43,11 @@
   </nav>
 
 <div class="text-center" style="padding-top: 2%;">
-<h3 style="color: black;">REGISTRO DE GASTOS DE VIAJE</h3>
+<h3 class="titulo-ext">REGISTRO DE GASTOS DE VIAJE</h3>
 </div>
 
 <div class="container" style="padding-top: 3%;">
-<h5 style="color: black;">Viaje: {{reinr_head}}</h5>
+<h5 class="titulo-ext">Viaje: {{reinr_head}}</h5>
 
 <div id="contenerdorCentrador" style="justify-content: space-between; padding-top: 3%;">
     <a (click)="createExpense(id_head, authCloseTrip)" class="btn btn-success" title="Mostrar gastos" [style.display]="styleCreate">REGISTRAR NUEVO GASTO</a>
@@ -57,12 +57,12 @@
 
 
 <div class="container" style="padding-top: 4%; padding-bottom: 5%;">
-<div class="row row-cols-1 row-cols-md-4 g-4">
+<div class="row row-cols-1 row-cols-md-3 g-4">
 
     <div class="col" *ngFor="let item of responseArray; let i = index">
-      <div class="card border-primary mb-3" style="width: 100%; height: 89%; ">
+      <div class="card mb-3" id="card">
         <div class="card-body" style="width: 100%; height: 90%;">
-        <div class="card-header bg-transparent border-primary">
+        <div class="card-header bg-transparent" id="lineCard">
           <h5 class="card-title text-center">{{item.exp_type}}</h5>
         </div>  
 
@@ -76,7 +76,7 @@
           
           <p class="card-text text-center" title="Fecha de gasto"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar-check-fill" viewBox="0 0 16 16">
             <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-5.146-5.146-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
-          </svg><a id="date" style="text-decoration: none;">{{item.rec_date}}</a></p>
+          </svg><a id="date" style="text-decoration: none;"> {{item.rec_date}}</a></p>
           
           <p class="card-text text-center">Estado <a id="status" [style.color]="getEstado(authorized[i]) === 'Aprobado' ? 'green' : (getEstado(authorized[i]) === 'Rechazado' ? 'red' : 'black')" title="{{getEstado(authorized[i])}}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark-check" viewBox="0 0 16 16">
             <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
@@ -85,7 +85,7 @@
           
           </div>
 
-          <div class="card-footer bg-transparent border-primary">
+          <div class="card-footer bg-transparent" id="lineCard">
           <div id="contenerdorCentrador" style="justify-content: space-between;">
             <a (click)="showExpense(item.receiptno, id_head, authCloseTrip)" style="text-decoration: none; color: #295bd9;" title="Visualizar gasto"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                 <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>

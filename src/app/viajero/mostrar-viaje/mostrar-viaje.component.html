@@ -41,12 +41,12 @@
 
     
     <div class="container" style="padding: 1%;">
-    <h5 style="color: black;">Detalles del viaje: <h4 id="numberTrip">{{reinr}}</h4></h5>
+    <h5 class="titulo-ext">Detalles del viaje: <h4 id="numberTrip">{{reinr}}</h4></h5>
 
-    <div class="row row-cols-1 row-cols-md-3 g-5" >
+    <div class="row row-cols-2 row-cols-md-2 g-2" >
       <div class="col">
         <div class="card">
-          <img src="../../../assets/image/tijuana.jpg" class="imgTravel" alt="{{zort1}}" title="{{zort1}}">
+          <img src="../../../assets/image/tijuana.jpg" class="" alt="{{zort1}}" title="{{zort1}}">
             <div class="card-img-overlay" style="background-color: #00000045;">
               <h5 class="card-title" style="color: white;">{{zort1}}</h5>
               <p class="card-text" style="color: white;">{{zland}}</p>
@@ -56,15 +56,16 @@
     </div>
 
 
-    <div id="contenerdorCentrador" style="justify-content: space-between; padding-top: 3%;">
+
+    <div id="contenerdorCentrador" style="justify-content: space-between; padding-top: 3%; padding-bottom: 3px;">
         <a (click)="details(id, authCloseTrip)" class="btn btn-primary" title="Mostrar gastos">Visualizar gastos de viaje</a>
         <a (click)="close()" class="btn btn-danger" title="Cerrar Viaje" [style.display]="styleClose">Cerrar viaje</a>
 
     </div>
 
-    <hr>
+    <br>
 
-    <form class="row g-3" style="padding-top: 5%; padding-bottom: 8%;">
+    <form class="row g-3" id="form">
       
       <div class="row">
         <div class="col">

@@ -58,12 +58,12 @@
   </nav>
 
 <div class="text-center" style="padding-top: 5%;">
-<h3 style="color: black;">REGISTRO DE GASTOS DE VIAJE</h3>
+<h3 class="titulo-ext" style="">REGISTRO DE GASTOS DE VIAJE</h3>
 </div>
 
 <div id="contenerdorCentrador" class="text-center" style="padding-top: 3%; justify-content: space-between;">
-<a style="color: black; font-size: x-large;">Viaje: {{reinr}}</a>
-<a style="color: black; font-size: x-large;">Colaborador: {{name}} - {{pernr}}</a>
+<a class="titulo-ext" style=" font-size: x-large;">Viaje: {{reinr}}</a>
+<a class="titulo-ext" style=" font-size: x-large;">Colaborador: {{name}} - {{pernr}}</a>
 </div>
 
 
@@ -72,9 +72,9 @@
   <div class="row row-cols-1 row-cols-md-3 g-4">
 
       <div class="col" *ngFor="let item of responseArray; let i = index">
-        <div class="card border-primary mb-3" style="width: 100%; height: 89%; ">
+        <div class="card mb-3" id="card" style="width: 100%; height: 89%; ">
           <div class="card-body" style="width: 100%; height: 90%;">
-          <div class="card-header bg-transparent border-primary">
+          <div class="card-header bg-transparent" id="lineCard">
             <h5 class="card-title text-center">{{item.exp_type}}</h5>
           </div>  
 
@@ -97,7 +97,7 @@
             
             </div>
 
-            <div class="card-footer bg-transparent border-primary">
+            <div class="card-footer bg-transparent" id="lineCard">
             <div id="contenerdorCentrador">
               <a (click)="showSpent(item.receiptno)" style="text-decoration: none; color: #295bd9;" title="Visualizar gasto">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">

@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Storage, ref, deleteObject } from '@angular/fire/storage';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
+
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
@@ -29,8 +31,10 @@ interface zfi_gv_paper_general
   rec_date: string;
   shorttxt: string;
   auth: number;
+  uuid: string;
+  object_id: string;
 }
-
+ 
 
 @Component({
   selector: 'app-mostrar-gasto',
@@ -54,14 +58,15 @@ export class MostrarGastoComponent implements OnInit {
   rec_date_general!: string;
   shorttxt_general!: string;
   auth_general!: string;
+  uuid_general!: string;
+  object_id_general!: string;
 
   authCloseTrip!: number;
-  authTrip!: number; 
 
   recivedData: any;
 
 
-  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
+  constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService, private storage: Storage){}
 
   styleCreate = 'none';
   styleEdit = 'none';
@@ -193,9 +198,9 @@ showExpenses(receiptno: number, id_head: number, authCloseTrip: number)
    this.router.navigate(['/Viajero/Detalles/Gasto']);
 }
 
-editeExpenses(receiptno: number, id_head: number, authCloseTrip: number, authExpense: number)
+editeExpenses(receiptno: number, id_head: number, authCloseTrip: number)
 {
-  const data = {id: receiptno, head: id_head, authCloseTrip: authCloseTrip, authExpense: authExpense};
+  const data = {id: receiptno, head: id_head, authCloseTrip: authCloseTrip};
 
   this.sharedDataService.setData(data);
 
@@ -205,7 +210,7 @@ editeExpenses(receiptno: number, id_head: number, authCloseTrip: number, authExp
 }
 
 
-  delete(receiptno: number, id_head: number){
+  delete(receiptno: number, id_head: number, uuid: string){
    // this.router.navigate(["/ViajeroHome"])
    let timerInterval=0;
    Swal.fire({
@@ -222,22 +227,30 @@ editeExpenses(receiptno: number, id_head: number, authCloseTrip: number, authExp
     if(result.isConfirmed)
     { 
 
-      //console.log(this.id_head)
-      this.http.delete('http://localhost:3000/GENERAL/' + receiptno).subscribe(d => {
-        Swal.fire(
-          {
-            icon: 'success',
-            title: 'Gasto eliminado con exito',
-            showConfirmButton: true,
-            confirmButtonText: 'Aceptar',
-          }
-        ).then((result) => {
-          location.reload()
+      const desertRef = ref(this.storage, `files/${uuid}`);
+
+      deleteObject(desertRef)
+      .then(response => {
+        //console.log(this.id_head)
+        this.http.delete('http://localhost:3000/GENERAL/' + receiptno).subscribe(d => {
+          Swal.fire(
+            {
+              icon: 'success',
+              title: 'Gasto eliminado con exito',
+              showConfirmButton: true,
+              confirmButtonText: 'Aceptar',
+            }
+          ).then((result) => {
+            location.reload()
+          })
         })
+        
       })
+      .catch(error => { console.log(error)} )
+      
     }
    })
-  
+      
   }
 
   info()

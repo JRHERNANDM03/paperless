@@ -41,7 +41,7 @@
 
 
 <div class="text-center" style="padding-top: 2%; padding-bottom: 4%;">
-<h2 style="color: black">RESULTADOS DE LA BÚSQUEDA: {{amountTrip}}</h2>        
+<h2 class="titulo-ext">RESULTADOS DE LA BÚSQUEDA: {{amountTrip}}</h2>        
 </div>
 
 
@@ -49,7 +49,7 @@
 <div class="row row-cols-1 row-cols-md-3 g-3">
 
   <div class="col"  *ngFor="let item of responseArray; let i = index">
-    <div class="card">
+    <div class="card" id="card">
       <img src="../../../assets/image/london.jpg" class="card-img-top" alt="Londres" width="200px" height="200px">
       <div class="card-body">
         <h5 class="card-title">{{item.zort1}}</h5>

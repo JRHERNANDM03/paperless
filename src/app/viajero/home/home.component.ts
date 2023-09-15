@@ -57,6 +57,10 @@ export class HomeComponent implements OnInit{
 
   emailsAmount: number = 0;
 
+  pernr!: string;
+
+  notifyDisplay = 'block'
+
   constructor(private router: Router, public auth: AuthService, private http: HttpClient, private sharedDataService: SharedDataService) {
 }
 
@@ -88,6 +92,8 @@ responseArray: PTRV_HEAD[] = [];
 getData(nickname: String)
 {
   this.http.get<UserData>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+
+  this.pernr = data.PERNR;
 
   const pernr_user = Number(data.PERNR);
   this.getEmailsV(pernr_user)
@@ -204,8 +210,10 @@ getEstado(auth: number): string {
 
   getVisibility(visibility: number): number {
     if (visibility === 0) {
+      this.notifyDisplay = 'none'
       return 0;
-    } else if (visibility === 1) { 
+    } else if (visibility === 1) {
+      this.notifyDisplay = 'block' 
       return 1;
     } else {
       return -1; // O cualquier otro valor numérico que desees asignar para representar el estado desconocido
@@ -260,6 +268,112 @@ sendData(id: number)
     this.router.navigate(['/Viajero/Viaje']);
 }
 
+
+deleteNotify(id: number, $event: any)
+{
+  $event.stopPropagation()
+  
+  try{
+
+    Swal.fire({
+      icon: 'warning',
+      title: '¿Estás seguro de querer eliminar esta notificación?',
+      text: 'Se eliminará permanentemente',
+      showCancelButton: true,
+      cancelButtonColor: 'grey',
+      showConfirmButton: true,
+      confirmButtonColor: 'red',
+      confirmButtonText: 'Eliminar'
+    }).then(result => {
+      if(result.isConfirmed)
+      {
+        this.http.delete('http://localhost:3000/EmailV/delete/' + id).subscribe(data => {
+          if(data)
+          {
+            Swal.fire({
+              icon: 'success',
+              title: 'Notificación eliminada con éxito',
+              showCancelButton: false,
+              showConfirmButton: true,
+              confirmButtonText: 'OK',
+              confirmButtonColor: 'blue'
+            }).then(res => {
+              if(res.isConfirmed)
+              {
+                location.reload()
+              }
+            })
+          }
+        })
+      }
+    })
+
+  }catch(error)
+  {
+    console.error(error)
+  }
+}
+
+deleteAllNotify()
+{
+
+  Swal.fire({
+    icon: 'warning',
+    title: '¿Estás seguro de querer eliminar todas las notificaciones que ya fueron vistas?',
+    text: 'Se eliminaran por completo',
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonColor: 'red',
+    confirmButtonText: 'Eliminar'
+  }).then(result => {
+
+    if(result.isConfirmed){
+
+    this.http.get<emailsV[]>('http://localhost:3000/EmailsV/' + this.pernr).subscribe(data => {
+
+    if(data.length == 0)
+    {
+      Swal.fire({
+        icon: 'info',
+        title: 'No hay registro que eliminar'
+      })
+    }else if(data.length > 0){
+      let x=0;
+  
+      for(x=0; x < data.length; x++)
+      {
+        if(data[x].visibility == 1)
+        {
+          this.http.delete('http://localhost:3000/EmailV/delete/' + data[x].id).subscribe()
+        }
+      }
+
+      let timerInterval = 0;
+
+      Swal.fire({
+        title: 'Eliminando notificaciones vistas',
+        html: '<div class="spinner-border text-primary" role="status">'+
+        '<span class="visually-hidden">Loading...</span>'+
+      '</div>',
+        timer: 2500,
+        timerProgressBar: false,
+        showConfirmButton: false,
+        willClose: () => {
+          clearInterval(timerInterval)
+        }
+      }).then((result) => {
+        if(result.dismiss === Swal.DismissReason.timer)
+        {
+          location.reload()
+        }
+      })
+
+    }
+    })
+  }
+  })
+
+}
 
 
 }

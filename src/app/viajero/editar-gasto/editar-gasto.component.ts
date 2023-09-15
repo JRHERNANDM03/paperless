@@ -10,6 +10,7 @@ import Swal from 'sweetalert2'
 
 interface dataGeneral
 {
+  pernr: string;
   reinr: string;
   exp_type: string;
   loc_amount: number;
@@ -20,13 +21,10 @@ interface dataGeneral
   bus_purpo: string;
   descript: string;
   uuid: string;
+  comentario: string;
+  auth: number;
 }
 
-interface zfi_gv_paper_general
-{
-  pernr: string;
-  reinr: string;
-}
 
 @Component({
   selector: 'app-editar-gasto',
@@ -37,6 +35,7 @@ export class EditarGastoComponent implements OnInit {
 
   head!: number;
 
+  pernr!: string;
   receiptno!: number;
   reinr!: string;
   exp_type!: string;
@@ -48,6 +47,8 @@ export class EditarGastoComponent implements OnInit {
   bus_purpo!: string;
   descript!: string;
   uuid!: string;
+  authExpense!: number;
+  comentario: string = '';
 
   nickname!: string;
   fechaActual!: string;
@@ -85,16 +86,13 @@ export class EditarGastoComponent implements OnInit {
   hora_mod:this.horaActual
 }
 
-Updategastos2: any = {};
+UpdateGastos2: any = {}
 
-sendEmailA: any = {};
+sendEmailA: any = {}
 
 authCloseTrip!: number;
-authExpense!: number;
 
 recivedData: any;
-
-
 
   constructor (private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute, private sharedDataService: SharedDataService){}
 
@@ -120,8 +118,6 @@ recivedData: any;
           this.getData(this.receiptno);
           this.head = this.recivedData.head;
           this.authCloseTrip = this.recivedData.authCloseTrip;
-          this.authExpense = this.recivedData.authExpense;
-
         }else{
           const localStorageData = localStorage.getItem('DataEditarGasto-Viajero');
           if (localStorageData) {
@@ -131,7 +127,6 @@ recivedData: any;
             this.getData(this.receiptno);
             this.head = parsedData.head;
             this.authCloseTrip = parsedData.authCloseTrip;
-            this.authExpense = parsedData.authExpense;
         }
       }
 
@@ -147,6 +142,8 @@ recivedData: any;
   getData(receiptno: number)
   {
     this.http.get<dataGeneral>('http://localhost:3000/GENERAL/' + receiptno).subscribe(data => {
+
+      this.pernr = data.pernr;
       this.reinr = data.reinr;
       this.exp_type = data.exp_type;
       this.loc_amount = data.loc_amount;
@@ -157,6 +154,7 @@ recivedData: any;
       this.bus_purpo = data.bus_purpo;
       this.descript = data.descript;
       this.uuid = data.uuid;
+      this.comentario = data.comentario;
 
       this.exp_typeN = this.exp_type;
       this.locAmountN = this.loc_amount;
@@ -166,6 +164,8 @@ recivedData: any;
       this.multipliN = this.multipli;
       this.busPurpoN = this.bus_purpo;
       this.descriptN = this.descript;
+
+      this.authExpense = data.auth;
     })
   }
 
@@ -188,55 +188,6 @@ recivedData: any;
   
   }
 
-  update2()
-  {
-
-    //console.log(this.receiptno)
-
-    this.http.get<zfi_gv_paper_general>('http://localhost:3000/GENERAL/' + this.receiptno).subscribe(data => {
-      
-      
-      const titleA = 'Nuevo gasto actualizado.';
-      const subtitleA = 'Viaje: '+ data.reinr;
-      const messageA = 'El usuario '+ this.nickname +' ha actualizado un gasto que se encontraba como rechazado para una nueva aprobación.';
-      
-      this.sendEmailA = {
-        pernr: data.pernr,
-        reinr: data.reinr,
-        message: messageA,
-        title: titleA,
-        subtitle: subtitleA
-      }
-
-      this.http.post('http://localhost:3000/EmailA', this.sendEmailA).subscribe(emailA => {
-        if(emailA)
-        {
-          let timerInterval = 0;
-
-          Swal.fire({
-            icon: 'success',
-            iconColor: 'yellow',
-            title: 'Gasto actualizado',
-            text: 'Informando al administrador de tu cambio',
-            showConfirmButton: false,
-            timer: 2500,
-            timerProgressBar: true,
-
-            willClose: () => {
-              clearInterval(timerInterval)
-            }
-          }).then((result) => {
-            if(result.dismiss === Swal.DismissReason.timer)
-            {
-              window.location.href='/Viajero/Gastos'
-            }
-          })
-        }
-      })
-
-    })
-  }
-
   formValid(): boolean {
     // Verificar si los campos requeridos están llenados
     if (
@@ -244,11 +195,9 @@ recivedData: any;
       this.locAmountN &&
       this.locCurrN &&
       this.dateN &&
-      this.taxCodeN &&
       this.multipliN &&
       this.busPurpoN &&
-      this.descriptN &&
-      this.documentoN
+      this.descriptN 
     ) {
       return true; // Todos los campos están llenados
     } else {
@@ -271,35 +220,35 @@ recivedData: any;
     const minutos = fecha.getMinutes().toString().padStart(2, '0');
     const segundos = fecha.getSeconds().toString().padStart(2, '0');
     this.horaActual = `${hora}:${minutos}:${segundos}`;
-  
-    // Mostrar los datos en la consola
-  /*
-    console.log('EXP_TYPE:', this.exp_typeN);
-    console.log('Importe:', this.locAmountN);
-    console.log('Moneda:', this.locCurrN);
-    console.log('Fecha de gasto:', this.dateN);
-    console.log('Indicador de impuestos:', this.taxCodeN);
-    console.log('Cantidad:', this.multipliN);
-    console.log('Info:', this.busPurpoN);
-    console.log('Descripción:', this.descriptN);
-    console.log('Justificación:', this.documentoN);
-    console.log('Fecha actual', this.fechaActual);
-    console.log('Hora Actual', this.horaActual);
-  */
 
-    if (this.selectedFile && this.selectedFile.name.endsWith('.pdf')) {
-      this.pdfN = 1;
-      this.xmlN = 0;
-      this.documentoN = (this.selectedFile.name)
-    } else if (this.selectedFile && this.selectedFile.name.endsWith('.xml')) {
-      this.pdfN = 0;
-      this.xmlN = 1;
-      this.documentoN = (this.selectedFile.name)
-    } else {
-      console.log('No se seleccionó ningún archivo o el archivo no tiene una extensión permitida.');
-      // Realizar acciones para otros tipos de archivo o cuando no se selecciona ningún archivo
+    if(this.exp_typeN == 'ALID'  || this.exp_typeN == 'ALIE'  || this.exp_typeN == 'ALIL'  || this.exp_typeN == 'AVIP'  || this.exp_typeN == 'AVIR'  || 
+    this.exp_typeN == 'CABE'  || this.exp_typeN == 'CABL'  || this.exp_typeN == 'CASE'  || this.exp_typeN == 'CASL'  || this.exp_typeN == 'CDEL'  || this.exp_typeN == 'ESTE'  || this.exp_typeN == 'ESTL'  || this.exp_typeN == 'EVEE'  || this.exp_typeN == 'EVEL'  || this.exp_typeN == 'EXPE'  || this.exp_typeN == 'EXPL'  ||
+    this.exp_typeN == 'GASE'  || this.exp_typeN == 'GASL'  ||
+    this.exp_typeN == 'HOTE'  || this.exp_typeN == 'HOTL'  ||
+    this.exp_typeN == 'MEDE'  || this.exp_typeN == 'MEDL'  || this.exp_typeN == 'MUEE'  || this.exp_typeN == 'MUEL'  || this.exp_typeN == 'PAPE'  || this.exp_typeN == 'PAPL'  ||
+    this.exp_typeN == 'RAUE'  || this.exp_typeN == 'RAUL'  ||
+    this.exp_typeN == 'TELE'  || this.exp_typeN == 'TELL'  || this.exp_typeN == 'TINE'  || this.exp_typeN == 'TINL'  ||
+    this.exp_typeN == 'ZAVN'  || this.exp_typeN == 'ZAVU'  )
+    {
+      this.taxCodeN = 'F2';
     }
-
+    else if(this.exp_typeN == 'BUSE'  || this.exp_typeN == 'BUSL'  ||
+    this.exp_typeN == 'GSCE'  || this.exp_typeN == 'GSCL'  ||
+    this.exp_typeN == 'IHOE'  || this.exp_typeN == 'IHOL'  || this.exp_typeN == 'IMIE'  || this.exp_typeN == 'IMIL'  ||
+    this.exp_typeN == 'PROE'  || this.exp_typeN == 'PROL'  ||
+    this.exp_typeN == 'TACE'  || this.exp_typeN == 'TASE'  || this.exp_typeN == 'TASL'  ||
+    this.exp_typeN == 'TUAP'  || this.exp_typeN == 'TUAR'  ||
+    this.exp_typeN == 'ZALE'  || this.exp_typeN == 'ZALL'  || this.exp_typeN == 'ZALP'  ||
+    this.exp_typeN == 'ZCOE'  || this.exp_typeN == 'ZGND'  || this.exp_typeN == 'ZGNL'  || this.exp_typeN == 'ZGSD'  || this.exp_typeN == 'ZHET'  || this.exp_typeN == 'ZPRE'  || this.exp_typeN == 'ZPRL'  || this.exp_typeN == 'ZSCL'  || this.exp_typeN == 'ZTAE'  || this.exp_typeN == 'ZTAL'  || this.exp_typeN == 'ZTUN'  || this.exp_typeN == 'ZTUU' )
+    {
+      this.taxCodeN = 'E3';
+    }
+    else if(this.exp_typeN == 'FAK'  ||
+    this.exp_typeN == 'UBPA'  || this.exp_typeN == 'VERP'  || this.exp_typeN == 'VORK'  || this.exp_typeN == 'VORS' )
+    {
+      this.taxCodeN = 'E0';
+    }
+   
     this.Updategastos=
     {
       multipli:this.multipliN,
@@ -312,14 +261,12 @@ recivedData: any;
       tax_code:this.taxCodeN,
       pdf:this.pdfN,
       xml:this.xmlN,
-      uuid:this.documentoN,
       user_mod:this.nickname,
       fec_mod:this.fechaActual,
       hora_mod:this.horaActual
-
+      
     }
-
-    this.Updategastos2=
+    this.UpdateGastos2=
     {
       multipli:this.multipliN,
       descript:this.descriptN,
@@ -331,53 +278,126 @@ recivedData: any;
       tax_code:this.taxCodeN,
       pdf:this.pdfN,
       xml:this.xmlN,
-      uuid:this.documentoN,
       user_mod:this.nickname,
       fec_mod:this.fechaActual,
       hora_mod:this.horaActual,
-      auth: 0
-
+      auth:0
+ 
     }
+    //Validar el status del gasto
 
-    /* */
+   if(this.authExpense == 0)
+   {
+      /*Cuándo el status del gasto sea igual a 0 'PENDIENTE' se hace un update sencillo exclusivamente 
+      para los campos seleccionados*/
 
-    if(this.authExpense == 0)
+      
+       this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
+       this.update()
+   })
+
+    }else if(this.authExpense == 1)
     {
+      /* Cuándo el status del gasto sea igual a 1 'ACEPTADO', la acción de actualizar no será permitida */
 
-      this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
-    this.update()
+      Swal.fire({
+        icon: 'error',
+        title: 'Este gasto no puede ser editado',
+        showCancelButton: false,
+        showConfirmButton: true,
+        confirmButtonColor: 'purple'
+      }).then(result => {
+        if(result.isConfirmed)
+        {
+          window.location.href='Viajero/Gastos'
+        }
       })
 
     }else if(this.authExpense == 2)
     {
+      /* Cuándo el status del gasto sea igual a 2 'RECHAZADO' 
+      Actualizamos los campos correspondientes más un cambio en el status, lo igualaremos a 0 'PENDIENTE'
+      para que el usuario Administrador lo pueda aprobar.
+      
+      Se envia un msj de notificacion al usuario Administrador para una nueva validacion
+      */
 
-      this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos2).subscribe(res => {
-    this.update2()
-      })
 
-    }else{
+      this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.UpdateGastos2).subscribe(res => {
+       if(res)
+       {
+        const titleA = 'Nuevo gasto actualizado.';
+        const subtitleA = 'Viaje: '+ this.reinr;
+        const messageA = 'El usuario '+ this.nickname +' ha actualizado un gasto que se encontraba como rechazado para una nueva aprobación.';
+      
+        this.sendEmailA = {
+        pernr: this.pernr,
+        reinr: this.reinr,
+        message: messageA,
+        title: titleA,
+        subtitle: subtitleA
+      }
 
-      Swal.fire({
-        icon: 'warning',
-        iconColor: 'purple',
-        title: 'Ocurrio un error durante el proceso, contacta a soporte',
-        showCancelButton: false,
-        showConfirmButton: true,
-        confirmButtonColor: 'orange'
-      }).then(result => {
-        if(result.isConfirmed)
+      this.http.post('http://localhost:3000/EmailA', this.sendEmailA).subscribe(emailA => {
+        if(emailA)
         {
-          window.location.href="/Viajero/Gastos"
+          let timerInterval = 0;
+
+          Swal.fire({
+            icon: 'success',
+            iconColor: 'yellow',
+            title: 'Gasto actualizado',
+            text: 'Informando al administrador de tu cambio',
+            showConfirmButton: false,
+            timer: 3500,
+            timerProgressBar: true,
+
+            willClose: () => {
+              clearInterval(timerInterval)
+            }
+          }).then((result) => {
+            if(result.dismiss === Swal.DismissReason.timer)
+            {
+              window.location.href='/Viajero/Gastos'
+            }
+          })
         }
       })
 
+       }
+   })
+
+
     }
+
+
+
   }
 
-  
-    onFileSelected(event: any) {
-      this.selectedFile = event.target.files[0];
-    }
+
+  editFile()
+  {
+    Swal.fire({
+      icon: 'info',
+      title: 'Editar archivo',
+      text: 'Esta función solo sirve para modificar el archivo registrado, deseas continuar?',
+      showCancelButton: true,
+      showConfirmButton: true,
+      confirmButtonColor: '#F25F29'
+    }).then(res => {
+      if(res.isConfirmed)
+      {
+        //console.log(this.receiptno, this.head, this.authCloseTrip)
+        const data = {id: this.receiptno, head: this.head, authCloseTrip: this.authCloseTrip};
+
+        this.sharedDataService.setData(data);
+
+        localStorage.setItem('DataEditarDocumento-Viajero', JSON.stringify(data))
+
+        this.router.navigate(['/Viajero/Editar/Documento']);
+      }
+    })
+  }
 
   
 

@@ -142,9 +142,16 @@ validate(pernrN: string)
 {
   var new_pernr = Number(pernrN);
   var pernrOld = Number(this.pernr)
-  if(new_pernr === pernrOld)
+  if(new_pernr == pernrOld)
   {
     this.listar()
+  }else{
+
+    this.styleDisplay='none'
+    Swal.fire({
+      icon: 'error',
+      title: 'Problemas en la consulta'
+    })
   }
   
   

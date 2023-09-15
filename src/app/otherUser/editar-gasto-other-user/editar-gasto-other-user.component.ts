@@ -28,12 +28,13 @@ interface dataGeneral
   bus_purpo: string;
   descript: string;
   uuid: string;
+  auth: number;
+  comentario: string;
 }
 
-interface zfi_gv_paper_general
+interface dataUserLog
 {
-  pernr: string;
-  reinr: string;
+  pernr: number;
 }
 
 @Component({
@@ -59,6 +60,8 @@ tax_code!: string;
 bus_purpo!: string;
 descript!: string;
 uuid!: string;
+authGeneral!: number;
+comentario!: string;
 
 nickname!: string;
 fechaActual!: string;
@@ -96,13 +99,14 @@ Updategastos:any =
   hora_mod:this.horaActual
 }
 
-Updategastos2: any = {};
+Updategastos2: any = {}
 
-sendEmailA: any = {}
-
-authExpense!: number;
+emailA: any = {}
 
 recivedData: any;
+
+pernrUserLog!: number;
+
   constructor (private router:Router, public auth:AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 ngOnInit(): void {
@@ -133,7 +137,6 @@ ngOnInit(): void {
           this.receiptno = this.recivedData.id;
           this.idHead = this.recivedData.head;
           this.pernr = this.recivedData.pernr;
-          this.authExpense = this.recivedData.authExpense;
 
           this.getInfoUser(this.pernr)
           this.getInfoHead(this.idHead)
@@ -152,7 +155,6 @@ ngOnInit(): void {
         this.receiptno = parsedData.id;
           this.idHead = parsedData.head;
           this.pernr = parsedData.pernr;
-          this.authExpense = parsedData.authExpense;
 
           this.getInfoUser(this.pernr)
           this.getInfoHead(this.idHead)
@@ -196,6 +198,8 @@ getData(receiptno: number)
     this.bus_purpo = data.bus_purpo;
     this.descript = data.descript;
     this.uuid = data.uuid;
+    this.authGeneral = data.auth;
+    this.comentario = data.comentario;
 
     this.exp_typeN = this.exp_type;
     this.locAmountN = this.loc_amount;
@@ -214,11 +218,9 @@ getData(receiptno: number)
       this.locAmountN &&
       this.locCurrN &&
       this.dateN &&
-      this.taxCodeN &&
       this.multipliN &&
       this.busPurpoN &&
-      this.descriptN &&
-      this.documentoN
+      this.descriptN 
     ) {
       return true; // Todos los campos están llenados
     } else {
@@ -241,18 +243,33 @@ getData(receiptno: number)
     const minutos = fecha.getMinutes().toString().padStart(2, '0');
     const segundos = fecha.getSeconds().toString().padStart(2, '0');
     this.horaActual = `${hora}:${minutos}:${segundos}`;
-  
-    if (this.selectedFile && this.selectedFile.name.endsWith('.pdf')) {
-      this.pdfN = 1;
-      this.xmlN = 0;
-      this.documentoN = (this.selectedFile.name)
-    } else if (this.selectedFile && this.selectedFile.name.endsWith('.xml')) {
-      this.pdfN = 0;
-      this.xmlN = 1;
-      this.documentoN = (this.selectedFile.name)
-    } else {
-      console.log('No se seleccionó ningún archivo o el archivo no tiene una extensión permitida.');
-      // Realizar acciones para otros tipos de archivo o cuando no se selecciona ningún archivo
+
+    if(this.exp_typeN == 'ALID'  || this.exp_typeN == 'ALIE'  || this.exp_typeN == 'ALIL'  || this.exp_typeN == 'AVIP'  || this.exp_typeN == 'AVIR'  || 
+    this.exp_typeN == 'CABE'  || this.exp_typeN == 'CABL'  || this.exp_typeN == 'CASE'  || this.exp_typeN == 'CASL'  || this.exp_typeN == 'CDEL'  || this.exp_typeN == 'ESTE'  || this.exp_typeN == 'ESTL'  || this.exp_typeN == 'EVEE'  || this.exp_typeN == 'EVEL'  || this.exp_typeN == 'EXPE'  || this.exp_typeN == 'EXPL'  ||
+    this.exp_typeN == 'GASE'  || this.exp_typeN == 'GASL'  ||
+    this.exp_typeN == 'HOTE'  || this.exp_typeN == 'HOTL'  ||
+    this.exp_typeN == 'MEDE'  || this.exp_typeN == 'MEDL'  || this.exp_typeN == 'MUEE'  || this.exp_typeN == 'MUEL'  || this.exp_typeN == 'PAPE'  || this.exp_typeN == 'PAPL'  ||
+    this.exp_typeN == 'RAUE'  || this.exp_typeN == 'RAUL'  ||
+    this.exp_typeN == 'TELE'  || this.exp_typeN == 'TELL'  || this.exp_typeN == 'TINE'  || this.exp_typeN == 'TINL'  ||
+    this.exp_typeN == 'ZAVN'  || this.exp_typeN == 'ZAVU'  )
+    {
+      this.taxCodeN = 'F2';
+    }
+    else if(this.exp_typeN == 'BUSE'  || this.exp_typeN == 'BUSL'  ||
+    this.exp_typeN == 'GSCE'  || this.exp_typeN == 'GSCL'  ||
+    this.exp_typeN == 'IHOE'  || this.exp_typeN == 'IHOL'  || this.exp_typeN == 'IMIE'  || this.exp_typeN == 'IMIL'  ||
+    this.exp_typeN == 'PROE'  || this.exp_typeN == 'PROL'  ||
+    this.exp_typeN == 'TACE'  || this.exp_typeN == 'TASE'  || this.exp_typeN == 'TASL'  ||
+    this.exp_typeN == 'TUAP'  || this.exp_typeN == 'TUAR'  ||
+    this.exp_typeN == 'ZALE'  || this.exp_typeN == 'ZALL'  || this.exp_typeN == 'ZALP'  ||
+    this.exp_typeN == 'ZCOE'  || this.exp_typeN == 'ZGND'  || this.exp_typeN == 'ZGNL'  || this.exp_typeN == 'ZGSD'  || this.exp_typeN == 'ZHET'  || this.exp_typeN == 'ZPRE'  || this.exp_typeN == 'ZPRL'  || this.exp_typeN == 'ZSCL'  || this.exp_typeN == 'ZTAE'  || this.exp_typeN == 'ZTAL'  || this.exp_typeN == 'ZTUN'  || this.exp_typeN == 'ZTUU' )
+    {
+      this.taxCodeN = 'E3';
+    }
+    else if(this.exp_typeN == 'FAK'  ||
+    this.exp_typeN == 'UBPA'  || this.exp_typeN == 'VERP'  || this.exp_typeN == 'VORK'  || this.exp_typeN == 'VORS' )
+    {
+      this.taxCodeN = 'E0';
     }
 
     this.Updategastos=
@@ -267,18 +284,13 @@ getData(receiptno: number)
       tax_code:this.taxCodeN,
       pdf:this.pdfN,
       xml:this.xmlN,
-      uuid:this.documentoN,
       user_mod:this.nickname,
       fec_mod:this.fechaActual,
       hora_mod:this.horaActual
 
     }
 
-  /*  this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
-    this.update()
-}) */
-
-this.Updategastos2=
+    this.Updategastos2 = 
     {
       multipli:this.multipliN,
       descript:this.descriptN,
@@ -290,47 +302,85 @@ this.Updategastos2=
       tax_code:this.taxCodeN,
       pdf:this.pdfN,
       xml:this.xmlN,
-      uuid:this.documentoN,
       user_mod:this.nickname,
       fec_mod:this.fechaActual,
       hora_mod:this.horaActual,
       auth: 0
-
     }
 
-    /* */
-
-    if(this.authExpense == 0)
+    if(this.authGeneral == 0)
     {
-
       this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
     this.update()
-      })
-
-    }else if(this.authExpense == 2)
+}) 
+    }else if(this.authGeneral == 1)
     {
-
-      this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos2).subscribe(res => {
-    this.update2()
-      })
-
-    }else{
-
       Swal.fire({
-        icon: 'warning',
-        iconColor: 'purple',
-        title: 'Ocurrio un error durante el proceso, contacta a soporte',
+        icon: 'error',
+        title: 'Esta acción no puede ser procesada',
         showCancelButton: false,
         showConfirmButton: true,
-        confirmButtonColor: 'orange'
-      }).then(result => {
-        if(result.isConfirmed)
+        confirmButtonColor: 'purple'
+      }).then(resul => {
+        if(resul.isConfirmed)
         {
-          window.location.href="/otherUser/Gastos"
+          location.reload()
         }
       })
+    }else if(this.authGeneral == 2)
+    {
+      this.http.get<dataUserLog>('http://localhost:3000/USERS/' + this.nickname).subscribe(dataUserLog => {
+        this.pernrUserLog = dataUserLog.pernr;
+      })
 
+      const titleA = 'Nuevo gasto actualizado';
+
+      const subtitleA = 'Viaje: '+ this.reinr;
+
+      const messageA = 'El usuario ' + this.nickname + ' con numero de empleado '+ this.pernrUserLog + ' ha actualizado un gasto que se encontraba como rechazado para una nueva aprobación dentro del viaje perteneciente al usuario '+ this.pernr;
+    
+      this.emailA={
+        pernr: this.pernr,
+        reinr: this.reinr,
+        title: titleA,
+        subtitle: subtitleA,
+        message: messageA
+      }
+
+      this.http.post('http://localhost:3000/EmailA', this.emailA).subscribe(postSuccess => {
+        if(postSuccess)
+        {
+           this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos2).subscribe(res => {
+           if(res)
+           {
+            let timerInterval = 0;
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Actualización exitosa',
+              text: 'Informando al administrador el informe de tu cambio...',
+              showConfirmButton: false,
+              timer: 2500,
+              timerProgressBar: true,
+
+              willClose: () => {
+                clearInterval(timerInterval)
+              }
+            }).then((response) => {
+              if(response.dismiss === Swal.DismissReason.timer)
+              {
+                window.location.href='/otherUser/Gastos'
+              }
+            })
+           }
+       }) 
+
+        }
+      })
+    
+    
     }
+
   }
 
   
@@ -352,59 +402,34 @@ this.Updategastos2=
       }).then((result) => {
        if(result.isConfirmed)
        {
-         this.router.navigate(["/otherUser/Gastos"])
+         location.reload()
        }
       })
      
      }
 
-     update2()
-  {
-
-    //console.log(this.receiptno)
-
-    this.http.get<zfi_gv_paper_general>('http://localhost:3000/GENERAL/' + this.receiptno).subscribe(data => {
-      
-      
-      const titleA = 'Nuevo gasto actualizado.';
-      const subtitleA = 'Viaje: '+ data.reinr;
-      const messageA = 'El usuario '+ this.nickname +' ha actualizado un gasto que se encontraba como rechazado para una nueva aprobación.';
-      
-      this.sendEmailA = {
-        pernr: data.pernr,
-        reinr: data.reinr,
-        message: messageA,
-        title: titleA,
-        subtitle: subtitleA
-      }
-
-      this.http.post('http://localhost:3000/EmailA', this.sendEmailA).subscribe(emailA => {
-        if(emailA)
-        {
-          let timerInterval = 0;
-
-          Swal.fire({
-            icon: 'success',
-            iconColor: 'yellow',
-            title: 'Gasto actualizado',
-            text: 'Informando al administrador de tu cambio',
-            showConfirmButton: false,
-            timer: 2500,
-            timerProgressBar: true,
-
-            willClose: () => {
-              clearInterval(timerInterval)
-            }
-          }).then((result) => {
-            if(result.dismiss === Swal.DismissReason.timer)
-            {
-              window.location.href='/otherUser/Gastos'
-            }
-          })
-        }
-      })
-
-    })
-  }
+     editFile()
+     {
+       Swal.fire({
+         icon: 'info',
+         title: 'Editar archivo',
+         text: 'Esta función solo sirve para modificar el archivo registrado, deseas continuar?',
+         showCancelButton: true,
+         showConfirmButton: true,
+         confirmButtonColor: '#F25F29'
+       }).then(res => {
+         if(res.isConfirmed)
+         {
+           //console.log(this.receiptno, this.head, this.authCloseTrip)
+           const data = {id: this.receiptno, head: this.idHead};
+   
+           this.sharedDataService.setData(data);
+   
+           localStorage.setItem('DataEditarDocumento-OtherUser', JSON.stringify(data))
+   
+           this.router.navigate(['/otherUser/Editar/Documento']);
+         }
+       })
+     }
 
 }

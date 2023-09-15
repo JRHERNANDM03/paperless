@@ -29,6 +29,22 @@
     background-color: #F25F29;
 }
 
+.titulo-ext{
+    color: #AD4782;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#card{
+    width: 100%; 
+    height: 89%; 
+    border-color: #73246D;
+}
+
+#lineCard{
+    border-color: #e0440cef;
+}
+
 @media all and (max-width: 775px)
 {
 

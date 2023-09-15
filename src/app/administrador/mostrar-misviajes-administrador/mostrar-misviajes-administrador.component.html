@@ -53,15 +53,15 @@
 
 
 <div class="text-center" style="padding-top: 2%; padding-bottom: 4%;">
-<h2 style="color: black">MIS VIAJES</h2>        
+<h2 class="titulo-ext">MIS VIAJES</h2>        
 </div>
 
 
 <div class="container" style="padding-bottom: 5%;">
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<div class="row row-cols-1 row-cols-md-3 g-3">
 
   <div class="col" *ngFor="let item of responseArray; let i = index">
-    <div class="card">
+    <div class="card" id="card">
       <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
       <div class="card-body">
         <h5 class="card-title">{{item.zort1}}</h5>

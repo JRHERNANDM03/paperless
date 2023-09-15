@@ -69,6 +69,13 @@ import { AEstadosComponent } from './administrador/filtros/a-estados/a-estados.c
 import { HomeChangeUserComponent } from './viajero/home-change-user/home-change-user.component';
 import { FormsModule } from '@angular/forms';
 import { Respuesta2FormularioAdministradorComponent } from './administrador/respuesta2-formulario-administrador/respuesta2-formulario-administrador.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideStorage,getStorage } from '@angular/fire/storage';
+import { EditarFileComponent } from './viajero/editar-file/editar-file.component';
+import { EditarFileOtherUserComponent } from './otherUser/editar-file-other-user/editar-file-other-user.component';
+import { EditarFileDirectorComponent } from './director/editar-file-director/editar-file-director.component';
+import { EditarFileAdministradorComponent } from './administrador/editar-file-administrador/editar-file-administrador.component';
 
 
 @NgModule({
@@ -124,7 +131,11 @@ import { Respuesta2FormularioAdministradorComponent } from './administrador/resp
     RespuestaFormularioAdministradorComponent,
     AEstadosComponent,
     HomeChangeUserComponent,
-    Respuesta2FormularioAdministradorComponent
+    Respuesta2FormularioAdministradorComponent,
+    EditarFileComponent,
+    EditarFileOtherUserComponent,
+    EditarFileDirectorComponent,
+    EditarFileAdministradorComponent
   ],
   imports: [
     BrowserModule,
@@ -140,6 +151,8 @@ import { Respuesta2FormularioAdministradorComponent } from './administrador/resp
         redirect_uri: window.location.origin
       }
     }),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideStorage(() => getStorage()),
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

@@ -51,6 +51,10 @@ import { OtherNumeroViajeComponent } from './otherUser/filtros/other-numero-viaj
 import { RegistrarGastoOtherUserComponent } from './otherUser/registrar-gasto-other-user/registrar-gasto-other-user.component';
 import { EditarGastoOtherUserComponent } from './otherUser/editar-gasto-other-user/editar-gasto-other-user.component';
 import { ShowFileComponent } from './file/show-file/show-file.component';
+import { EditarFileComponent } from './viajero/editar-file/editar-file.component';
+import { EditarFileDirectorComponent } from './director/editar-file-director/editar-file-director.component';
+import { EditarFileAdministradorComponent } from './administrador/editar-file-administrador/editar-file-administrador.component';
+import { EditarFileOtherUserComponent } from './otherUser/editar-file-other-user/editar-file-other-user.component';
 
 
 const routes: Routes = [
@@ -66,6 +70,7 @@ const routes: Routes = [
   { path:'Viajero/Filtro/Fecha', component:FechaComponent},
   { path:'Viajero/Filtro/Estado', component:EstadoComponent},
   { path:'Viajero/CambiarUsuaro', component:HomeChangeUserComponent},
+  { path:'Viajero/Editar/Documento', component:EditarFileComponent},
   { path:'Director/Home', component:HomeDirectorComponent},
   { path:'Director/Viaje', component:MostrarViajeDirectorComponent},
   { path:'Director/Gastos', component:MostrarGastosDirectorComponent},
@@ -80,6 +85,7 @@ const routes: Routes = [
   { path:'Director/Detalles/Mis-Gastos', component:MostrarDetallesMisGastosDirectorComponent},
   { path:'Director/Registrar/Gasto', component:RegistrarGastoDirectorComponent},
   { path:'Director/Editar/Gasto', component:EditarGastoDirectorComponent},
+  { path:'Director/Editar/Documento', component:EditarFileDirectorComponent},
   { path:'Administrador/Home', component:HomeAdministradorComponent},
   { path:'Administrador/Viaje', component:MostrarViajeAdministradorComponent},
   { path:'Administrador/Gastos', component:MostrarGastosAdministradorComponent},
@@ -96,6 +102,7 @@ const routes: Routes = [
   { path:'Administrador/Registrar/Gasto', component:RegistrarGastoAdministradorComponent},
   { path:'Administrador/Answer', component:RespuestaFormularioAdministradorComponent}, 
   { path:'Administrador/Answer2', component:Respuesta2FormularioAdministradorComponent}, 
+  { path:'Administrador/Editar/Documento', component:EditarFileAdministradorComponent},
   { path:'otherUser/Home', component:HomeOtherUserComponent},
   { path:'otherUser/Viaje', component:MostrarViajeOtherUserComponent},
   { path:'otherUser/Gastos', component:MostrarGastoOtherUserComponent},
@@ -105,6 +112,7 @@ const routes: Routes = [
   { path:'otherUser/Detalles/Gasto', component:DetalleGastoOtherUserComponent},
   { path:'otherUser/Registrar/Gasto', component:RegistrarGastoOtherUserComponent},
   { path:'otherUser/Editar/Gasto', component:EditarGastoOtherUserComponent},
+  { path:'otherUser/Editar/Documento', component:EditarFileOtherUserComponent},
   { path:'showFile', component:ShowFileComponent},
   { path:'***', redirectTo:'inicio', pathMatch:'full'}
   

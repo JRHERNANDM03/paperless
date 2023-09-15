@@ -42,12 +42,12 @@
 </div>
 
 <div class="text-center">
-<h2 style="color: black;">Detalles de gasto seleccionado</h2>
+<h2 class="titulo-ext">Detalles de gasto seleccionado</h2>
 </div>
 
 <div id="contenerdorCentrador" class="text-center container" style="justify-content: space-between;">
-<a style="color: black; font-size: x-large;">Viaje: {{reinrHead}}</a>
-<a style="color: black; font-size: x-large;">Colaborador: {{nameCollaborator}} - {{pernr}}</a>
+<a class="titulo-ext" style=" font-size: x-large;">Viaje: {{reinrHead}}</a>
+<a class="titulo-ext" style=" font-size: x-large;">Colaborador: {{nameCollaborator}} - {{pernr}}</a>
 </div>
 
 
@@ -55,7 +55,7 @@
     <button (click)="notify(receiptno, reinr, pernr)" class="btn btn-success" [style.display]="displayChange">CAMIBIAR ESTADO</button>
 </div>
 
-<div class="container" style="padding: 1%;">
+<div class="container" id="contenedor">
 <form class="row g-3" style="padding-top: 3%; padding-bottom: 8%;">
   <div class="col-md-12">
     <label for="inputEmail4" class="form-label" style="color: black;">COMENTARIO:</label>
@@ -68,7 +68,7 @@
       <label for="floatingInput">Estado</label>
     </div>
     <div class="col form-floating mb-3" >
-      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{exp_type}}" aria-label="First name" readonly>
+      <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{exp_typeGeneral}}" aria-label="First name" readonly>
       <label for="floatingInput">Tipo de gasto</label>
     </div>
   </div>
@@ -95,7 +95,7 @@
     <label for="floatingInput">Fecha de gasto</label>
   </div>
   <div class="col form-floating mb-3" >
-   <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{tax_code}}" aria-label="First name" readonly>
+   <input type="text" step="any" name="import" class="form-control card border-dark mb-3" id="floatingInput" value="{{tax_codeGeneral}}" aria-label="First name" readonly>
    <label for="floatingInput">Indicador de impuestos</label>
  </div>
  </div> 
@@ -110,14 +110,14 @@
    <label for="floatingTextarea">Descripción</label>
  </div>
 
- <div class="form-floating" (click)="showFile(uuid)">
-  <input type="text" class="form-control card border-dark mb-3" value="{{uuid}}" aria-label="First name" readonly>
-  <label for="floatingTextarea">Justificación <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
-    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/>
-  </svg></label>
-</div>
+ <div id="justificacion">
+   <label for="inputPassword4" class="form-label" style="color: black;">Justificación:</label>
+   <a *ngIf="fileDownloadURL" [href]="fileDownloadURL" target="_blank" class="form-control card border-dark mb-3" id="inputPassword4" style="text-decoration: none;">{{uuid}}</a>
+ </div>
 
 </form>
 
+
 </div>
 
+<br>
