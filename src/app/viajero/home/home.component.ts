@@ -12,6 +12,7 @@ import {ServiceService} from '../../Service/service.service'
 
 interface UserData {
   PERNR: string;
+  rol_id: number;
   // Otros campos que esperas en los datos de respuesta
 }
 
@@ -101,6 +102,11 @@ responseArray: PTRV_HEAD[] = [];
 getData(nickname: String)
 {
   this.http.get<UserData>(this.url+'USERS/' + nickname).subscribe(data => {
+
+    if(data.rol_id != 1)
+    {
+      window.location.href='/access_error';
+    }
 
   this.pernr = data.PERNR;
 

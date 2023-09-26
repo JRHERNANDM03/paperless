@@ -47,6 +47,19 @@ interface dataAuth{
   time2: string;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-mostrar-miviaje-administrador',
   templateUrl: './mostrar-miviaje-administrador.component.html',
@@ -101,6 +114,8 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
           this.getDataTrip(params['id'])
         })*/
 
+        this.getDataUserLogg();
+
         this.recivedData = this.sharedDataService.getData()
 
         if(this.recivedData)
@@ -125,6 +140,19 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
       }
     })
   }
+
+  getDataUserLogg()
+{
+  this.auth.user$.subscribe(user => {
+    const nickname = user?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+      if(data.rol_id != 3)
+      {
+        window.location.href='/access_error';
+      }
+    })
+  })
+}
 
   getDataTrip(idHead: number)
   {

@@ -10,6 +10,7 @@ import { ServiceService } from 'src/app/Service/service.service';
 interface user
 {
   area_id: number;
+  rol_id: number;
 }
 
 interface ptrv_head
@@ -87,6 +88,12 @@ export class DEstadoComponent implements OnInit{
   getInfoUser(nickname: string)
   {
     this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
+
+      if(data.rol_id != 2)
+      {
+        window.location.href='/access_error';
+      }
+
       this.areaID = data.area_id
     })
   }

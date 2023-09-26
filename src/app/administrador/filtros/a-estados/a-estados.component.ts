@@ -11,6 +11,7 @@ import { ServiceService } from 'src/app/Service/service.service';
 interface dataUser
 {
   PERNR: number;
+  rol_id: number;
 }
 
 interface ptrv_headP
@@ -112,6 +113,12 @@ url:any;
   getData(userNickname: string)
   {
     this.http.get<dataUser>(this.url+'USERS/' + userNickname).subscribe(data => {
+
+      if(data.rol_id != 3)
+      {
+        window.location.href='/access_error';
+      }
+
       this.pernrUser = data.PERNR;
     })
   }

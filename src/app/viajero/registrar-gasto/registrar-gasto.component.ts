@@ -19,6 +19,19 @@ interface data_PTRV_HEAD
   zland: string;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-registrar-gasto',
   templateUrl: './registrar-gasto.component.html',
@@ -107,6 +120,8 @@ url: any;
       {
         const service = new ServiceService();
         this.url = service.url();
+
+        this.getDataUserLogg();
         
         /*this.route.queryParams.subscribe(params => {
           const id_head = params['id'];
@@ -144,6 +159,19 @@ url: any;
           })
 
       }
+    })
+  }
+
+  getDataUserLogg()
+  {
+    this.auth.user$.subscribe(dataUser => {
+      const nickname = dataUser?.nickname;
+      this.http.get<dataUser>(this.url+'USERS/'+nickname).subscribe(data => {
+        if(data.rol_id != 1)
+        {
+          window.location.href='/access_error';
+        }
+      })
     })
   }
 

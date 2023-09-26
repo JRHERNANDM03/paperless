@@ -40,6 +40,19 @@ interface ptrv_head{
   zort1: string;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-respuesta-formulario-administrador',
   templateUrl: './respuesta-formulario-administrador.component.html',
@@ -83,6 +96,8 @@ ngOnInit(): void {
     }else if(isAuthenticate){
       const service = new ServiceService();
       this.url = service.url();
+
+      this.getDataUserLogg();
 
       /*this.route.queryParams.subscribe(params => {
         this.n_empArray = params['n_empArray'];
@@ -134,6 +149,19 @@ ngOnInit(): void {
       this.obtenerFechaHaceUnaSemana()
       this.print()
     }
+  })
+}
+
+getDataUserLogg()
+{
+  this.auth.user$.subscribe(user => {
+    const nickname = user?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+      if(data.rol_id != 3)
+      {
+        window.location.href='/access_error';
+      }
+    })
   })
 }
 

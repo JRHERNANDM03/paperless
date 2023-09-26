@@ -33,6 +33,19 @@ interface zfi_gv_paper_general
   auth: number;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 
 @Component({
   selector: 'app-mostrar-mis-gastos-director',
@@ -84,6 +97,8 @@ export class MostrarMisGastosDirectorComponent implements OnInit {
         const service = new ServiceService();
         this.url = service.url();
 
+        this.getDataUserLogg();
+
         this.recivedData = this.sharedDataService.getData()
 
         if(this.recivedData)
@@ -108,6 +123,19 @@ export class MostrarMisGastosDirectorComponent implements OnInit {
       }
     })
   }
+
+  getDataUserLogg()
+{
+  this.auth.user$.subscribe(dataUser => {
+    const nickname = dataUser?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/'+nickname).subscribe(data => {
+      if(data.rol_id != 2)
+      {
+        window.location.href='/access_error';
+      }
+    })
+  })
+}
 
   getData(id: number)
   {

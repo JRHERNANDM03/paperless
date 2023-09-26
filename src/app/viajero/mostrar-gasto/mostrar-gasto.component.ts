@@ -36,6 +36,18 @@ interface zfi_gv_paper_general
   object_id: string;
 }
  
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
 
 @Component({
   selector: 'app-mostrar-gasto',
@@ -83,6 +95,8 @@ ngOnInit(): void {
     {
       const service = new ServiceService();
       this.url = service.url();
+
+      this.getDataUserLogg();
       
       /*this.route.queryParams.subscribe(params => {
         const idHead = params['id'];
@@ -120,6 +134,19 @@ ngOnInit(): void {
     }
   })
 }
+
+getDataUserLogg()
+  {
+    this.auth.user$.subscribe(dataUser => {
+      const nickname = dataUser?.nickname;
+      this.http.get<dataUser>(this.url+'USERS/'+nickname).subscribe(data => {
+        if(data.rol_id != 1)
+        {
+          window.location.href='/access_error';
+        }
+      })
+    })
+  }
 
 getData(id: number)
 {

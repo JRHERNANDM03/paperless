@@ -84,6 +84,19 @@ interface info_user{
   rol_id: number;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-mostrar-detalles-gastos-administrador',
   templateUrl: './mostrar-detalles-gastos-administrador.component.html',
@@ -176,6 +189,8 @@ complete_name!: string;
 
         })*/
 
+        this.getDataUserLogg();
+
         this.recivedData = this.sharedDataService.getData()
 
       if(this.recivedData)
@@ -207,6 +222,19 @@ complete_name!: string;
           this.complete_name = String(infoUser?.name)
         })
       }
+    })
+  }
+
+  getDataUserLogg()
+  {
+    this.auth.user$.subscribe(user => {
+      const nickname = user?.nickname;
+      this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+        if(data.rol_id != 3)
+        {
+          window.location.href='/access_error';
+        }
+      })
     })
   }
 

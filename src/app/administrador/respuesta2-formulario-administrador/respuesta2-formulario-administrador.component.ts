@@ -38,6 +38,19 @@ interface ptrv_head{
   zort1: string;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-respuesta2-formulario-administrador',
   templateUrl: './respuesta2-formulario-administrador.component.html',
@@ -82,6 +95,8 @@ url:any;
       {
         const service = new ServiceService();
         this.url = service.url();
+
+        this.getDataUserLogg();
 
         /*this.route.queryParams.subscribe(params => {
           this.value_pernr = params['n_empArray'];
@@ -136,6 +151,18 @@ url:any;
     })
   }
 
+  getDataUserLogg()
+{
+  this.auth.user$.subscribe(user => {
+    const nickname = user?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+      if(data.rol_id != 3)
+      {
+        window.location.href='/access_error';
+      }
+    })
+  })
+}
 
   print()
 { 

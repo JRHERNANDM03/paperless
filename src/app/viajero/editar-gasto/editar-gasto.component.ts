@@ -27,6 +27,18 @@ interface dataGeneral
   auth: number;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
 
 @Component({
   selector: 'app-editar-gasto',
@@ -110,6 +122,7 @@ url:any;
         const service = new ServiceService();
         this.url = service.url();
         
+        this.getDataUserLogg();
        /* this.route.queryParams.subscribe(params => {
           this.receiptno = params['id'];
           this.getData(this.receiptno);
@@ -146,6 +159,18 @@ url:any;
     })
   }
 
+  getDataUserLogg()
+  {
+    this.auth.user$.subscribe(dataUser => {
+      const nickname = dataUser?.nickname;
+      this.http.get<dataUser>(this.url+'USERS/'+nickname).subscribe(data => {
+        if(data.rol_id != 1)
+        {
+          window.location.href='/access_error';
+        }
+      })
+    })
+  }
 
   getData(receiptno: number)
   {

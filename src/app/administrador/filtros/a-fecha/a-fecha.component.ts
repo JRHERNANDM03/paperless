@@ -11,6 +11,7 @@ import { ServiceService } from 'src/app/Service/service.service';
 interface user
 {
   PERNR: number;
+  rol_id: number;
 }
 
 interface ptrv_head 
@@ -95,6 +96,12 @@ export class AFechaComponent implements OnInit {
   getPERNR(nickname: string)
 {
   this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
+
+    if(data.rol_id != 3)
+    {
+      window.location.href='/access_error';
+    }
+    
     this.pernrU = data.PERNR;
   })
 }

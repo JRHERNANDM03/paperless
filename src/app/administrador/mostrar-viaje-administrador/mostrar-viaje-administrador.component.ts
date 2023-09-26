@@ -41,6 +41,19 @@ interface dataTrip{
   zort1: string;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-mostrar-viaje-administrador',
   templateUrl: './mostrar-viaje-administrador.component.html',
@@ -102,6 +115,8 @@ ngOnInit(): void {
         this.getDataTrip(params['id'])
       })*/
 
+      this.getDataUserLogg();
+
       this.recivedData = this.sharedDataService.getData()
 
       if(this.recivedData)
@@ -121,6 +136,19 @@ ngOnInit(): void {
 
       }}
     }
+  })
+}
+
+getDataUserLogg()
+{
+  this.auth.user$.subscribe(user => {
+    const nickname = user?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+      if(data.rol_id != 3)
+      {
+        window.location.href='/access_error';
+      }
+    })
   })
 }
 

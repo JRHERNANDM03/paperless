@@ -13,6 +13,7 @@ interface user
 {
   PERNR: number;
   area_id: number;
+  rol_id: number;
 }
 
 interface PTRV_HEAD{
@@ -53,6 +54,7 @@ interface authorize
   date2: string;
   time2: string;
 }
+
 
 
 @Component({
@@ -147,6 +149,12 @@ export class MostrarMiviajeDirectorComponent implements OnInit {
         this.auth.user$.subscribe(infoUser => {
           this.completeName = String(infoUser?.name)
           this.http.get<user>(this.url+'USERS/' + infoUser?.nickname).subscribe(data => {
+
+            if(data.rol_id != 2)
+            {
+              window.location.href='/access_error';
+            }
+
             this.pernrUser = String(data.PERNR);
             this.getTrip()
           })

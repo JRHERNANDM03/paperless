@@ -79,6 +79,19 @@ interface ptrv_head {
   zort1: string;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-mostrar-gastos-administrador',
   templateUrl: './mostrar-gastos-administrador.component.html',
@@ -135,6 +148,8 @@ ngOnInit(): void {
       const service = new ServiceService();
       this.url = service.url();
 
+      this.getDataUserLogg();
+
       /*this.route.queryParams.subscribe(params => {
         this.idHead = params['id'];
         this.reinrHead = params['reinr'];
@@ -164,8 +179,22 @@ ngOnInit(): void {
 
       this.auth.user$.subscribe(infoUser => {
         this.complete_name = String(infoUser?.name)
+        
       })
     }
+  })
+}
+
+getDataUserLogg()
+{
+  this.auth.user$.subscribe(user => {
+    const nickname = user?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+      if(data.rol_id != 3)
+      {
+        window.location.href='/access_error';
+      }
+    })
   })
 }
 

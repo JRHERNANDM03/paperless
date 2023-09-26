@@ -30,6 +30,19 @@ interface zfi_gv_paper_general
   reinr: string;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-editar-gasto-administrador',
   templateUrl: './editar-gasto-administrador.component.html',
@@ -101,6 +114,8 @@ authExpense!: number;
         const service = new ServiceService();
         this.url = service.url();
 
+        this.getDataUserLogg();
+
         /*this.route.queryParams.subscribe(params => {
           this.idReceiptno = params['id'];
           this.idHead = params['idhead'];
@@ -144,6 +159,19 @@ authExpense!: number;
       }
     })
   }
+
+  getDataUserLogg()
+{
+  this.auth.user$.subscribe(user => {
+    const nickname = user?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+      if(data.rol_id != 3)
+      {
+        window.location.href='/access_error';
+      }
+    })
+  })
+}
 
   getData(receiptno: number)
   {

@@ -10,6 +10,7 @@ import { ServiceService } from 'src/app/Service/service.service';
 interface user 
 {
   PERNR: number;
+  rol_id: number;
 }
 
 interface head 
@@ -82,6 +83,12 @@ styleDisplay = 'none';
 getPERNR(nickname: string)
 {
   this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
+
+    if(data.rol_id != 1)
+    {
+      window.location.href='/access_error';
+    }
+
     this.pernrUser = data.PERNR;
   })
 }

@@ -54,6 +54,7 @@ import { EditarFileComponent } from './viajero/editar-file/editar-file.component
 import { EditarFileDirectorComponent } from './director/editar-file-director/editar-file-director.component';
 import { EditarFileAdministradorComponent } from './administrador/editar-file-administrador/editar-file-administrador.component';
 import { EditarFileOtherUserComponent } from './otherUser/editar-file-other-user/editar-file-other-user.component';
+import { AccessErrorComponent } from './access/access-error/access-error.component';
 
 
 const routes: Routes = [
@@ -112,6 +113,7 @@ const routes: Routes = [
   { path:'otherUser/Registrar/Gasto', component:RegistrarGastoOtherUserComponent},
   { path:'otherUser/Editar/Gasto', component:EditarGastoOtherUserComponent},
   { path:'otherUser/Editar/Documento', component:EditarFileOtherUserComponent},
+  { path:'access_error', component:AccessErrorComponent},
   { path:'***', redirectTo:'inicio', pathMatch:'full'}
   
 ];

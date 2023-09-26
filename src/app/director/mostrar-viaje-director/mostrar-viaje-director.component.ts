@@ -57,7 +57,9 @@ rol_id: number;
 interface userLogg
 {
   PERNR: number;
+  rol_id: number;
 }
+
 
 @Component({
   selector: 'app-mostrar-viaje-director',
@@ -168,6 +170,12 @@ export class MostrarViajeDirectorComponent implements OnInit{
   getUserDataLogg(nickname: string)
   {
     this.http.get<userLogg>(this.url+'USERS/' + nickname).subscribe(dataUser => {
+
+      if(dataUser.rol_id != 2)
+      {
+        window.location.href='/access_error';
+      }
+
       this.pernrDirector = dataUser?.PERNR;
     })
   }

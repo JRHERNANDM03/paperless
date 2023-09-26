@@ -18,6 +18,19 @@ interface data_PTRV_HEAD
   zland: string;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-registrar-gasto-administrador',
   templateUrl: './registrar-gasto-administrador.component.html',
@@ -82,6 +95,8 @@ ngOnInit(): void {
         this.getData(params['id'])
       })*/
 
+      this.getDataUserLogg();
+
       this.recivedData = this.sharedDataService.getData()
 
         if(this.recivedData)
@@ -109,6 +124,19 @@ ngOnInit(): void {
         this.nickname = String(dataUser?.nickname)
       })
     }
+  })
+}
+
+getDataUserLogg()
+{
+  this.auth.user$.subscribe(user => {
+    const nickname = user?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+      if(data.rol_id != 3)
+      {
+        window.location.href='/access_error';
+      }
+    })
   })
 }
 

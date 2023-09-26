@@ -18,6 +18,19 @@ interface data_PTRV_HEAD
   zland: string;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-registrar-gasto-director',
   templateUrl: './registrar-gasto-director.component.html',
@@ -113,6 +126,8 @@ url:any;
         const service = new ServiceService();
         this.url = service.url();
 
+        this.getDataUserLogg();
+
         this.recivedData = this.sharedDataService.getData()
 
         if(this.recivedData)
@@ -147,6 +162,19 @@ url:any;
       }
     })
   }
+
+  getDataUserLogg()
+{
+  this.auth.user$.subscribe(dataUser => {
+    const nickname = dataUser?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/'+nickname).subscribe(data => {
+      if(data.rol_id != 2)
+      {
+        window.location.href='/access_error';
+      }
+    })
+  })
+}
 
   getData(id_head: number)
   {

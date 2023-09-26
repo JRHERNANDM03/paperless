@@ -47,6 +47,19 @@ interface dataGeneral {
   xml: string;
   }
 
+  interface dataUser{
+    PERNR: number;
+    area: string;
+    area_id: number;
+    lastname: string;
+    name: string;
+    nickname: string;
+    puesto: string;
+    rol_id: number;
+    society: number;
+
+  }
+
 @Component({
   selector: 'app-editar-file-administrador',
   templateUrl: './editar-file-administrador.component.html',
@@ -85,6 +98,8 @@ ngOnInit()
 
       this.recivedData = this.sharedDataService.getData()
 
+      this.getDataUserLogg();
+
         if(this.recivedData)
         {
           this.receiptno = this.recivedData.id;
@@ -109,7 +124,18 @@ ngOnInit()
   })
 }
 
-
+getDataUserLogg()
+{
+  this.auth.user$.subscribe(user => {
+    const nickname = user?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+      if(data.rol_id != 3)
+      {
+        window.location.href='/access_error';
+      }
+    })
+  })
+}
 
 getData(receiptno: number)
 {

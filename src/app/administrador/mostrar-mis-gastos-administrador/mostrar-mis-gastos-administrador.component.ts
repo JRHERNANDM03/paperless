@@ -49,6 +49,20 @@ interface ptrv_head
   closeTrip: number;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
+
 @Component({
   selector: 'app-mostrar-mis-gastos-administrador',
   templateUrl: './mostrar-mis-gastos-administrador.component.html',
@@ -118,6 +132,19 @@ url:any;
       }
     })
   }
+
+  getDataUserLogg()
+{
+  this.auth.user$.subscribe(user => {
+    const nickname = user?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+      if(data.rol_id != 3)
+      {
+        window.location.href='/access_error';
+      }
+    })
+  })
+}
 
   getTravelExpenses(reinr: string){
 

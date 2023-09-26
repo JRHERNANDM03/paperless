@@ -12,6 +12,7 @@ import { ServiceService } from 'src/app/Service/service.service';
 interface user
 {
   PERNR: number;
+  rol_id: number;
 }
 
 
@@ -41,6 +42,12 @@ export class HomeChangeUserComponent implements OnInit {
 
         this.auth.user$.subscribe(infoUser => {
           this.http.get<user>(this.url+'USERS/'+ infoUser?.nickname).subscribe(dataUser => {
+
+            if(dataUser.rol_id != 1)
+            {
+              window.location.href='/access_error';
+            }
+
             this.pernrLoggeado = dataUser.PERNR;
           })
         })

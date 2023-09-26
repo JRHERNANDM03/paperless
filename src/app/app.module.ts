@@ -75,6 +75,7 @@ import { EditarFileComponent } from './viajero/editar-file/editar-file.component
 import { EditarFileOtherUserComponent } from './otherUser/editar-file-other-user/editar-file-other-user.component';
 import { EditarFileDirectorComponent } from './director/editar-file-director/editar-file-director.component';
 import { EditarFileAdministradorComponent } from './administrador/editar-file-administrador/editar-file-administrador.component';
+import { AccessErrorComponent } from './access/access-error/access-error.component';
 
 
 @NgModule({
@@ -133,7 +134,8 @@ import { EditarFileAdministradorComponent } from './administrador/editar-file-ad
     EditarFileComponent,
     EditarFileOtherUserComponent,
     EditarFileDirectorComponent,
-    EditarFileAdministradorComponent
+    EditarFileAdministradorComponent,
+    AccessErrorComponent
   ],
   imports: [
     BrowserModule,

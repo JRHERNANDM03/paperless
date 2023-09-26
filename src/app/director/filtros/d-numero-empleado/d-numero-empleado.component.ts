@@ -37,6 +37,7 @@ interface PTRV_HEAD{
 interface user
 {
   area_id: number;
+  rol_id: number;
 }
 
 @Component({
@@ -77,6 +78,12 @@ ngOnInit(): void {
 getInfoUser(nickname: string)
 {
   this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
+
+    if(data.rol_id != 2)
+    {
+      window.location.href='/access_error';
+    }
+
     this.area_id = data.area_id
   })
 }

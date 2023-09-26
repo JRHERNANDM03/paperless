@@ -39,6 +39,19 @@ interface zfi_gv_paper_general
   auth: number; 
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-mostrar-detalles-gastos-director',
   templateUrl: './mostrar-detalles-gastos-director.component.html',
@@ -93,6 +106,8 @@ constructor(private storage: Storage, public auth:AuthService, private router: R
           this.getDataSpent(params['receiptno'])
         })*/
 
+        this.getDataUserLogg();
+
         const serivce = new ServiceService();
         this.url = serivce.url();
         
@@ -119,6 +134,19 @@ constructor(private storage: Storage, public auth:AuthService, private router: R
       }
     })
   }
+
+  getDataUserLogg()
+{
+  this.auth.user$.subscribe(dataUser => {
+    const nickname = dataUser?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/'+nickname).subscribe(data => {
+      if(data.rol_id != 2)
+      {
+        window.location.href='/access_error';
+      }
+    })
+  })
+}
 
   getDataTrip(idHead: number)
   {

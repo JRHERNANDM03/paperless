@@ -27,6 +27,19 @@ interface zfi_gv_paper_general
   reinr: string;
 }
 
+interface dataUser{
+  PERNR: number;
+  area: string;
+  area_id: number;
+  lastname: string;
+  name: string;
+  nickname: string;
+  puesto: string;
+  rol_id: number;
+  society: number;
+
+}
+
 @Component({
   selector: 'app-editar-gasto-director',
   templateUrl: './editar-gasto-director.component.html',
@@ -106,6 +119,8 @@ url:any;
         const service = new ServiceService();
         this.url = service.url();
 
+        this.getDataUserLogg();
+
         /*this.route.queryParams.subscribe(params => {
           this.authCloseTrip = params['authCloseTrip'];
           this.receiptno = params['id'];
@@ -144,6 +159,19 @@ url:any;
       }
     })
   }
+
+  getDataUserLogg()
+{
+  this.auth.user$.subscribe(dataUser => {
+    const nickname = dataUser?.nickname;
+    this.http.get<dataUser>(this.url+'USERS/'+nickname).subscribe(data => {
+      if(data.rol_id != 2)
+      {
+        window.location.href='/access_error';
+      }
+    })
+  })
+}
 
   getData(receiptno: number)
   {

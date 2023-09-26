@@ -75,6 +75,12 @@ url:any;
 getDataUser(nickname: string)
 {
   this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
+
+    if(data.rol_id != 3)
+    {
+      window.location.href='/access_error';
+    }
+
     this.pernrUser = data.PERNR;
   })
 }

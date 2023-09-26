@@ -11,6 +11,7 @@ import { ServiceService } from 'src/app/Service/service.service';
 
 interface UserData {
   PERNR: string;
+  rol_id: number;
   // Otros campos que esperas en los datos de respuesta
 }
 
@@ -97,6 +98,9 @@ export class HomeAdministradorComponent implements OnInit {
 {
   this.http.get<UserData>(this.url+'USERS/' + nickname).subscribe(data => {
 
+    if(data.rol_id != 3){
+      window.location.href='/access_error';
+    }
   const pernr_user = Number(data.PERNR);
   this.getEmailsA(pernr_user)
 

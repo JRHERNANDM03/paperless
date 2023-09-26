@@ -12,6 +12,7 @@ import { ServiceService } from 'src/app/Service/service.service';
 interface user
 {
   PERNR: number;
+  rol_id: number;
 }
 
 interface PTRV_HEAD{
@@ -144,6 +145,12 @@ url:any;
   getPernr(nickname: string)
   {
     this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
+
+      if(data.rol_id != 2)
+      {
+        window.location.href='/access_error'
+      }
+
       this.pernr = data.PERNR;
       this.pernrDirector = data.PERNR;
       this.getHead(this.pernr)
@@ -172,7 +179,7 @@ getEmailsD(pernr: number)
 {
   this.http.get<emailsD[]>(this.url+'EmailsD/' + pernr).subscribe(data => {
 
-    console.log(data)
+    //console.log(data)
     
     this.responseArrayEmails = data;
     this.visibility_auth = data.map(item => Number(item.visibility))
