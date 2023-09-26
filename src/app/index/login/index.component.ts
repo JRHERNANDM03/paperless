@@ -8,6 +8,8 @@ import { HttpClient } from '@angular/common/http';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 
 interface UserData {
   rol_id: string;
@@ -22,6 +24,7 @@ interface UserData {
 })
 export class IndexComponent implements OnInit{
 
+  url:any;
 
   constructor(private router: Router, public auth: AuthService, private http: HttpClient) {}
 
@@ -29,6 +32,9 @@ export class IndexComponent implements OnInit{
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(isAuthenticate)
       {
+        const service = new ServiceService();
+        this.url = service.url();
+
         //this.router.navigate(['/Viajero/Home'])
           this.auth.user$.subscribe(user => {
             const userEmail = user?.email;
@@ -103,7 +109,7 @@ failed()
 
 getData(id: String) {
   const nickname = id;
-    this.http.get<UserData>('http://localhost:3000/USERS/' + nickname).subscribe(
+    this.http.get<UserData>(this.url+'USERS/' + nickname).subscribe(
       data => {
         if(data.rol_id == '1')
         {

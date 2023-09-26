@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface dataTrip{
   auth: number;
   closeTrip: number;
@@ -85,6 +87,7 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
 
   recivedData: any;
 
+  url:any;
 
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -92,6 +95,8 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
        /* this.route.queryParams.subscribe(params => {
           this.getDataTrip(params['id'])
         })*/
@@ -123,7 +128,7 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
 
   getDataTrip(idHead: number)
   {
-    this.http.get<dataTrip>('http://localhost:3000/PTRV_HEADS/' + idHead).subscribe(data => {
+    this.http.get<dataTrip>(this.url+'PTRV_HEADS/' + idHead).subscribe(data => {
       this.authHead = data.auth;
       this.closeTripHead = data.closeTrip;
       this.created_atHead = data.created_at;
@@ -155,7 +160,7 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
 
   getAmountTrip(reinr: string)
   {
-    this.http.get<amount>('http://localhost:3000/getSUM_TRIP/' + reinr).subscribe(data => {
+    this.http.get<amount>(this.url+'getSUM_TRIP/' + reinr).subscribe(data => {
       this.amountHead = data.price_total;
     })
   }
@@ -231,7 +236,7 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
 
       try{ 
         
-        this.http.get<dataAuth>('http://localhost:3000/one_authorized/' + this.reinrHead).subscribe(dataAuth => {
+        this.http.get<dataAuth>(this.url+'one_authorized/' + this.reinrHead).subscribe(dataAuth => {
 
         let typeTrip = '';
 
@@ -260,10 +265,10 @@ export class MostrarMiviajeAdministradorComponent implements OnInit{
           closeTrip: 1
         }
 
-        this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(email_d => {
+        this.http.post(this.url+'EmailD', this.emailD).subscribe(email_d => {
           if(email_d)
           {
-            this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.idHead, this.updHead).subscribe(upd_head => {
+            this.http.patch(this.url+'PTRV_HEADS/' + this.idHead, this.updHead).subscribe(upd_head => {
               if(upd_head)
               {
                 this.closeConfirmed()

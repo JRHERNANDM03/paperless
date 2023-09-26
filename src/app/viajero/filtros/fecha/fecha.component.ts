@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
+import { ServiceService } from 'src/app/Service/service.service';
 
 interface user
 {
@@ -63,6 +64,8 @@ times_head!: string;
 uname_head!: string;
 authorized_head!: number;
 
+url:any;
+
   constructor(public auth: AuthService, private router: Router, private http: HttpClient, private route: ActivatedRoute, private sharedDataService: SharedDataService){}
 
   styleDisplay = 'none';
@@ -74,6 +77,9 @@ authorized_head!: number;
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
+        const service = new ServiceService();
+        this.url = service.url();
+        
         this.auth.user$.subscribe(info => {
           this.nickname = String(info?.nickname);
           this.getPERNR(this.nickname)
@@ -88,7 +94,7 @@ authorized_head!: number;
 
 getPERNR(nickname: string)
 {
-  this.http.get<user>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+  this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
     this.pernrU = data.PERNR;
   })
 }
@@ -116,7 +122,7 @@ responseArray: ptrv_head[] = [];
   authorized!: number[];
 
 submitForm() {
-  this.http.get<ptrv_head[]>('http://localhost:3000/PTRV_HEADS/filter/' + this.data1 + '/' + this.data2 + '/' + this.pernrU).subscribe(data => {
+  this.http.get<ptrv_head[]>(this.url+'PTRV_HEADS/filter/' + this.data1 + '/' + this.data2 + '/' + this.pernrU).subscribe(data => {
     this.responseArray = data;
     this.authorized = data.map(item => item.auth);
     this.listar()

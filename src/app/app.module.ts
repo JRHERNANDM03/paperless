@@ -50,7 +50,6 @@ import { DetalleGastoOtherUserComponent } from './otherUser/detalle-gasto-other-
 import { MostrarGastoOtherUserComponent } from './otherUser/mostrar-gasto-other-user/mostrar-gasto-other-user.component';
 import { RegistrarGastoOtherUserComponent } from './otherUser/registrar-gasto-other-user/registrar-gasto-other-user.component';
 import { EditarGastoOtherUserComponent } from './otherUser/editar-gasto-other-user/editar-gasto-other-user.component';
-import { ShowFileComponent } from './file/show-file/show-file.component';
 import { MostrarMiviajeDirectorComponent } from './director/mostrar-miviaje-director/mostrar-miviaje-director.component';
 import { PendientesHomeComponent } from './director/pendientes-home/pendientes-home.component';
 import { MostrarDetallesMisGastosDirectorComponent } from './director/mostrar-detalles-mis-gastos-director/mostrar-detalles-mis-gastos-director.component';
@@ -114,7 +113,6 @@ import { EditarFileAdministradorComponent } from './administrador/editar-file-ad
     MostrarGastoOtherUserComponent,
     RegistrarGastoOtherUserComponent,
     EditarGastoOtherUserComponent,
-    ShowFileComponent,
     MostrarMiviajeDirectorComponent,
     PendientesHomeComponent,
     MostrarDetallesMisGastosDirectorComponent,

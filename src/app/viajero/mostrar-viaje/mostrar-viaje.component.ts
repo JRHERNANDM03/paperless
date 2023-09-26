@@ -9,6 +9,8 @@ import Swal from 'sweetalert2'
 
 import { SharedDataService } from 'src/app/shared-data.service';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface user
 {
   area_id: number;
@@ -85,6 +87,8 @@ complete_name!: string;
 recivedData: any;
 idParams: any;
 
+url: any;
+
   constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
   
   styleClose='none'
@@ -96,6 +100,8 @@ idParams: any;
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
+        const service = new ServiceService();
+        this.url = service.url();
 
         this.recivedData = this.sharedDataService.getData()
 
@@ -124,6 +130,7 @@ idParams: any;
         this.auth.user$.subscribe(info => {
             this.complete_name = String(info?.name);
         })
+
       }
     })
   }
@@ -133,7 +140,7 @@ idParams: any;
   {
      const id = this.idParams;
 
-    this.http.get<saveData>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
+    this.http.get<saveData>(this.url+'PTRV_HEADS/' + id).subscribe(data => {
     this.id = data.id;
     this.reinr = data.reinr;
     this.pernr = data.pernr;
@@ -164,7 +171,7 @@ idParams: any;
 
   getAccount(reinr: string)
   {
-    this.http.get<saveData>('http://localhost:3000/GENERAL/account/' + reinr).subscribe(data => {
+    this.http.get<saveData>(this.url+'GENERAL/account/' + reinr).subscribe(data => {
       if(data.TOTAL === null)
       {
         this.TOTAL = 0;
@@ -248,7 +255,7 @@ idParams: any;
 
 closeTrip()
 {
-  this.http.get<authorize>('http://localhost:3000/one_authorized/' + this.reinr).subscribe(data => {
+  this.http.get<authorize>(this.url+'one_authorized/' + this.reinr).subscribe(data => {
     this.createEmail(data.pernr_auth1)
   })
 }
@@ -279,7 +286,9 @@ createEmail(pernr_auth1: number)
     title: titulo,
     subtitle: subtitulo
   }
-  this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(res => {
+
+  //console.log(this.emailD)
+  this.http.post(this.url+'EmailD', this.emailD).subscribe(res => {
    
   if(res)
   {   
@@ -294,7 +303,7 @@ updatePTRV_HEAD()
   {
     closeTrip: 1
   }
-  this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.id, this.ptrv_head).subscribe(res => {
+  this.http.patch(this.url+'PTRV_HEADS/' + this.id, this.ptrv_head).subscribe(res => {
     this.successCloseTrip()
   })
 }

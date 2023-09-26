@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
+import { ServiceService } from 'src/app/Service/service.service';
 
 
 interface user
@@ -90,6 +91,8 @@ export class OtherEstadoComponent implements OnInit {
 
   recivedData: any;
 
+  url:any;
+
   constructor(private router: Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
   
   ngOnInit(): void {
@@ -98,6 +101,9 @@ export class OtherEstadoComponent implements OnInit {
       {
         this.router.navigate(['login'])
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+        
         /*this.route.queryParams.subscribe(params => {
           this.pernr = params['pernr'];
           this.getInfoUser(this.pernr)
@@ -118,6 +124,7 @@ export class OtherEstadoComponent implements OnInit {
         this.pernr = parsedData.pernr;
           this.getInfoUser(this.pernr)
         }}
+
   }
 
 })
@@ -126,7 +133,7 @@ export class OtherEstadoComponent implements OnInit {
 
   getInfoUser(pernr: number)
 {
-  this.http.get<user>('http://localhost:3000/User/' + pernr).subscribe(data => {
+  this.http.get<user>(this.url+'User/' + pernr).subscribe(data => {
     this.name = data.name;
   })
 }
@@ -140,7 +147,7 @@ authorized!: number[];
 
 getTRIPP()
 {
-  this.http.get<ptrv_headP[]>('http://localhost:3000/PTRV_HEADS/filter/authP/' + this.pernr).subscribe(pendientes => {
+  this.http.get<ptrv_headP[]>(this.url+'PTRV_HEADS/filter/authP/' + this.pernr).subscribe(pendientes => {
     this.responseArray1 = pendientes;
     this.authorized = pendientes.map(item => item.auth);
   })
@@ -149,7 +156,7 @@ getTRIPP()
 
 getTRIPA()
 {
-  this.http.get<ptrv_headA[]>('http://localhost:3000/PTRV_HEADS/filter/authA/' + this.pernr).subscribe(autorizados => {
+  this.http.get<ptrv_headA[]>(this.url+'PTRV_HEADS/filter/authA/' + this.pernr).subscribe(autorizados => {
     this.responseArray2 = autorizados;
     this.authorized = autorizados.map(item => item.auth);
   })
@@ -158,7 +165,7 @@ getTRIPA()
 
 getTRIPR()
 {
-  this.http.get<ptrv_headR[]>('http://localhost:3000/PTRV_HEADS/filter/authR/' + this.pernr).subscribe(rechazados => {
+  this.http.get<ptrv_headR[]>(this.url+'PTRV_HEADS/filter/authR/' + this.pernr).subscribe(rechazados => {
     this.responseArray3 = rechazados;
     this.authorized = rechazados.map(item => item.auth);
   })

@@ -8,6 +8,8 @@ import { Storage, ref, getDownloadURL, listAll} from '@angular/fire/storage';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface info
 {
   name: string;
@@ -72,6 +74,8 @@ export class MostrarDetallesGastosDirectorComponent implements OnInit{
 
   recivedData: any;
 
+  url:any;
+
     // Propiedad para almacenar el enlace de descarga del archivo
     fileDownloadURL: string | null = null;
 
@@ -89,6 +93,9 @@ constructor(private storage: Storage, public auth:AuthService, private router: R
           this.getDataSpent(params['receiptno'])
         })*/
 
+        const serivce = new ServiceService();
+        this.url = serivce.url();
+        
         this.recivedData = this.sharedDataService.getData()
 
         if(this.recivedData)
@@ -115,7 +122,7 @@ constructor(private storage: Storage, public auth:AuthService, private router: R
 
   getDataTrip(idHead: number)
   {
-    this.http.get<info>('http://localhost:3000/PTRV_HEADS/mostra_viaje/' + idHead).subscribe(data => {
+    this.http.get<info>(this.url+'PTRV_HEADS/mostra_viaje/' + idHead).subscribe(data => {
       this.reinr = data.reinr
       this.name = data.name
       this.pernr = data.pernr
@@ -124,7 +131,7 @@ constructor(private storage: Storage, public auth:AuthService, private router: R
 
   getDataSpent(receiptno: number)
   {
-    this.http.get<zfi_gv_paper_general>('http://localhost:3000/GENERAL/' + receiptno).subscribe(data => {
+    this.http.get<zfi_gv_paper_general>(this.url+'GENERAL/' + receiptno).subscribe(data => {
       
     //console.log(data);
     const fileName = data.uuid;

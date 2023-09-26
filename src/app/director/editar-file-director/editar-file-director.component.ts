@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
+import { ServiceService } from 'src/app/Service/service.service';
 
 interface dataGeneral {
   auth: number;
@@ -73,6 +74,8 @@ export class EditarFileDirectorComponent {
 
   recivedData: any;
 
+  url:any;
+
   constructor(private sharedDataService: SharedDataService, private router: Router, private route: ActivatedRoute, public auth: AuthService, private http: HttpClient, private storage: Storage){}
 
 ngOnInit()
@@ -83,6 +86,9 @@ ngOnInit()
       this.router.navigate(['login'])
     }else
     {
+      const service = new ServiceService();
+      this.url = service.url();
+
       this.recivedData = this.sharedDataService.getData()
 
         if(this.recivedData)
@@ -117,7 +123,7 @@ ngOnInit()
 
 getData(receiptno: number)
 {
-  this.http.get<dataGeneral>('http://localhost:3000/GENERAL/' + receiptno).subscribe(data => {
+  this.http.get<dataGeneral>(this.url+'GENERAL/' + receiptno).subscribe(data => {
     //console.log(data)
     this.uuid = data.uuid;
     this.pernr = data.pernr;
@@ -176,7 +182,7 @@ saveChange()
               object_id: response.metadata.name
             }
   
-            this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.dataUpdateGeneral).subscribe(upd => {
+            this.http.patch(this.url+'GENERAL/' + this.receiptno, this.dataUpdateGeneral).subscribe(upd => {
               if(upd)
               {
                 Swal.fire({
@@ -214,7 +220,7 @@ saveChange()
                 object_id: result.metadata.name
               }
     
-              this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.dataUpdateGeneral).subscribe(upd => {
+              this.http.patch(this.url+'GENERAL/' + this.receiptno, this.dataUpdateGeneral).subscribe(upd => {
                 if(upd)
                 {
                   Swal.fire({
@@ -268,7 +274,7 @@ saveChange()
               auth:0
             }
   
-            this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.dataUpdateGeneral).subscribe(upd => {
+            this.http.patch(this.url+'GENERAL/' + this.receiptno, this.dataUpdateGeneral).subscribe(upd => {
               if(upd)
               {
                 const titleA = 'Nuevo gasto actualizado.';
@@ -283,7 +289,7 @@ saveChange()
                   subtitle: subtitleA
                 }
 
-                this.http.post('http://localhost:3000/EmailA', this.sendEmailA).subscribe(emailA => {
+                this.http.post(this.url+'EmailA', this.sendEmailA).subscribe(emailA => {
                   if(emailA)
                   {
                           let timerInterval = 0;
@@ -332,7 +338,7 @@ saveChange()
                 auth:0
               }
     
-              this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.dataUpdateGeneral).subscribe(upd => {
+              this.http.patch(this.url+'GENERAL/' + this.receiptno, this.dataUpdateGeneral).subscribe(upd => {
                 if(upd)
                 {
 
@@ -348,7 +354,7 @@ saveChange()
                     subtitle: subtitleA
                   }
   
-                  this.http.post('http://localhost:3000/EmailA', this.sendEmailA).subscribe(emailA => {
+                  this.http.post(this.url+'EmailA', this.sendEmailA).subscribe(emailA => {
                     if(emailA)
                     {
                             let timerInterval = 0;

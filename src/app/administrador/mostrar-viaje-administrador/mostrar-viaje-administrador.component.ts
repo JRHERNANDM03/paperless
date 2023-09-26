@@ -7,6 +7,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface dataTrip{
   PERNR: number;
   area: string;
@@ -85,13 +87,16 @@ idHead!: number;
 
   recivedData: any;
 
+  url:any;
+
 ngOnInit(): void {
   this.auth.isAuthenticated$.subscribe(isAuthentica => {
     if(!isAuthentica)
     {
       this.auth.logout()
     }else if(isAuthentica){
-
+      const service = new ServiceService();
+      this.url = service.url();
       /*this.route.queryParams.subscribe(params => {
         this.idHeadParam = params['id']
         this.getDataTrip(params['id'])
@@ -122,7 +127,7 @@ ngOnInit(): void {
 
 getDataTrip(idHead: number)
 {
-  this.http.get<dataTrip>('http://localhost:3000/getOneTrip_allInf/' + idHead).subscribe(data => {
+  this.http.get<dataTrip>(this.url+'getOneTrip_allInf/' + idHead).subscribe(data => {
 
     this.PERNR = data.PERNR;
     this.area = data.area;

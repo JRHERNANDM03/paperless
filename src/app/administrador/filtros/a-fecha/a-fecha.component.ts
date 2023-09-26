@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface user
 {
   PERNR: number;
@@ -68,12 +70,17 @@ export class AFechaComponent implements OnInit {
 
   styleDisplay = 'none';
 
+  url:any;
+
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+
         this.auth.user$.subscribe(info => {
           this.nickname = String(info?.nickname);
           this.getPERNR(this.nickname)
@@ -87,7 +94,7 @@ export class AFechaComponent implements OnInit {
 
   getPERNR(nickname: string)
 {
-  this.http.get<user>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+  this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
     this.pernrU = data.PERNR;
   })
 }
@@ -115,7 +122,7 @@ responseArray: ptrv_head[] = [];
   authorized!: number[];
 
 submitForm() {
-  this.http.get<ptrv_head[]>('http://localhost:3000/PTRV_HEADS/filter/' + this.data1 + '/' + this.data2 + '/' + this.pernrU).subscribe(data => {
+  this.http.get<ptrv_head[]>(this.url+'PTRV_HEADS/filter/' + this.data1 + '/' + this.data2 + '/' + this.pernrU).subscribe(data => {
     this.responseArray = data;
     this.authorized = data.map(item => item.auth);
     this.listar()

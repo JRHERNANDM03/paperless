@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import { Storage, ref, listAll, getDownloadURL } from '@angular/fire/storage';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface trip
 {
   reinr: string
@@ -76,6 +78,8 @@ recivedData: any;
 // Propiedad para almacenar el enlace de descarga del archivo
 fileDownloadURL: string | null = null;
 
+url: any;
+
   constructor (private storage: Storage, private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -84,6 +88,8 @@ fileDownloadURL: string | null = null;
       {
         this.router.navigate(['login'])
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
 
         document.querySelector('#contenerdorCentrador')?.scrollIntoView()
         /*this.route.queryParams.subscribe(params => {
@@ -122,27 +128,28 @@ fileDownloadURL: string | null = null;
         
         }}
 
+
       }
     })
   }
 
   getDataTrip(id: number)
   {
-    this.http.get<trip>('http://localhost:3000/PTRV_HEADS/ '+ id).subscribe(data => {
+    this.http.get<trip>(this.url+'PTRV_HEADS/ '+ id).subscribe(data => {
       this.reinr = data.reinr;
     })
   }
 
   getDataUser(pernr: number)
   {
-    this.http.get<user>('http://localhost:3000/User/' + pernr).subscribe(data => {
+    this.http.get<user>(this.url+'User/' + pernr).subscribe(data => {
       this.name = data.name;
     })
   }
 
   getData(id: number)
   {
-    this.http.get<zfi_gv_paper_general>('http://localhost:3000/GENERAL/' + id).subscribe(data => {
+    this.http.get<zfi_gv_paper_general>(this.url+'GENERAL/' + id).subscribe(data => {
       
     //console.log(data);
 

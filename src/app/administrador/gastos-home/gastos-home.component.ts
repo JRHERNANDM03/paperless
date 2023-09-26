@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
+import { ServiceService } from 'src/app/Service/service.service';
 
 interface dataTrip{
   auth: number;
@@ -41,12 +42,17 @@ export class GastosHomeComponent  implements OnInit{
  
   authorized!: number[];
 
+  url:any;
+
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+
         this.getTrip()
       }
     })
@@ -54,7 +60,7 @@ export class GastosHomeComponent  implements OnInit{
 
   getTrip()
   {
-    this.http.get<dataTrip[]>('http://localhost:3000/Trip_finalApproval').subscribe(data => {
+    this.http.get<dataTrip[]>(this.url+'Trip_finalApproval').subscribe(data => {
       this.responseArray = data;
       this.authorized = data.map(item => item.auth);
     })

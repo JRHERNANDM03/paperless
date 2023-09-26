@@ -7,6 +7,8 @@ import { AuthService } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
 import { SharedDataService } from 'src/app/shared-data.service';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface user
 {
   name: string;
@@ -49,6 +51,8 @@ nickname!: string;
 
 recivedData: any;
 
+url:any;
+
   constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -57,6 +61,8 @@ recivedData: any;
       {
         this.router.navigate(['login'])
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
            
         /*this.route.queryParams.subscribe(params => {
           this.pernr = params['pernr'];
@@ -82,6 +88,7 @@ recivedData: any;
           this.getTrip(this.pernr)
         }}
 
+
       }
     })
   }
@@ -89,7 +96,7 @@ recivedData: any;
 
   getDataUser(pernr: number)
   {
-    this.http.get<user>('http://localhost:3000/User/' + pernr).subscribe(data => {
+    this.http.get<user>(this.url+'User/' + pernr).subscribe(data => {
       this.name = data.name;
       this.lastname = data.lastname;
       this.nickname = data.nickname;
@@ -102,7 +109,7 @@ recivedData: any;
   
   getTrip(pernr: number)
   {
-    this.http.get<PTRV_HEADS[]>('http://localhost:3000/PTRV_HEADS/find/' + pernr).subscribe(data => {
+    this.http.get<PTRV_HEADS[]>(this.url+'PTRV_HEADS/find/' + pernr).subscribe(data => {
       this.responseArray = data;
       this.authorized = data.map(item => item.auth);
     })

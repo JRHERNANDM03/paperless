@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
+import { ServiceService } from 'src/app/Service/service.service';
 
 interface ptrv_head{
   PERNR: number;
@@ -70,6 +71,8 @@ amountTrip!: number;
 
 recivedData: any; 
 
+url:any;
+
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
@@ -77,6 +80,9 @@ recivedData: any;
         this.auth.logout;
       }else if(isAuthenticate)
       {
+        const service = new ServiceService();
+        this.url = service.url();
+
         /*this.route.queryParams.subscribe(params => {
           this.value_pernr = params['n_empArray'];
           this.value_reinr = params['n_viajeArray'];
@@ -155,7 +161,7 @@ recivedData: any;
     {
         //console.log('Todos los datos capturados')
         
-        const url = 'http://localhost:3000/get_info_filter9_administrator/'+ this.value_pernr +'/'+ this.value_reinr +'/'+ this.value_society +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
+        const url = this.url+'get_info_filter9_administrator/'+ this.value_pernr +'/'+ this.value_reinr +'/'+ this.value_society +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
 
         this.http.get<ptrv_head[]>(url).subscribe(data => {
           //console.log(data);
@@ -168,7 +174,7 @@ recivedData: any;
     {
       //console.log('Consultar viajes especificos de los usuarios dentro de las sociedades en especifico')
 
-      const url = 'http://localhost:3000/get_info_filter10_administrator/'+ this.value_reinr +'/'+ this.value_society +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
+      const url = this.url+'get_info_filter10_administrator/'+ this.value_reinr +'/'+ this.value_society +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
 
         this.http.get<ptrv_head[]>(url).subscribe(data => {
           //console.log(data);
@@ -181,7 +187,7 @@ recivedData: any;
     {
       //console.log('Traer todos los viajes de los usuarios dentro de una sociedad en especifico')
 
-      const url = 'http://localhost:3000/get_info_filter11_administrator/'+ this.value_society +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
+      const url = this.url+'get_info_filter11_administrator/'+ this.value_society +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
 
         this.http.get<ptrv_head[]>(url).subscribe(data => {
           //console.log(data);
@@ -194,7 +200,7 @@ recivedData: any;
     {
       //console.log('Traer todos los viajes con el status y fechas indicadas')
 
-      const url = 'http://localhost:3000/get_info_filter12_administrator/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
+      const url = this.url+'get_info_filter12_administrator/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
 
         this.http.get<ptrv_head[]>(url).subscribe(data => {
           //console.log(data);
@@ -207,7 +213,7 @@ recivedData: any;
     {
       //console.log('Traer todos los viajes de los usuarios proporcionados')
 
-      const url = 'http://localhost:3000/get_info_filter13_administrator/'+ this.value_pernr +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
+      const url = this.url+'get_info_filter13_administrator/'+ this.value_pernr +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
 
         this.http.get<ptrv_head[]>(url).subscribe(data => {
           //console.log(data);
@@ -220,7 +226,7 @@ recivedData: any;
     {
       //console.log('Traer todos los viajes que coincidan con los usuarios y los numeros de viaje ingresados')
 
-      const url = 'http://localhost:3000/get_info_filter14_administrator/'+ this.value_pernr +'/'+ this.value_reinr +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
+      const url = this.url+'get_info_filter14_administrator/'+ this.value_pernr +'/'+ this.value_reinr +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
 
         this.http.get<ptrv_head[]>(url).subscribe(data => {
           //console.log(data);
@@ -233,7 +239,7 @@ recivedData: any;
     {
       //console.log('Traer todos los viajes de los usuarios indicados dentro de las sociedades indicadas')
       
-      const url = 'http://localhost:3000/get_info_filter15_administrator/'+ this.value_pernr +'/'+ this.value_society +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
+      const url = this.url+'get_info_filter15_administrator/'+ this.value_pernr +'/'+ this.value_society +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
 
         this.http.get<ptrv_head[]>(url).subscribe(data => {
           //console.log(data);
@@ -246,7 +252,7 @@ recivedData: any;
     {
       //console.log('Traer todos los viajes indicados')
 
-      const url = 'http://localhost:3000/get_info_filter16_administrator/'+ this.value_reinr +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
+      const url = this.url+'get_info_filter16_administrator/'+ this.value_reinr +'/'+ this.status +'/'+ this.fecha1 +'/'+ this.fecha2;
 
         this.http.get<ptrv_head[]>(url).subscribe(data => {
           //console.log(data);

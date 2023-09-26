@@ -6,4 +6,11 @@ import { Injectable } from '@angular/core';
 export class ServiceService {
 
   constructor() { }
+
+  url()
+  {
+    const URL = 'http://localhost:3000/';
+    return URL;
+  }
+
 }

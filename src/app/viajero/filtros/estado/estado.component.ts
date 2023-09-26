@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
+import { ServiceService } from 'src/app/Service/service.service';
 
 
 interface dataUser
@@ -87,6 +88,8 @@ styleDisplay3 = 'none';
 userNickname!: string;
 pernrUser!: number;
 
+url: any;
+
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
@@ -94,6 +97,9 @@ pernrUser!: number;
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
+        const service = new ServiceService();
+        this.url = service.url();
+        
         this.auth.user$.subscribe(user => {
           this.userNickname = String(user?.nickname)
          this.getData(this.userNickname)
@@ -104,7 +110,7 @@ pernrUser!: number;
 
   getData(userNickname: string)
   {
-    this.http.get<dataUser>('http://localhost:3000/USERS/' + userNickname).subscribe(data => {
+    this.http.get<dataUser>(this.url+'USERS/' + userNickname).subscribe(data => {
       this.pernrUser = data.PERNR;
     })
   }
@@ -117,7 +123,7 @@ pernrUser!: number;
 
   getTRIPP()
   {
-    this.http.get<ptrv_headP[]>('http://localhost:3000/PTRV_HEADS/filter/authP/' + this.pernrUser).subscribe(pendientes => {
+    this.http.get<ptrv_headP[]>(this.url+'PTRV_HEADS/filter/authP/' + this.pernrUser).subscribe(pendientes => {
       this.responseArray1 = pendientes;
       this.authorized = pendientes.map(item => item.auth);
     })
@@ -126,7 +132,7 @@ pernrUser!: number;
 
   getTRIPA()
   {
-    this.http.get<ptrv_headA[]>('http://localhost:3000/PTRV_HEADS/filter/authA/' + this.pernrUser).subscribe(autorizados => {
+    this.http.get<ptrv_headA[]>(this.url+'PTRV_HEADS/filter/authA/' + this.pernrUser).subscribe(autorizados => {
       this.responseArray2 = autorizados;
       this.authorized = autorizados.map(item => item.auth);
     })
@@ -135,7 +141,7 @@ pernrUser!: number;
 
   getTRIPR()
   {
-    this.http.get<ptrv_headR[]>('http://localhost:3000/PTRV_HEADS/filter/authR/' + this.pernrUser).subscribe(rechazados => {
+    this.http.get<ptrv_headR[]>(this.url+'PTRV_HEADS/filter/authR/' + this.pernrUser).subscribe(rechazados => {
       this.responseArray3 = rechazados;
       this.authorized = rechazados.map(item => item.auth);
     })

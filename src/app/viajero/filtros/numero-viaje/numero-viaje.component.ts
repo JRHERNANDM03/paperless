@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
+import { ServiceService } from 'src/app/Service/service.service';
 
 interface user 
 {
@@ -42,6 +43,8 @@ datv1: string = '';
 uhrv1: string = '';
 authorized!: number;
 
+url:any;
+
 constructor(public auth:AuthService, private router: Router, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 styleDisplay = 'none';
@@ -53,6 +56,9 @@ styleDisplay = 'none';
         this.router.navigate(['login'])
       }else if(isAutenticate)
       {
+        const service = new ServiceService();
+        this.url = service.url();
+        
         this.auth.user$.subscribe(info => {
           this.nickname = String(info?.nickname);
           this.getPERNR(this.nickname)
@@ -75,14 +81,14 @@ styleDisplay = 'none';
 
 getPERNR(nickname: string)
 {
-  this.http.get<user>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+  this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
     this.pernrUser = data.PERNR;
   })
 }
 
 
 submitForm() {
-  this.http.get<head>('http://localhost:3000/PTRV_HEAD/' + this.reinrN).subscribe(
+  this.http.get<head>(this.url+'PTRV_HEAD/' + this.reinrN).subscribe(
     data => {
       if (data) {
         this.idH = data.id;

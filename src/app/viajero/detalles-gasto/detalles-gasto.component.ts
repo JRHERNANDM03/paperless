@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 
 import { Storage, ref, listAll, getDownloadURL } from '@angular/fire/storage';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface zfi_gv_paper_general
 {
   pernr: string;
@@ -65,6 +67,7 @@ export class DetallesGastoComponent implements OnInit {
    // Propiedad para almacenar el enlace de descarga del archivo
    fileDownloadURL: string | null = null;
 
+  url:any;
 
   constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService, private storage: Storage){}
 
@@ -75,6 +78,9 @@ export class DetallesGastoComponent implements OnInit {
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
+        const service = new ServiceService();
+        this.url = service.url();
+        
        /* this.route.queryParams.subscribe(params => {
           const id = params['id'];
           this.authCloseTrip = params['authCloseTrip']
@@ -105,14 +111,13 @@ export class DetallesGastoComponent implements OnInit {
             this.getData(id)
             }
         }
-
       }
     })
   }
 
   getData(id: number)
   {
-    this.http.get<zfi_gv_paper_general>('http://localhost:3000/GENERAL/' + id).subscribe(data => {
+    this.http.get<zfi_gv_paper_general>(this.url+'GENERAL/' + id).subscribe(data => {
       
 
     const fileName = data.uuid;

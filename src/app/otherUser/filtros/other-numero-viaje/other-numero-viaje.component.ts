@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
+import { ServiceService } from 'src/app/Service/service.service';
 
 interface user
 {
@@ -46,6 +47,8 @@ authorized!: number;
 
   recivedData: any;
 
+  url:any;
+
   constructor(private router: Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -54,6 +57,9 @@ authorized!: number;
       {
         this.router.navigate(['login'])
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+        
         /*this.route.queryParams.subscribe(params => {
           this.pernr = params['pernr'];
           this.getInfoUser(this.pernr)
@@ -74,13 +80,14 @@ authorized!: number;
         this.pernr = parsedData.pernr;
           this.getInfoUser(this.pernr)
         }}
+
       }
     })
   }
 
 getInfoUser(pernr: number)
 {
-  this.http.get<user>('http://localhost:3000/User/' + pernr).subscribe(data => {
+  this.http.get<user>(this.url+'User/' + pernr).subscribe(data => {
     this.name = data.name;
   })
 }
@@ -98,7 +105,7 @@ formValid(): boolean {
 }
 
 submitForm() {
-  this.http.get<head>('http://localhost:3000/PTRV_HEAD/' + this.reinrN).subscribe(
+  this.http.get<head>(this.url+'PTRV_HEAD/' + this.reinrN).subscribe(
     data => {
       if (data) {
         this.idH = data.id;

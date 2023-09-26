@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
+import { ServiceService } from 'src/app/Service/service.service';
 
 interface dataGeneral
 {
@@ -92,6 +93,8 @@ authExpense!: number;
 
 recivedData: any;
 
+url:any;
+
   constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -100,6 +103,9 @@ recivedData: any;
       {
         this.auth.logout()
       }else if(isAuthenticate) {
+        const service = new ServiceService();
+        this.url = service.url();
+
         /*this.route.queryParams.subscribe(params => {
           this.authCloseTrip = params['authCloseTrip'];
           this.receiptno = params['id'];
@@ -141,7 +147,7 @@ recivedData: any;
 
   getData(receiptno: number)
   {
-    this.http.get<dataGeneral>('http://localhost:3000/GENERAL/' + receiptno).subscribe(data => {
+    this.http.get<dataGeneral>(this.url+'GENERAL/' + receiptno).subscribe(data => {
       this.reinr = data.reinr;
       this.exp_type = data.exp_type;
       this.loc_amount = data.loc_amount;
@@ -189,7 +195,7 @@ recivedData: any;
 
     //console.log(this.receiptno)
 
-    this.http.get<zfi_gv_paper_general>('http://localhost:3000/GENERAL/' + this.receiptno).subscribe(data => {
+    this.http.get<zfi_gv_paper_general>(this.url+'GENERAL/' + this.receiptno).subscribe(data => {
       
       
       const titleA = 'Nuevo gasto actualizado.';
@@ -204,7 +210,7 @@ recivedData: any;
         subtitle: subtitleA
       }
 
-      this.http.post('http://localhost:3000/EmailA', this.sendEmailA).subscribe(emailA => {
+      this.http.post(this.url+'EmailA', this.sendEmailA).subscribe(emailA => {
         if(emailA)
         {
           let timerInterval = 0;
@@ -339,14 +345,14 @@ recivedData: any;
 if(this.authExpense == 0)
     {
 
-      this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
+      this.http.patch(this.url+'GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
     this.update()
       })
 
     }else if(this.authExpense == 2)
     {
 
-      this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos2).subscribe(res => {
+      this.http.patch(this.url+'GENERAL/' + this.receiptno, this.Updategastos2).subscribe(res => {
     this.update2()
       })
 

@@ -8,6 +8,8 @@ import { Storage, ref, updateMetadata, uploadBytes } from '@angular/fire/storage
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface data_PTRV_HEAD
 {
   id: number;
@@ -62,12 +64,17 @@ gastos: any = {}
 
 recivedData: any;
 
+url:any;
+
 ngOnInit(): void {
   this.auth.isAuthenticated$.subscribe(isAuthenticate => {
     if(!isAuthenticate)
     {
       this.auth.logout()
     }else if(isAuthenticate){
+      const service = new ServiceService();
+      this.url = service.url();
+
      /* this.route.queryParams.subscribe(params => {
         this.idHead = params['id'];
         this.reinrHead = params['reinr'];
@@ -107,7 +114,7 @@ ngOnInit(): void {
 
 getData(id_head: number)
 {
-  this.http.get<data_PTRV_HEAD>('http://localhost:3000/PTRV_HEADS/' + id_head).subscribe(data => {
+  this.http.get<data_PTRV_HEAD>(this.url+'PTRV_HEADS/' + id_head).subscribe(data => {
     this.pernrG = data.pernr;
     this.reinrG = data.reinr;
     this.zlandG = data.zland;
@@ -249,7 +256,7 @@ submitForm() {
       auth: 0
     };
 
-    this.http.post('http://localhost:3000/GENERAL', this.gastos).subscribe(res => {
+    this.http.post(this.url+'GENERAL', this.gastos).subscribe(res => {
       this.success();
     });
   
@@ -348,7 +355,7 @@ submitForm() {
         auth: 0
       };
 
-      this.http.post('http://localhost:3000/GENERAL', this.gastos).subscribe(res => {
+      this.http.post(this.url+'GENERAL', this.gastos).subscribe(res => {
         this.success();
       });
     })

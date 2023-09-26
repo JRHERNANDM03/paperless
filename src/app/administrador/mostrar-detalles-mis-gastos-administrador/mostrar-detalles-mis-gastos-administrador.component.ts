@@ -8,6 +8,8 @@ import { Storage, ref, listAll, getDownloadURL} from '@angular/fire/storage';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface tripExpenses{
   auth: number;
   bus_purpo: string;
@@ -95,6 +97,8 @@ export class MostrarDetallesMisGastosAdministradorComponent implements OnInit{
 
   recivedData: any;
 
+  url:any;
+
   // Propiedad para almacenar el enlace de descarga del archivo
   fileDownloadURL: string | null = null;
 
@@ -104,6 +108,9 @@ export class MostrarDetallesMisGastosAdministradorComponent implements OnInit{
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+
        /* this.route.queryParams.subscribe(params => {
           this.idReceiptno = params['id'];
           this.idHead = params['idHead'];
@@ -145,7 +152,7 @@ export class MostrarDetallesMisGastosAdministradorComponent implements OnInit{
 
   getDataExpenses(receiptno: number)
   {
-    this.http.get<tripExpenses>('http://localhost:3000/GENERAL/' + receiptno).subscribe(expenses => {
+    this.http.get<tripExpenses>(this.url+'GENERAL/' + receiptno).subscribe(expenses => {
     
     const fileName = expenses.uuid;
 

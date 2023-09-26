@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface dataUser{
   PERNR: number;
   area: string;
@@ -50,6 +52,8 @@ pernrH!: string;
 datv1: string = '';
 uhrv1: string = '';
 authorized!: number;
+
+url:any;
   
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -57,6 +61,9 @@ authorized!: number;
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+
         this.auth.user$.subscribe(dataUser => {
           const nickname = String(dataUser?.nickname);
           this.getDataUser(nickname)
@@ -67,7 +74,7 @@ authorized!: number;
 
 getDataUser(nickname: string)
 {
-  this.http.get<dataUser>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+  this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
     this.pernrUser = data.PERNR;
   })
 }
@@ -90,7 +97,7 @@ formValid(): boolean {
   }
 
   submitForm() {
-    this.http.get<head>('http://localhost:3000/PTRV_HEAD/' + this.reinrN).subscribe(
+    this.http.get<head>(this.url+'PTRV_HEAD/' + this.reinrN).subscribe(
       data => {
         if (data) {
           this.idH = data.id;

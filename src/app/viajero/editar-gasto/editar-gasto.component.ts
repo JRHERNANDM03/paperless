@@ -7,6 +7,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 
 interface dataGeneral
 {
@@ -94,6 +96,8 @@ authCloseTrip!: number;
 
 recivedData: any;
 
+url:any;
+
   constructor (private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -103,6 +107,9 @@ recivedData: any;
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
+        const service = new ServiceService();
+        this.url = service.url();
+        
        /* this.route.queryParams.subscribe(params => {
           this.receiptno = params['id'];
           this.getData(this.receiptno);
@@ -134,6 +141,7 @@ recivedData: any;
         this.auth.user$.subscribe(info => {
           this.nickname = String(info?.nickname);
         })
+
       }
     })
   }
@@ -141,7 +149,7 @@ recivedData: any;
 
   getData(receiptno: number)
   {
-    this.http.get<dataGeneral>('http://localhost:3000/GENERAL/' + receiptno).subscribe(data => {
+    this.http.get<dataGeneral>(this.url+'GENERAL/' + receiptno).subscribe(data => {
 
       this.pernr = data.pernr;
       this.reinr = data.reinr;
@@ -292,7 +300,7 @@ recivedData: any;
       para los campos seleccionados*/
 
       
-       this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
+       this.http.patch(this.url+'GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
        this.update()
    })
 
@@ -323,7 +331,7 @@ recivedData: any;
       */
 
 
-      this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.UpdateGastos2).subscribe(res => {
+      this.http.patch(this.url+'GENERAL/' + this.receiptno, this.UpdateGastos2).subscribe(res => {
        if(res)
        {
         const titleA = 'Nuevo gasto actualizado.';
@@ -338,7 +346,7 @@ recivedData: any;
         subtitle: subtitleA
       }
 
-      this.http.post('http://localhost:3000/EmailA', this.sendEmailA).subscribe(emailA => {
+      this.http.post(this.url+'EmailA', this.sendEmailA).subscribe(emailA => {
         if(emailA)
         {
           let timerInterval = 0;

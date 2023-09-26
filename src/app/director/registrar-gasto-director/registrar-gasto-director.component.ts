@@ -8,6 +8,8 @@ import { Storage, ref, uploadBytes} from '@angular/fire/storage';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface data_PTRV_HEAD
 {
   id: number;
@@ -88,6 +90,8 @@ authCloseTrip!: number;
 
 recivedData: any;
 
+url:any;
+
   constructor(private storage: Storage, private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -106,6 +110,8 @@ recivedData: any;
             this.nickname = String(info?.nickname);
           })
         })*/
+        const service = new ServiceService();
+        this.url = service.url();
 
         this.recivedData = this.sharedDataService.getData()
 
@@ -137,13 +143,14 @@ recivedData: any;
             this.nickname = String(info?.nickname);
           })
         }}
+
       }
     })
   }
 
   getData(id_head: number)
   {
-    this.http.get<data_PTRV_HEAD>('http://localhost:3000/PTRV_HEADS/' + id_head).subscribe(data => {
+    this.http.get<data_PTRV_HEAD>(this.url+'PTRV_HEADS/' + id_head).subscribe(data => {
       this.pernrG = data.pernr;
       this.reinrG = data.reinr;
       this.zlandG = data.zland;
@@ -327,7 +334,7 @@ recivedData: any;
         auth: 0
       };
   
-      this.http.post('http://localhost:3000/GENERAL', this.gastos).subscribe(res => {
+      this.http.post(this.url+'GENERAL', this.gastos).subscribe(res => {
         this.success();
       });
     
@@ -426,7 +433,7 @@ recivedData: any;
           auth: 0
         };
   
-        this.http.post('http://localhost:3000/GENERAL', this.gastos).subscribe(res => {
+        this.http.post(this.url+'GENERAL', this.gastos).subscribe(res => {
           this.success();
         });
       })

@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import { Storage, ref, uploadBytes} from '@angular/fire/storage';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
@@ -91,6 +93,7 @@ authCloseTrip!: number;
 
 recivedData: any;
 
+url: any;
   constructor (private router:Router, public auth: AuthService, private http: HttpClient, private route: ActivatedRoute, private sharedDataService: SharedDataService, private storage: Storage){}
 
 
@@ -102,6 +105,9 @@ recivedData: any;
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
+        const service = new ServiceService();
+        this.url = service.url();
+        
         /*this.route.queryParams.subscribe(params => {
           const id_head = params['id'];
           this.id_head = params['id'];
@@ -136,6 +142,7 @@ recivedData: any;
           this.auth.user$.subscribe(info => {
             this.nickname = String(info?.nickname);
           })
+
       }
     })
   }
@@ -143,7 +150,7 @@ recivedData: any;
 
   getData(id_head: number)
   {
-    this.http.get<data_PTRV_HEAD>('http://localhost:3000/PTRV_HEADS/' + id_head).subscribe(data => {
+    this.http.get<data_PTRV_HEAD>(this.url+'PTRV_HEADS/' + id_head).subscribe(data => {
       this.pernrG = data.pernr;
       this.reinrG = data.reinr;
       this.zlandG = data.zland;
@@ -292,7 +299,7 @@ submitForm() {
 
     //console.log(this.gastos)
 
-    this.http.post('http://localhost:3000/GENERAL', this.gastos).subscribe(res => {
+    this.http.post(this.url+'GENERAL', this.gastos).subscribe(res => {
       this.success();
     });
   
@@ -391,7 +398,7 @@ submitForm() {
         auth: 0
       };
 
-      this.http.post('http://localhost:3000/GENERAL', this.gastos).subscribe(res => {
+      this.http.post(this.url+'GENERAL', this.gastos).subscribe(res => {
         this.success();
       });
     })

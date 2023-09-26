@@ -7,6 +7,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface info
 {
   PERNR: number;
@@ -90,6 +92,8 @@ export class MostrarGastosDirectorComponent implements OnInit{
 
 recivedData: any;
 
+url:any;
+
   constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -101,6 +105,8 @@ recivedData: any;
         /*this.route.queryParams.subscribe(params => {
           this.getInfoTrip(params['id'])
         })*/
+        const service = new ServiceService();
+        this.url = service.url();
 
         this.recivedData = this.sharedDataService.getData()
 
@@ -117,14 +123,13 @@ recivedData: any;
         this.getInfoTrip(parsedData.id)           
 
         }}
-        
       }
     })
   }
 
   getInfoTrip(idHead: number)
   {
-    this.http.get<info>('http://localhost:3000/PTRV_HEADS/mostra_viaje/' + idHead).subscribe(data => {
+    this.http.get<info>(this.url+'PTRV_HEADS/mostra_viaje/' + idHead).subscribe(data => {
       this.PERNR = data.PERNR
       this.area_id = data.area_id
       this.closeTrip = data.closeTrip
@@ -161,7 +166,7 @@ authorized!: number[];
 
 getDetails(reinr: string)
 {
-  this.http.get<zfi_gv_paper_general[]>('http://localhost:3000/GENERAL/find/' + reinr).subscribe(data => {
+  this.http.get<zfi_gv_paper_general[]>(this.url+'GENERAL/find/' + reinr).subscribe(data => {
     this.responseArray = data;
     this.authorized = data.map(item => item.auth); // Almacenar todos los valores de auth en authorized
    // console.log(this.responseArray)

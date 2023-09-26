@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface ptrv_head{
   PERNR: number;
   area: string;
@@ -71,6 +73,7 @@ amountTrip!: number;
 
 recivedData: any;
 
+url:any;
 
 ngOnInit(): void {
   this.auth.isAuthenticated$.subscribe(isAuthenticate => {
@@ -78,6 +81,9 @@ ngOnInit(): void {
     {
       this.auth.logout()
     }else if(isAuthenticate){
+      const service = new ServiceService();
+      this.url = service.url();
+
       /*this.route.queryParams.subscribe(params => {
         this.n_empArray = params['n_empArray'];
         this.n_viajeArray = params['n_viajeArray'];
@@ -156,7 +162,7 @@ print()
         const queryParams_pernr = this.n_empArray.map(value => `n_empArray=${encodeURIComponent(value)}`).join('&');
         const queryParams_reinr = this.n_viajeArray.map(value => `n_viajeArray=${encodeURIComponent(value)}`).join('&');
         const queryParams_sociedad = this.sociedadArray.map(value => `sociedadArray=${encodeURIComponent(value)}`).join('&');
-      const url = `http://localhost:3000/get_info_filter_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_pernr}&${queryParams_reinr}&${queryParams_sociedad}`;
+      const url = this.url+`get_info_filter_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_pernr}&${queryParams_reinr}&${queryParams_sociedad}`;
       
       //console.log('this ir url: '+url)
       this.http.get<ptrv_head[]>(url).subscribe(
@@ -180,7 +186,7 @@ print()
       const queryParams_reinr = this.n_viajeArray.map(value => `n_viajeArray=${encodeURIComponent(value)}`).join('&')
       const queryParams_sociedad = this.sociedadArray.map(value => `sociedadArray=${encodeURIComponent(value)}`).join('&')
 
-      const url = `http://localhost:3000/get_info_filter2_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_reinr}&${queryParams_sociedad}`;
+      const url = this.url+`get_info_filter2_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_reinr}&${queryParams_sociedad}`;
 
       //console.log(url)
 
@@ -198,7 +204,7 @@ print()
 
       const queryParams_sociedad = this.sociedadArray.map(value => `sociedadArray=${encodeURIComponent(value)}`).join('&')
 
-      const url = `http://localhost:3000/get_info_filter3_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_sociedad}`;
+      const url = this.url+`get_info_filter3_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_sociedad}`;
 
       this.http.get<ptrv_head[]>(url).subscribe(data => {
         //console.log(data);
@@ -212,7 +218,7 @@ print()
     {
       //console.log('Traer todos los viajes con el status y fechas indicadas')
 
-      const url = `http://localhost:3000/get_info_filter4_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2;
+      const url = this.url+`get_info_filter4_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2;
 
       this.http.get<ptrv_head[]>(url).subscribe(data => {
         //console.log(data);
@@ -229,7 +235,7 @@ print()
 
       const queryParams_pernr = this.n_empArray.map(value => `n_empArray=${encodeURIComponent(value)}`).join('&')
 
-      const url = `http://localhost:3000/get_info_filter5_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_pernr}`;
+      const url = this.url+`get_info_filter5_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_pernr}`;
 
       this.http.get<ptrv_head[]>(url).subscribe(data => {
         //console.log(data);
@@ -246,7 +252,7 @@ print()
       const queryParams_pernr = this.n_empArray.map(value => `n_empArray=${encodeURIComponent(value)}`).join('&');
       const queryParams_reinr = this.n_viajeArray.map(value => `n_viajeArray=${encodeURIComponent(value)}`).join('&');
 
-      const url = `http://localhost:3000/get_info_filter6_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_pernr}&${queryParams_reinr}`;
+      const url = this.url+`get_info_filter6_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_pernr}&${queryParams_reinr}`;
 
       this.http.get<ptrv_head[]>(url).subscribe(data => {
         //console.log(data);
@@ -262,7 +268,7 @@ print()
     const queryParams_pernr = this.n_empArray.map(value => `n_empArray=${encodeURIComponent(value)}`).join('&');
     const queryParams_sociedad = this.sociedadArray.map(value => `sociedadArray=${encodeURIComponent(value)}`).join('&');
 
-    const url = `http://localhost:3000/get_info_filter7_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_pernr}&${queryParams_sociedad}`;
+    const url = this.url+`get_info_filter7_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_pernr}&${queryParams_sociedad}`;
 
     this.http.get<ptrv_head[]>(url).subscribe(data => {
       //console.log(data);
@@ -277,7 +283,7 @@ print()
 
       const queryParams_reinr = this.n_viajeArray.map(value => `n_viajeArray=${encodeURIComponent(value)}`).join('&');
 
-      const url = `http://localhost:3000/get_info_filter8_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_reinr}`;
+      const url = this.url+`get_info_filter8_administrator/`+ this.status +`/`+ this.fecha1 +`/`+ this.fecha2 +`/arrays/?${queryParams_reinr}`;
 
       this.http.get<ptrv_head[]>(url).subscribe(data => {
         //console.log(data);

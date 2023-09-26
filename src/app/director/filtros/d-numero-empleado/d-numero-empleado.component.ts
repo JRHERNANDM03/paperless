@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface validate
 {
   TOTAL: number;
@@ -51,6 +53,8 @@ export class DNumeroEmpleadoComponent implements OnInit {
   nickname!: string;
   area_id!: number;
 
+  url:any;
+
 constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 ngOnInit(): void {
@@ -59,6 +63,9 @@ ngOnInit(): void {
     {
       this.auth.logout()
     }else if(isAuthenticate){
+      const service = new ServiceService();
+      this.url = service.url();
+
       this.auth.user$.subscribe(infoUser => {
         this.nickname = String(infoUser?.nickname)
         this.getInfoUser(this.nickname)
@@ -69,7 +76,7 @@ ngOnInit(): void {
 
 getInfoUser(nickname: string)
 {
-  this.http.get<user>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+  this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
     this.area_id = data.area_id
   })
 }
@@ -91,7 +98,7 @@ responseArray: PTRV_HEAD[] = [];
 
 submitForm()
 {
-  this.http.get<validate>('http://localhost:3000/User/Validate/' + this.pernr).subscribe(data => {
+  this.http.get<validate>(this.url+'User/Validate/' + this.pernr).subscribe(data => {
     if(data.TOTAL === 0)
     {
 
@@ -105,7 +112,7 @@ submitForm()
 
     }else
     {
-      this.http.get<PTRV_HEAD[]>('http://localhost:3000/PTRV_HEAD/and/count/' + this.area_id +'/' + this.pernr).subscribe(data => {
+      this.http.get<PTRV_HEAD[]>(this.url+'PTRV_HEAD/and/count/' + this.area_id +'/' + this.pernr).subscribe(data => {
             
       if(data.length === 0)
         {

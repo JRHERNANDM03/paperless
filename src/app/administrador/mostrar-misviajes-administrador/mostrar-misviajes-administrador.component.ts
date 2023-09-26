@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface dataUser{
   PERNR: number;
   area: string;
@@ -53,12 +55,17 @@ export class MostrarMisviajesAdministradorComponent implements OnInit{
   responseArray: dataTrip[] = [];
   authorized!: number[];
 
+  url:any;
+
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+
         this.auth.user$.subscribe(infoUser => {
           const nickname = String(infoUser?.nickname);
           this.getDataUser(nickname)
@@ -69,7 +76,7 @@ export class MostrarMisviajesAdministradorComponent implements OnInit{
 
   getDataUser(nickname: string)
   {
-    this.http.get<dataUser>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+    this.http.get<dataUser>(this.url+'USERS/' + nickname).subscribe(data => {
       this.pernr = data.PERNR;
       this.getDataTrip(data.PERNR)
     })
@@ -77,7 +84,7 @@ export class MostrarMisviajesAdministradorComponent implements OnInit{
 
   getDataTrip(pernr: number)
   {
-    this.http.get<dataTrip[]>('http://localhost:3000/PTRV_HEADS/find/' + pernr).subscribe(dataTrip => {
+    this.http.get<dataTrip[]>(this.url+'PTRV_HEADS/find/' + pernr).subscribe(dataTrip => {
       this.responseArray = dataTrip;
       this.authorized = dataTrip.map(item => item.auth);
     })

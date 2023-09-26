@@ -7,6 +7,8 @@ import { timeInterval } from 'rxjs';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface user
 {
   PERNR: number;
@@ -23,6 +25,8 @@ export class HomeChangeUserComponent implements OnInit {
   numeroEmpleado!: number;
   pernrLoggeado!: number;
 
+  url:any;
+
   constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -32,8 +36,11 @@ export class HomeChangeUserComponent implements OnInit {
         this.router.navigate(['login'])
       }else if(isAutenticate)
       {
+        const service = new ServiceService();
+        this.url = service.url();
+
         this.auth.user$.subscribe(infoUser => {
-          this.http.get<user>('http://localhost:3000/USERS/'+ infoUser?.nickname).subscribe(dataUser => {
+          this.http.get<user>(this.url+'USERS/'+ infoUser?.nickname).subscribe(dataUser => {
             this.pernrLoggeado = dataUser.PERNR;
           })
         })
@@ -56,7 +63,7 @@ export class HomeChangeUserComponent implements OnInit {
   submitForm() 
   {
     let timerInterval = 0;
-    this.http.get('http://localhost:3000/User/' + this.numeroEmpleado).subscribe(data => 
+    this.http.get(this.url+'User/' + this.numeroEmpleado).subscribe(data => 
     {
       if(data)
       {

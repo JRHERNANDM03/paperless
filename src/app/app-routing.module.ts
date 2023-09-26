@@ -50,7 +50,6 @@ import { OtherFechaComponent } from './otherUser/filtros/other-fecha/other-fecha
 import { OtherNumeroViajeComponent } from './otherUser/filtros/other-numero-viaje/other-numero-viaje.component';
 import { RegistrarGastoOtherUserComponent } from './otherUser/registrar-gasto-other-user/registrar-gasto-other-user.component';
 import { EditarGastoOtherUserComponent } from './otherUser/editar-gasto-other-user/editar-gasto-other-user.component';
-import { ShowFileComponent } from './file/show-file/show-file.component';
 import { EditarFileComponent } from './viajero/editar-file/editar-file.component';
 import { EditarFileDirectorComponent } from './director/editar-file-director/editar-file-director.component';
 import { EditarFileAdministradorComponent } from './administrador/editar-file-administrador/editar-file-administrador.component';
@@ -113,7 +112,6 @@ const routes: Routes = [
   { path:'otherUser/Registrar/Gasto', component:RegistrarGastoOtherUserComponent},
   { path:'otherUser/Editar/Gasto', component:EditarGastoOtherUserComponent},
   { path:'otherUser/Editar/Documento', component:EditarFileOtherUserComponent},
-  { path:'showFile', component:ShowFileComponent},
   { path:'***', redirectTo:'inicio', pathMatch:'full'}
   
 ];

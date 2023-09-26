@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import { Storage, ref, uploadBytes } from '@angular/fire/storage';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface user
 {
   name: string;
@@ -96,6 +98,8 @@ gastos:any =
 
 recivedData: any;
 
+url: any;
+
   constructor (private storage: Storage, private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -104,6 +108,8 @@ recivedData: any;
       {
         this.router.navigate(['login'])
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
         
         
         /*this.route.queryParams.subscribe(params => {
@@ -149,13 +155,14 @@ recivedData: any;
         
         }}
 
+
       }
     })
   }
 
 getInfoUser(pernr: number)
 {
-  this.http.get<user>('http://localhost:3000/User/' + pernr).subscribe(data => {
+  this.http.get<user>(this.url+'User/' + pernr).subscribe(data => {
     this.name = data['name'];
     this.lastname = data['lastname'];
     this.nickname = data['nickname'];
@@ -164,7 +171,7 @@ getInfoUser(pernr: number)
 
 getTrip(id: number)
 {
-  this.http.get<trip>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
+  this.http.get<trip>(this.url+'PTRV_HEADS/' + id).subscribe(data => {
     this.reinr = data.reinr;
     this.zland = data.zland;
   })
@@ -308,7 +315,7 @@ onArchivoSeleccionado(event: any) {
         auth: 0
       };
   
-      this.http.post('http://localhost:3000/GENERAL', this.gastos).subscribe(res => {
+      this.http.post(this.url+'GENERAL', this.gastos).subscribe(res => {
         this.success();
       });
     
@@ -405,7 +412,7 @@ onArchivoSeleccionado(event: any) {
           auth: 0
         };
   
-        this.http.post('http://localhost:3000/GENERAL', this.gastos).subscribe(res => {
+        this.http.post(this.url+'GENERAL', this.gastos).subscribe(res => {
           this.success();
         });
       })

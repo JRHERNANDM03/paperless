@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface user
 {
   name: string;
@@ -107,6 +109,8 @@ recivedData: any;
 
 pernrUserLog!: number;
 
+url:any;
+
   constructor (private router:Router, public auth:AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
 ngOnInit(): void {
@@ -115,6 +119,8 @@ ngOnInit(): void {
     {
       this.router.navigate(['login'])
     }else if(isAuthentica){
+      const service = new ServiceService();
+      this.url = service.url();
 
       document.querySelector('#contenerdorCentrador')?.scrollIntoView()
       /*this.route.queryParams.subscribe(params => {
@@ -172,14 +178,14 @@ ngOnInit(): void {
 
 getInfoUser(pernr: number)
 {
-  this.http.get<user>('http://localhost:3000/User/' + pernr).subscribe(data => {
+  this.http.get<user>(this.url+'User/' + pernr).subscribe(data => {
     this.name = data.name;
   })
 }
 
 getInfoHead(id: number)
 {
-  this.http.get<head>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
+  this.http.get<head>(this.url+'PTRV_HEADS/' + id).subscribe(data => {
     this.reinr = data.reinr;
   })
 }
@@ -187,7 +193,7 @@ getInfoHead(id: number)
 
 getData(receiptno: number)
 {
-  this.http.get<dataGeneral>('http://localhost:3000/GENERAL/' + receiptno).subscribe(data => {
+  this.http.get<dataGeneral>(this.url+'GENERAL/' + receiptno).subscribe(data => {
     this.reinr = data.reinr;
     this.exp_type = data.exp_type;
     this.loc_amount = data.loc_amount;
@@ -310,7 +316,7 @@ getData(receiptno: number)
 
     if(this.authGeneral == 0)
     {
-      this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
+      this.http.patch(this.url+'GENERAL/' + this.receiptno, this.Updategastos).subscribe(res => {
     this.update()
 }) 
     }else if(this.authGeneral == 1)
@@ -329,7 +335,7 @@ getData(receiptno: number)
       })
     }else if(this.authGeneral == 2)
     {
-      this.http.get<dataUserLog>('http://localhost:3000/USERS/' + this.nickname).subscribe(dataUserLog => {
+      this.http.get<dataUserLog>(this.url+'USERS/' + this.nickname).subscribe(dataUserLog => {
         this.pernrUserLog = dataUserLog.pernr;
       })
 
@@ -347,10 +353,10 @@ getData(receiptno: number)
         message: messageA
       }
 
-      this.http.post('http://localhost:3000/EmailA', this.emailA).subscribe(postSuccess => {
+      this.http.post(this.url+'EmailA', this.emailA).subscribe(postSuccess => {
         if(postSuccess)
         {
-           this.http.patch('http://localhost:3000/GENERAL/' + this.receiptno, this.Updategastos2).subscribe(res => {
+           this.http.patch(this.url+'GENERAL/' + this.receiptno, this.Updategastos2).subscribe(res => {
            if(res)
            {
             let timerInterval = 0;

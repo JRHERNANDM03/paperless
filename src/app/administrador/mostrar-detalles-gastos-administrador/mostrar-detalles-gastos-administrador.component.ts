@@ -10,6 +10,8 @@ import { Storage, ref, listAll, getDownloadURL} from '@angular/fire/storage';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface ptrv_head{
   auth: number;
   closeTrip: number;
@@ -150,6 +152,8 @@ complete_name!: string;
 
   recivedData: any;
 
+  url:any;
+
   // Propiedad para almacenar el enlace de descarga del archivo
   fileDownloadURL: string | null = null;
 
@@ -159,6 +163,9 @@ complete_name!: string;
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+
         /*this.route.queryParams.subscribe(params => {
           this.idHead = params['idHead'];
           this.reinrHead = params['reinr'];
@@ -205,7 +212,7 @@ complete_name!: string;
 
 getDataTrip(reinr: string)
 {
-  this.http.get<ptrv_head>('http://localhost:3000/PTRV_HEAD/' + reinr).subscribe(data => {
+  this.http.get<ptrv_head>(this.url+'PTRV_HEAD/' + reinr).subscribe(data => {
     this.authHead = data.auth;
     this.pernrHead = data.pernr;
 
@@ -215,14 +222,14 @@ getDataTrip(reinr: string)
 
 getDataUser(pernr: string)
 {
-  this.http.get<info_user>('http://localhost:3000/User/' + pernr).subscribe(data => {
+  this.http.get<info_user>(this.url+'User/' + pernr).subscribe(data => {
     this.nameCollaborator = data.name
   })
 }
 
 getDataExpenses(receiptno: number)
 {
-  this.http.get<info_expenses>('http://localhost:3000/GENERAL/' + receiptno).subscribe(data => {
+  this.http.get<info_expenses>(this.url+'GENERAL/' + receiptno).subscribe(data => {
   
   const fileName = data.uuid;
 
@@ -543,7 +550,7 @@ getDocument(fileName: string)
   
 notify(receiptno: number, reinr: string, pernr: string) {
 
-  this.http.get<ptrv_head>('http://localhost:3000/PTRV_HEAD/' + reinr).subscribe(data => {
+  this.http.get<ptrv_head>(this.url+'PTRV_HEAD/' + reinr).subscribe(data => {
     if(data.auth == 1)
     {
       Swal.fire({
@@ -608,10 +615,10 @@ approvate(receiptno: number, reinr: string, pernr: string)
     subtitle: subtitulo
   }
 
-  this.http.patch('http://localhost:3000/GENERAL/' + receiptno, this.upd_zfi_gv_paper_general).subscribe(upd_general => {
+  this.http.patch(this.url+'GENERAL/' + receiptno, this.upd_zfi_gv_paper_general).subscribe(upd_general => {
     if(upd_general)
     {
-      this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+      this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
         if(email_v)
         {
           let timerInterval = 0;
@@ -694,10 +701,10 @@ declain(receiptno: number, reinr: string, pernr: string)
     subtitle: subtitulo
   }
 
-  this.http.patch('http://localhost:3000/GENERAL/' + receiptno, this.upd_zfi_gv_paper_general).subscribe(upd_general => {
+  this.http.patch(this.url+'GENERAL/' + receiptno, this.upd_zfi_gv_paper_general).subscribe(upd_general => {
     if(upd_general)
     {
-      this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+      this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
         if(email_v)
         {
           let timerInterval=0;

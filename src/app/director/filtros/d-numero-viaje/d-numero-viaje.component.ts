@@ -6,6 +6,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface user
 {
   area_id: number;
@@ -86,6 +88,8 @@ styleDisplay = 'none';
   zland!: string;
   zort1!: string;
 
+url:any;
+
 constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -94,6 +98,9 @@ constructor(public auth: AuthService, private router: Router, private route: Act
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+
         this.auth.user$.subscribe(infoUser =>{
           this.nickname = String(infoUser?.nickname)
           this.getInfoUser(this.nickname)
@@ -105,7 +112,7 @@ constructor(public auth: AuthService, private router: Router, private route: Act
 
   getInfoUser(nickname: string)
   {
-    this.http.get<user>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+    this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
       this.areaID = data.area_id;
     })
   }
@@ -123,7 +130,7 @@ constructor(public auth: AuthService, private router: Router, private route: Act
 
   submitForm()
   {
-    this.http.get<ptrv_head>('http://localhost:3000/PTRV_HEADS/filterreinr/' + this.reinr +'/' + this.areaID).subscribe(data => {
+    this.http.get<ptrv_head>(this.url+'PTRV_HEADS/filterreinr/' + this.reinr +'/' + this.areaID).subscribe(data => {
       if(data === null)
       {
         this.alertError()

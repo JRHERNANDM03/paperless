@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from '@auth0/auth0-angular';
 import { HttpClient } from '@angular/common/http';
 import { SharedDataService } from 'src/app/shared-data.service';
+import { ServiceService } from 'src/app/Service/service.service';
 
 interface UserData {
   PERNR: string;
@@ -67,6 +68,8 @@ export class HomeAdministradorComponent implements OnInit {
 
   notifyDisplay='block';
 
+  url:any;
+
   constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -75,6 +78,9 @@ export class HomeAdministradorComponent implements OnInit {
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+
         this.auth.user$.subscribe(user => {
           const nickname = String(user?.nickname);
           this.getData(nickname);     
@@ -89,7 +95,7 @@ export class HomeAdministradorComponent implements OnInit {
 
   getData(nickname: String)
 {
-  this.http.get<UserData>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+  this.http.get<UserData>(this.url+'USERS/' + nickname).subscribe(data => {
 
   const pernr_user = Number(data.PERNR);
   this.getEmailsA(pernr_user)
@@ -103,7 +109,7 @@ responseArrayEmails: emailsD[] = [];
 
 getEmailsA(pernr: number)
 {
-  this.http.get<emailsD[]>('http://localhost:3000/EmailsA').subscribe(data => {
+  this.http.get<emailsD[]>(this.url+'EmailsA').subscribe(data => {
     
     this.responseArrayEmails = data;
     this.visibility_auth = data.map(item => Number(item.visibility))
@@ -123,7 +129,7 @@ getEmailsA(pernr: number)
 getEmailsARequest(idEmailA: number, message: string, reinr: number, visibility: number, title: string, pernr: number)
 {
 
-  this.http.get<PTRV_HEAD>('http://localhost:3000/PTRV_HEAD/' + reinr).subscribe(trip => {
+  this.http.get<PTRV_HEAD>(this.url+'PTRV_HEAD/' + reinr).subscribe(trip => {
 const idHead = trip.id;
 
   Swal.fire({
@@ -143,7 +149,7 @@ const idHead = trip.id;
       this.updateEmailA = {
         visibility: 1
       }
-      this.http.patch('http://localhost:3000/EmailA/update/' + idEmailA, this.updateEmailA).subscribe(upd => {
+      this.http.patch(this.url+'EmailA/update/' + idEmailA, this.updateEmailA).subscribe(upd => {
         if(upd)
         {
           //this.router.navigate(['/Administrador/Viaje'], {queryParams: {id: idHead, reload: 1}})
@@ -184,7 +190,7 @@ const idHead = trip.id;
         this.updateEmailA = {
           visibility: 1
         }
-        this.http.patch('http://localhost:3000/EmailA/update/' + idEmailA, this.updateEmailA).subscribe(upd => {
+        this.http.patch(this.url+'EmailA/update/' + idEmailA, this.updateEmailA).subscribe(upd => {
           if(upd)
           {
             location.reload()
@@ -469,7 +475,7 @@ getVisibility(visibility: number): number {
     }).then(result => {
       if(result.isConfirmed)
       {
-        this.http.delete('http://localhost:3000/EmailA/delete/' + id).subscribe(data => {
+        this.http.delete(this.url+'EmailA/delete/' + id).subscribe(data => {
           if(data)
           {
             Swal.fire({
@@ -511,7 +517,7 @@ deleteAllNotify()
 
     if(result.isConfirmed){
 
-    this.http.get<emailsD[]>('http://localhost:3000/EmailsA/').subscribe(data => {
+    this.http.get<emailsD[]>(this.url+'EmailsA/').subscribe(data => {
 
     if(data.length == 0)
     {
@@ -526,7 +532,7 @@ deleteAllNotify()
       {
         if(data[x].visibility == 1)
         {
-          this.http.delete('http://localhost:3000/EmailA/delete/' + data[x].id).subscribe()
+          this.http.delete(this.url+'EmailA/delete/' + data[x].id).subscribe()
         }
       }
 

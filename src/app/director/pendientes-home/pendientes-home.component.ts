@@ -7,6 +7,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface user
 {
   PERNR: number;
@@ -71,6 +73,8 @@ export class PendientesHomeComponent implements OnInit{
 fechaActual!: string;
 horaActual!: string;
 
+url:any;
+
   constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -79,19 +83,23 @@ horaActual!: string;
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+        
         this.auth.user$.subscribe(info => {
           const nickname = String(info?.nickname)
           this.getArea(nickname)
 
           this.nameDirector = String(info?.name)
         })
+
       }
     })
   }
 
   getArea(nickname: string)
   {
-    this.http.get<user>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+    this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
       this.pernrDirector = data.PERNR;
       this.getAllTrip(data.PERNR)
     })
@@ -103,7 +111,7 @@ horaActual!: string;
 
   getAllTrip(pernr: number)
   {
-    this.http.get<infoTrip[]>('http://localhost:3000/authorized/' + pernr).subscribe(data => {  
+    this.http.get<infoTrip[]>(this.url+'authorized/' + pernr).subscribe(data => {  
     this.responseArray = data;
     this.authorized = data.map(item => item.auth);
     })
@@ -189,16 +197,16 @@ horaActual!: string;
   
           try
           {
-          this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(resV => {
+          this.http.post(this.url+'EmailV', this.emailV).subscribe(resV => {
             if(resV)
             {
-              this.http.post('http://localhost:3000/EmailA', this.emailA).subscribe(resA => {
+              this.http.post(this.url+'EmailA', this.emailA).subscribe(resA => {
                 if(resA)
                 {
-                  this.http.patch('http://localhost:3000/PTRV_HEADS/' + idHead, this.ptrv_head).subscribe(resH => {
+                  this.http.patch(this.url+'PTRV_HEADS/' + idHead, this.ptrv_head).subscribe(resH => {
                     if(resH)
                     {
-                      this.http.patch('http://localhost:3000/authorized/' + id_auth, this.authorizedPatch).subscribe(resAuthorized => {
+                      this.http.patch(this.url+'authorized/' + id_auth, this.authorizedPatch).subscribe(resAuthorized => {
                         if(resAuthorized)
                         {
                           this.true()
@@ -255,10 +263,10 @@ horaActual!: string;
   
           try
           {
-          this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(resV => {
+          this.http.post(this.url+'EmailV', this.emailV).subscribe(resV => {
             if(resV)
             {
-              this.http.patch('http://localhost:3000/PTRV_HEADS/' + idHead, this.ptrv_head).subscribe(resH => {
+              this.http.patch(this.url+'PTRV_HEADS/' + idHead, this.ptrv_head).subscribe(resH => {
                 if(resH)
                 {
                   this.false()
@@ -332,11 +340,11 @@ horaActual!: string;
   
           try
           {
-              this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(resA => {
+              this.http.post(this.url+'EmailD', this.emailD).subscribe(resA => {
                 if(resA)
                 {
                   
-                      this.http.patch('http://localhost:3000/authorized/' + id_auth, this.authorizedPatch).subscribe(resAuthorized => {
+                      this.http.patch(this.url+'authorized/' + id_auth, this.authorizedPatch).subscribe(resAuthorized => {
                         if(resAuthorized)
                         {
                           this.true2()
@@ -383,10 +391,10 @@ horaActual!: string;
   
           try
           {
-          this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(resV => {
+          this.http.post(this.url+'EmailV', this.emailV).subscribe(resV => {
             if(resV)
             {
-              this.http.patch('http://localhost:3000/PTRV_HEADS/' + idHead, this.ptrv_head).subscribe(resH => {
+              this.http.patch(this.url+'PTRV_HEADS/' + idHead, this.ptrv_head).subscribe(resH => {
                 if(resH)
                 {
                   this.false()
@@ -496,16 +504,16 @@ horaActual!: string;
   
           try
           {
-          this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(resV => {
+          this.http.post(this.url+'EmailV', this.emailV).subscribe(resV => {
             if(resV)
             {
-              this.http.post('http://localhost:3000/EmailA', this.emailA).subscribe(resA => {
+              this.http.post(this.url+'EmailA', this.emailA).subscribe(resA => {
                 if(resA)
                 {
-                  this.http.patch('http://localhost:3000/PTRV_HEADS/' + idHead, this.ptrv_head).subscribe(resH => {
+                  this.http.patch(this.url+'PTRV_HEADS/' + idHead, this.ptrv_head).subscribe(resH => {
                     if(resH)
                     {
-                      this.http.patch('http://localhost:3000/authorized/' + id_auth, this.authorizedPatch).subscribe(resAuthorized => {
+                      this.http.patch(this.url+'authorized/' + id_auth, this.authorizedPatch).subscribe(resAuthorized => {
                         if(resAuthorized)
                         {
                           this.true()
@@ -562,10 +570,10 @@ horaActual!: string;
   
           try
           {
-          this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(resV => {
+          this.http.post(this.url+'EmailV', this.emailV).subscribe(resV => {
             if(resV)
             {
-              this.http.patch('http://localhost:3000/PTRV_HEADS/' + idHead, this.ptrv_head).subscribe(resH => {
+              this.http.patch(this.url+'PTRV_HEADS/' + idHead, this.ptrv_head).subscribe(resH => {
                 if(resH)
                 {
                   this.false()

@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 
 import { SharedDataService } from 'src/app/shared-data.service';
 
+import {ServiceService} from '../../Service/service.service'
+
 interface UserData {
   PERNR: string;
   // Otros campos que esperas en los datos de respuesta
@@ -61,22 +63,29 @@ export class HomeComponent implements OnInit{
 
   notifyDisplay = 'block'
 
+  url: any;
+
   constructor(private router: Router, public auth: AuthService, private http: HttpClient, private sharedDataService: SharedDataService) {
 }
 
 ngOnInit(): void {
 
    this.auth.isAuthenticated$.subscribe(isAuthenticate => {
+    
     if(!isAuthenticate)
     {
       this.router.navigate(['login'])
     }
     else if(isAuthenticate)
     {
+      const service = new ServiceService();
+      this.url = service.url();
+      
       this.auth.user$.subscribe(user => {
         const nickname = String(user?.nickname);
         this.getData(nickname);     
       })
+
     }
   });
 
@@ -91,14 +100,14 @@ responseArray: PTRV_HEAD[] = [];
 
 getData(nickname: String)
 {
-  this.http.get<UserData>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+  this.http.get<UserData>(this.url+'USERS/' + nickname).subscribe(data => {
 
   this.pernr = data.PERNR;
 
   const pernr_user = Number(data.PERNR);
   this.getEmailsV(pernr_user)
 
-    this.http.get<PTRV_HEAD[]>('http://localhost:3000/PTRV_HEADS/find/' + data.PERNR).subscribe(info_PTRV_HEAD => {
+    this.http.get<PTRV_HEAD[]>(this.url+'PTRV_HEADS/find/' + data.PERNR).subscribe(info_PTRV_HEAD => {
       this.responseArray = info_PTRV_HEAD;
       this.authorized = info_PTRV_HEAD.map(item => item.auth); // Almacenar todos los valores de auth en authorized
       //console.log(info_PTRV_HEAD.map(item => item.auth))
@@ -113,7 +122,7 @@ responseArrayEmails: emailsV[] = [];
 
 getEmailsV(pernr: number)
 {
-  this.http.get<emailsV[]>('http://localhost:3000/EmailsV/' + pernr).subscribe(data => {
+  this.http.get<emailsV[]>(this.url+'EmailsV/' + pernr).subscribe(data => {
     
     this.responseArrayEmails = data;
     this.visibility_auth = data.map(item => Number(item.visibility))
@@ -148,7 +157,7 @@ getEstado(auth: number): string {
   getEmailsVRequest(idEmailV: number, message: string, reinr: number, visibility: number)
   {
 
-    this.http.get<PTRV_HEAD>('http://localhost:3000/PTRV_HEAD/' + reinr).subscribe(trip => {
+    this.http.get<PTRV_HEAD>(this.url+'PTRV_HEAD/' + reinr).subscribe(trip => {
   const idHead = trip.id;
 
     Swal.fire({
@@ -166,7 +175,7 @@ getEstado(auth: number): string {
         this.updateEmailV = {
           visibility: 1
         }
-        this.http.patch('http://localhost:3000/EmailV/update/' + idEmailV, this.updateEmailV).subscribe(upd => {
+        this.http.patch(this.url+'EmailV/update/' + idEmailV, this.updateEmailV).subscribe(upd => {
           if(upd)
           {
             //this.router.navigate(['/Viajero/Viaje'], {queryParams: {id: idHead}})
@@ -192,7 +201,7 @@ getEstado(auth: number): string {
           this.updateEmailV = {
             visibility: 1
           }
-          this.http.patch('http://localhost:3000/EmailV/update/' + idEmailV, this.updateEmailV).subscribe(upd => {
+          this.http.patch(this.url+'EmailV/update/' + idEmailV, this.updateEmailV).subscribe(upd => {
             if(upd)
             {
               location.reload()
@@ -287,7 +296,7 @@ deleteNotify(id: number, $event: any)
     }).then(result => {
       if(result.isConfirmed)
       {
-        this.http.delete('http://localhost:3000/EmailV/delete/' + id).subscribe(data => {
+        this.http.delete(this.url+'EmailV/delete/' + id).subscribe(data => {
           if(data)
           {
             Swal.fire({
@@ -329,7 +338,7 @@ deleteAllNotify()
 
     if(result.isConfirmed){
 
-    this.http.get<emailsV[]>('http://localhost:3000/EmailsV/' + this.pernr).subscribe(data => {
+    this.http.get<emailsV[]>(this.url+'EmailsV/' + this.pernr).subscribe(data => {
 
     if(data.length == 0)
     {
@@ -344,7 +353,7 @@ deleteAllNotify()
       {
         if(data[x].visibility == 1)
         {
-          this.http.delete('http://localhost:3000/EmailV/delete/' + data[x].id).subscribe()
+          this.http.delete(this.url+'EmailV/delete/' + data[x].id).subscribe()
         }
       }
 

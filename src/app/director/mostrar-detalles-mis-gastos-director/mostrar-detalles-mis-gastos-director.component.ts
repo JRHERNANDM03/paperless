@@ -8,6 +8,8 @@ import { Storage, ref, getDownloadURL, listAll } from '@angular/fire/storage';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service'
+
 interface zfi_gv_paper_general
 {
   pernr: string;
@@ -63,6 +65,8 @@ export class MostrarDetallesMisGastosDirectorComponent implements OnInit{
 
   recivedData: any;
 
+  url:any;
+
     // Propiedad para almacenar el enlace de descarga del archivo
     fileDownloadURL: string | null = null;
 
@@ -81,6 +85,9 @@ export class MostrarDetallesMisGastosDirectorComponent implements OnInit{
            this.getData(id);
            this.id_head = (params['head']);
         });*/
+
+        const service = new ServiceService();
+        this.url = service.url();
 
         this.recivedData = this.sharedDataService.getData()
 
@@ -108,7 +115,7 @@ export class MostrarDetallesMisGastosDirectorComponent implements OnInit{
 
   getData(id: number)
   {
-    this.http.get<zfi_gv_paper_general>('http://localhost:3000/GENERAL/' + id).subscribe(data => {
+    this.http.get<zfi_gv_paper_general>(this.url+'GENERAL/' + id).subscribe(data => {
       
     //console.log(data);
     const fileName = data.uuid;

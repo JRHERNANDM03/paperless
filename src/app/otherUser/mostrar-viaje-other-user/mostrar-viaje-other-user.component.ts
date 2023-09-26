@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { timeInterval } from 'rxjs';
 import { SharedDataService } from 'src/app/shared-data.service';
 
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
+
+import { ServiceService } from 'src/app/Service/service.service';
 
 interface infoUser
 {
@@ -96,6 +97,8 @@ complete_name!: string;
 
 recivedData: any;
 
+url: any;
+
   constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   styleClose='none'
@@ -106,6 +109,8 @@ ngOnInit(): void {
     {
       this.router.navigate(['login'])
     }else if(isAuthenticate){
+      const service = new ServiceService();
+      this.url = service.url();
 
       document.querySelector('#contenerdorCentrador')?.scrollIntoView()
       
@@ -144,13 +149,14 @@ ngOnInit(): void {
           this.getInfoUser(this.pernr)
         }
         }
+
     }
   })
 }
 
 getInfoUser(pernr: string)
 {
-  this.http.get<infoUser>('http://localhost:3000/User/' + pernr).subscribe(data => {
+  this.http.get<infoUser>(this.url+'User/' + pernr).subscribe(data => {
     this.name = data.name;
     this.lastname = data.lastname;
     this.nickname = data.nickname;
@@ -159,7 +165,7 @@ getInfoUser(pernr: string)
 
 getDataTrip(id: number, pernr: number)
 {
-  this.http.get<saveData>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
+  this.http.get<saveData>(this.url+'PTRV_HEADS/' + id).subscribe(data => {
     this.id = data.id;
     this.reinr = data.reinr;
     this.pernr = data.pernr;
@@ -189,7 +195,7 @@ getDataTrip(id: number, pernr: number)
 
 getAccount(reinr: string)
 {
-  this.http.get<saveData>('http://localhost:3000/GENERAL/account/' + reinr).subscribe(data => {
+  this.http.get<saveData>(this.url+'GENERAL/account/' + reinr).subscribe(data => {
     if(data.TOTAL === null)
     {
       this.TOTAL = 0;
@@ -275,10 +281,10 @@ status(authorized: number)
 
   closeTrip()
 {
-  this.http.get<info_auth>('http://localhost:3000/one_authorized/' + this.pernr).subscribe(dataInfo_auth => {
+  this.http.get<info_auth>(this.url+'one_authorized/' + this.pernr).subscribe(dataInfo_auth => {
     if(dataInfo_auth)
     {
-      this.http.get<user>('http://localhost:3000/User/' + this.pernr).subscribe(dataUser =>
+      this.http.get<user>(this.url+'User/' + this.pernr).subscribe(dataUser =>
       {
         this.createEmail(dataUser.area_id, dataInfo_auth.pernr_auth1)
       })
@@ -314,7 +320,7 @@ createEmail(area: number, pernr_auth1: number)
     title: titulo,
     subtitle: subtitulo
   }
-  this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(res => {
+  this.http.post(this.url+'EmailD', this.emailD).subscribe(res => {
    
   if(res)
   {
@@ -331,7 +337,7 @@ updatePTRV_HEAD()
   {
     closeTrip: 1
   }
-  this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.id, this.ptrv_head).subscribe(res => {
+  this.http.patch(this.url+'PTRV_HEADS/' + this.id, this.ptrv_head).subscribe(res => {
 
   Swal.fire({
     icon: 'success',

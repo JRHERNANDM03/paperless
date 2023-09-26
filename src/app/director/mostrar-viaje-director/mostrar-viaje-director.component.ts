@@ -9,6 +9,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface info
 {
 AREA_ID: number;
@@ -120,6 +122,8 @@ export class MostrarViajeDirectorComponent implements OnInit{
 
   recivedData: any;
 
+  url:any;
+
   constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private datePipe: DatePipe, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -131,6 +135,8 @@ export class MostrarViajeDirectorComponent implements OnInit{
         /*this.route.queryParams.subscribe(params => {
           this.getInfoTrip(params['id'])
         })*/
+        const service = new ServiceService();
+        this.url = service.url();
 
         this.recivedData = this.sharedDataService.getData()
 
@@ -154,20 +160,21 @@ export class MostrarViajeDirectorComponent implements OnInit{
           this.getUserDataLogg(nickname)
         })
 
+
       }
     })
   }
 
   getUserDataLogg(nickname: string)
   {
-    this.http.get<userLogg>('http://localhost:3000/USERS/' + nickname).subscribe(dataUser => {
+    this.http.get<userLogg>(this.url+'USERS/' + nickname).subscribe(dataUser => {
       this.pernrDirector = dataUser?.PERNR;
     })
   }
 
   getInfoTrip(idHead: number)
   {
-    this.http.get<info>('http://localhost:3000/getMostrar_viajeAuth/' + idHead).subscribe(data => {
+    this.http.get<info>(this.url+'getMostrar_viajeAuth/' + idHead).subscribe(data => {
       
     this.AREA_ID = data.AREA_ID;
     this.authorized = data.auth;
@@ -224,7 +231,7 @@ export class MostrarViajeDirectorComponent implements OnInit{
 
   getDataUser(pernr: string)
   {
-    this.http.get<infoUser>('http://localhost:3000/User/' + pernr).subscribe(data => {
+    this.http.get<infoUser>(this.url+'User/' + pernr).subscribe(data => {
       this.area = data.area;
       this.area_id = data.area_id;
       this.lastname = data.lastname;
@@ -355,19 +362,19 @@ export class MostrarViajeDirectorComponent implements OnInit{
 
           try{
             
-            this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(head => {
+            this.http.patch(this.url+'PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(head => {
               if(head)
               {
 
-                this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+                this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
                   if(email_v)
                   {
 
-                    this.http.post('http://localhost:3000/EmailA', this.emailA).subscribe(email_a => {
+                    this.http.post(this.url+'EmailA', this.emailA).subscribe(email_a => {
                       if(email_a)
                       {
 
-                        this.http.patch('http://localhost:3000/authorized/' + this.id_auth, this.authorizedPatch).subscribe(auth_patch => {
+                        this.http.patch(this.url+'authorized/' + this.id_auth, this.authorizedPatch).subscribe(auth_patch => {
                           if(auth_patch)
                           {
 
@@ -411,11 +418,11 @@ export class MostrarViajeDirectorComponent implements OnInit{
 
             try{
 
-              this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(head => {
+              this.http.patch(this.url+'PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(head => {
                 if(head)
                 {
 
-                  this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+                  this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
                     if(email_v)
                     {
 
@@ -502,11 +509,11 @@ export class MostrarViajeDirectorComponent implements OnInit{
 
           try{
 
-            this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(email_d => {
+            this.http.post(this.url+'EmailD', this.emailD).subscribe(email_d => {
               if(email_d)
               {
 
-                this.http.patch('http://localhost:3000/authorized/' + this.id_auth, this.authorizedPatch).subscribe(auth_patch => {
+                this.http.patch(this.url+'authorized/' + this.id_auth, this.authorizedPatch).subscribe(auth_patch => {
                   if(auth_patch)
                   {
 
@@ -554,11 +561,11 @@ export class MostrarViajeDirectorComponent implements OnInit{
 
             try{
 
-              this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(head => {
+              this.http.patch(this.url+'PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(head => {
                 if(head)
                 {
 
-                  this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+                  this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
                     if(email_v)
                     {
 
@@ -673,19 +680,19 @@ export class MostrarViajeDirectorComponent implements OnInit{
   
             try{
               
-              this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(head => {
+              this.http.patch(this.url+'PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(head => {
                 if(head)
                 {
   
-                  this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+                  this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
                     if(email_v)
                     {
   
-                      this.http.post('http://localhost:3000/EmailA', this.emailA).subscribe(email_a => {
+                      this.http.post(this.url+'EmailA', this.emailA).subscribe(email_a => {
                         if(email_a)
                         {
   
-                          this.http.patch('http://localhost:3000/authorized/' + this.id_auth, this.authorizedPatch).subscribe(auth_patch => {
+                          this.http.patch(this.url+'authorized/' + this.id_auth, this.authorizedPatch).subscribe(auth_patch => {
                             if(auth_patch)
                             {
   
@@ -734,15 +741,15 @@ export class MostrarViajeDirectorComponent implements OnInit{
   
               try{
   
-                this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(head => {
+                this.http.patch(this.url+'PTRV_HEADS/' + this.idHead, this.ptrv_head).subscribe(head => {
                   if(head)
                   {
   
-                    this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+                    this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
                       if(email_v)
                       {
                         
-                        this.http.patch('http://localhost:3000/authorized/' + this.id_auth, this.authorizedPatch).subscribe(a => {
+                        this.http.patch(this.url+'authorized/' + this.id_auth, this.authorizedPatch).subscribe(a => {
                           if(a)
                           {
                             this.false()

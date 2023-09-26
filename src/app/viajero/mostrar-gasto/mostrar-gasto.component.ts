@@ -4,6 +4,7 @@ import { Storage, ref, deleteObject } from '@angular/fire/storage';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
+import { ServiceService } from 'src/app/Service/service.service';
 
 
 // ES6 Modules or TypeScript
@@ -65,6 +66,7 @@ export class MostrarGastoComponent implements OnInit {
 
   recivedData: any;
 
+  url: any;
 
   constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService, private storage: Storage){}
 
@@ -79,6 +81,9 @@ ngOnInit(): void {
       this.router.navigate(['login'])
     }else if(isAuthenticate)
     {
+      const service = new ServiceService();
+      this.url = service.url();
+      
       /*this.route.queryParams.subscribe(params => {
         const idHead = params['id'];
         const id = idHead;
@@ -112,7 +117,6 @@ ngOnInit(): void {
         }
       }
 
-
     }
   })
 }
@@ -121,7 +125,7 @@ getData(id: number)
 {
   
 
-  this.http.get<ptrv_head>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
+  this.http.get<ptrv_head>(this.url+'PTRV_HEADS/' + id).subscribe(data => {
     this.id_head = data.id;
     this.pernr_head = data.pernr;
     this.reinr_head = data.reinr;
@@ -142,7 +146,7 @@ authorized!: number[];
 
 getDetails(reinr_head: string)
 {
-  this.http.get<zfi_gv_paper_general[]>('http://localhost:3000/GENERAL/find/' + reinr_head).subscribe(data => {
+  this.http.get<zfi_gv_paper_general[]>(this.url+'GENERAL/find/' + reinr_head).subscribe(data => {
    
   this.responseArray = data;
     this.authorized = data.map(item => item.auth); // Almacenar todos los valores de auth en authorized
@@ -232,7 +236,7 @@ editeExpenses(receiptno: number, id_head: number, authCloseTrip: number)
       deleteObject(desertRef)
       .then(response => {
         //console.log(this.id_head)
-        this.http.delete('http://localhost:3000/GENERAL/' + receiptno).subscribe(d => {
+        this.http.delete(this.url+'GENERAL/' + receiptno).subscribe(d => {
           Swal.fire(
             {
               icon: 'success',

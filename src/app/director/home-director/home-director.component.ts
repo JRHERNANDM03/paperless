@@ -7,6 +7,8 @@ import { SharedDataService } from 'src/app/shared-data.service';
 
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface user
 {
   PERNR: number;
@@ -115,6 +117,8 @@ pernrDirector!: number;
 
 notifyDisplay = 'block'
 
+url:any;
+
   constructor(private router:Router, public auth: AuthService, private http: HttpClient, private datePipe: DatePipe, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -123,19 +127,23 @@ notifyDisplay = 'block'
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+        
         this.auth.user$.subscribe(user => {
           this.nameDirector = String(user?.name)
           this.nickname = String(user?.nickname);
           this.getPernr(this.nickname)
           
         })
+
       }
     })
   }
 
   getPernr(nickname: string)
   {
-    this.http.get<user>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+    this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
       this.pernr = data.PERNR;
       this.pernrDirector = data.PERNR;
       this.getHead(this.pernr)
@@ -149,7 +157,7 @@ notifyDisplay = 'block'
 
   getHead(pernr: number)
   {
-    this.http.get<PTRV_HEAD[]>('http://localhost:3000/PTRV_HEADS/find/' + pernr).subscribe(data => {
+    this.http.get<PTRV_HEAD[]>(this.url+'PTRV_HEADS/find/' + pernr).subscribe(data => {
       
       this.responseArray = data;
       this.authorized = data.map(item => item.auth);
@@ -162,7 +170,9 @@ visibility_auth!: number[];
 
 getEmailsD(pernr: number)
 {
-  this.http.get<emailsD[]>('http://localhost:3000/EmailsD/' + pernr).subscribe(data => {
+  this.http.get<emailsD[]>(this.url+'EmailsD/' + pernr).subscribe(data => {
+
+    console.log(data)
     
     this.responseArrayEmails = data;
     this.visibility_auth = data.map(item => Number(item.visibility))
@@ -212,7 +222,7 @@ getEmailsD(pernr: number)
   {
     const newPernr = String(this.pernr);
 
-    this.http.get<search[]>('http://localhost:3000/PTRV_HEAD/find/datv1/' + this.date + '/pernr/' + newPernr).subscribe(data => {
+    this.http.get<search[]>(this.url+'PTRV_HEAD/find/datv1/' + this.date + '/pernr/' + newPernr).subscribe(data => {
       this.todosMisViajes = 'none';
       this.findTrip = 'block';
       this.responseArray2 = data;
@@ -236,8 +246,8 @@ getEmailsD(pernr: number)
   getEmailsDRequest(idEmailD: number, message: string, reinr: number, visibility: number, titulo: string, pernrV: number)
   {
     
-     this.http.get<getSum>('http://localhost:3000/getSUM_trip/' + reinr).subscribe(data => {
-      this.http.get<PTRV_HEAD>('http://localhost:3000/PTRV_HEAD/' + reinr).subscribe(trip => {
+     this.http.get<getSum>(this.url+'getSUM_trip/' + reinr).subscribe(data => {
+      this.http.get<PTRV_HEAD>(this.url+'PTRV_HEAD/' + reinr).subscribe(trip => {
         const idHead = trip.id;
         
         Swal.fire({
@@ -278,7 +288,7 @@ getEmailsD(pernr: number)
                   if(trip.auth == 0 && trip.closeTrip == 1)
                   {
 
-                  this.http.get<authorized>('http://localhost:3000/one_authorized/' + reinr).subscribe(infAuth => {
+                  this.http.get<authorized>(this.url+'one_authorized/' + reinr).subscribe(infAuth => {
               
                   const tituloA = 'Nuevo viaje NACIONAL aprobado por el director correspondiente';
                   const subtituloA = 'Viaje: ' + reinr;
@@ -327,23 +337,23 @@ getEmailsD(pernr: number)
 
            try{
 
-            this.http.post('http://localhost:3000/EmailA', this.emailA).subscribe(emailAdm => {
+            this.http.post(this.url+'EmailA', this.emailA).subscribe(emailAdm => {
 
             if(emailAdm){
 
-                this.http.patch('http://localhost:3000/PTRV_HEADS/' + idHead, this.updateHead).subscribe(head => {
+                this.http.patch(this.url+'PTRV_HEADS/' + idHead, this.updateHead).subscribe(head => {
                   if(head)
                   {
-                    this.http.patch('http://localhost:3000/authorized/' + infAuth.id_auth, this.updateAuthorized).subscribe(upAuth => {
+                    this.http.patch(this.url+'authorized/' + infAuth.id_auth, this.updateAuthorized).subscribe(upAuth => {
                       if(upAuth)
                       {
-                        this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+                        this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
                           if(email_v)
                           {
 
                             if(visibility == 0)
                             {
-                              this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(email_d => {
+                              this.http.patch(this.url+'EmailD/update/' + idEmailD, this.updateEmailD).subscribe(email_d => {
                                 if(email_d)
                                 {
                                   this.authorizedTrip01()
@@ -411,13 +421,13 @@ getEmailsD(pernr: number)
 
                 try{
 
-                  this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_V =>{
+                  this.http.post(this.url+'EmailV', this.emailV).subscribe(email_V =>{
                     if(email_V)
                     {
-                      this.http.patch('http://localhost:3000/PTRV_HEADS/' + trip.id, this.updateHead).subscribe(upHead =>{
+                      this.http.patch(this.url+'PTRV_HEADS/' + trip.id, this.updateHead).subscribe(upHead =>{
                         if(upHead)
                         {
-                          this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(email_d => {
+                          this.http.patch(this.url+'EmailD/update/' + idEmailD, this.updateEmailD).subscribe(email_d => {
                             this.declainTrip01()
                           })
                         }else { console.log('ERROR en UPHEAD') }
@@ -456,11 +466,11 @@ getEmailsD(pernr: number)
           this.horaActual = String(this.datePipe.transform(fechaHoraActual, 'HH:mm:ss'));
                       
 
-          this.http.get<authorized>('http://localhost:3000/one_authorized/' + trip.reinr).subscribe(data_auth => {
+          this.http.get<authorized>(this.url+'one_authorized/' + trip.reinr).subscribe(data_auth => {
             if(data_auth)
             {
               
-              this.http.get<PTRV_HEAD>('http://localhost:3000/PTRV_HEAD/' + data_auth.reinr).subscribe(ptrv_head => {
+              this.http.get<PTRV_HEAD>(this.url+'PTRV_HEAD/' + data_auth.reinr).subscribe(ptrv_head => {
 
               
 
@@ -501,10 +511,10 @@ getEmailsD(pernr: number)
                         time1: this.horaActual
                       }
 
-                      this.http.post('http://localhost:3000/EmailD', this.emailD).subscribe(email_d => {
+                      this.http.post(this.url+'EmailD', this.emailD).subscribe(email_d => {
                         if(email_d)
                         {
-                          this.http.patch('http://localhost:3000/authorized/' + data_auth.id_auth, this.updateAuthorized).subscribe(upd_auth => {
+                          this.http.patch(this.url+'authorized/' + data_auth.id_auth, this.updateAuthorized).subscribe(upd_auth => {
                             if(upd_auth)
                             {
                               let timerInterval = 0;
@@ -527,7 +537,7 @@ getEmailsD(pernr: number)
                                     visibility: 1
                                   }
 
-                                  this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(upd_email_d => {
+                                  this.http.patch(this.url+'EmailD/update/' + idEmailD, this.updateEmailD).subscribe(upd_email_d => {
                                     if(upd_email_d)
                                     {
                                       this.reload()
@@ -564,9 +574,9 @@ getEmailsD(pernr: number)
                         visibility: 1
                       }
 
-                      this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe()
-                      this.http.patch('http://localhost:3000/PTRV_HEADS/' +  idHead, this.updateHead).subscribe()
-                      this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe()
+                      this.http.post(this.url+'EmailV', this.emailV).subscribe()
+                      this.http.patch(this.url+'PTRV_HEADS/' +  idHead, this.updateHead).subscribe()
+                      this.http.patch(this.url+'EmailD/update/' + idEmailD, this.updateEmailD).subscribe()
 
                       let timerInterval = 0;
 
@@ -655,11 +665,11 @@ getEmailsD(pernr: number)
                       visibility: 1
                     }
 
-                    this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe()
-                    this.http.post('http://localhost:3000/EmailA', this.emailA).subscribe()
-                    this.http.patch('http://localhost:3000/PTRV_HEADS/' + ptrv_head.id, this.updateHead).subscribe()
-                    this.http.patch('http://localhost:3000/authorized/' + data_auth.id_auth, this.updateAuthorized).subscribe()
-                    this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe()
+                    this.http.post(this.url+'EmailV', this.emailV).subscribe()
+                    this.http.post(this.url+'EmailA', this.emailA).subscribe()
+                    this.http.patch(this.url+'PTRV_HEADS/' + ptrv_head.id, this.updateHead).subscribe()
+                    this.http.patch(this.url+'authorized/' + data_auth.id_auth, this.updateAuthorized).subscribe()
+                    this.http.patch(this.url+'EmailD/update/' + idEmailD, this.updateEmailD).subscribe()
 
                     let timerInterval = 0;
                     Swal.fire({
@@ -709,10 +719,10 @@ getEmailsD(pernr: number)
                       visibility: 1
                     }
 
-                    this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe()
-                    this.http.patch('http://localhost:3000/PTRV_HEADS/' + ptrv_head.id, this.updateHead).subscribe()
-                    this.http.patch('http://localhost:3000/authorized/' + data_auth.id_auth, this.updateAuthorized).subscribe()
-                    this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe()
+                    this.http.post(this.url+'EmailV', this.emailV).subscribe()
+                    this.http.patch(this.url+'PTRV_HEADS/' + ptrv_head.id, this.updateHead).subscribe()
+                    this.http.patch(this.url+'authorized/' + data_auth.id_auth, this.updateAuthorized).subscribe()
+                    this.http.patch(this.url+'EmailD/update/' + idEmailD, this.updateEmailD).subscribe()
 
                     let timerInterval = 0;
                     Swal.fire({
@@ -773,7 +783,7 @@ getEmailsD(pernr: number)
             visibility: 1
           }
 
-          this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(upd_emailD => {
+          this.http.patch(this.url+'EmailD/update/' + idEmailD, this.updateEmailD).subscribe(upd_emailD => {
             if(upd_emailD)
             {
               //this.router.navigate(['/Director/Viaje'], {queryParams: {id: idHead}})
@@ -814,7 +824,7 @@ getEmailsD(pernr: number)
             visibility: 1
           }
 
-          this.http.patch('http://localhost:3000/EmailD/update/' + idEmailD, this.updateEmailD).subscribe(upd_emailD => {
+          this.http.patch(this.url+'EmailD/update/' + idEmailD, this.updateEmailD).subscribe(upd_emailD => {
             if(upd_emailD)
             {
               this.reload()
@@ -977,7 +987,7 @@ deleteNotify(id: number, $event: any)
     }).then(result => {
       if(result.isConfirmed)
       {
-        this.http.delete('http://localhost:3000/EmailD/delete/' + id).subscribe(data => {
+        this.http.delete(this.url+'EmailD/delete/' + id).subscribe(data => {
           if(data)
           {
             Swal.fire({
@@ -1019,7 +1029,7 @@ deleteAllNotify()
 
     if(result.isConfirmed){
 
-    this.http.get<emailsD[]>('http://localhost:3000/EmailsD/' + this.pernr).subscribe(data => {
+    this.http.get<emailsD[]>(this.url+'EmailsD/' + this.pernr).subscribe(data => {
 
     if(data.length == 0)
     {
@@ -1034,7 +1044,7 @@ deleteAllNotify()
       {
         if(data[x].visibility == 1)
         {
-          this.http.delete('http://localhost:3000/EmailD/delete/' + data[x].id).subscribe()
+          this.http.delete(this.url+'EmailD/delete/' + data[x].id).subscribe()
         }
       }
 

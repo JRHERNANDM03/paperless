@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
+import { ServiceService } from 'src/app/Service/service.service';
 
 interface travelExpenses{
   auth: number;
@@ -71,12 +72,17 @@ authCloseTrip!: number;
 
 recivedData: any;
 
+url:any;
+
   ngOnInit(): void {
     this.auth.isAuthenticated$.subscribe(isAuthenticate => {
       if(!isAuthenticate)
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+
         /*this.route.queryParams.subscribe(params => {
           this.idHead = params['id'];
           this.reinrHead = params['reinr']
@@ -115,7 +121,7 @@ recivedData: any;
 
   getTravelExpenses(reinr: string){
 
-      this.http.get<travelExpenses[]>('http://localhost:3000/GENERAL/find/' + reinr).subscribe(travel_expenses => {
+      this.http.get<travelExpenses[]>(this.url+'GENERAL/find/' + reinr).subscribe(travel_expenses => {
         this.responseArray = travel_expenses;
         this.authorized = travel_expenses.map(item => item.auth);  
     })
@@ -123,7 +129,7 @@ recivedData: any;
 
   getData(id: number)
   {
-    this.http.get<ptrv_head>('http://localhost:3000/PTRV_HEADS/' + id).subscribe(data => {
+    this.http.get<ptrv_head>(this.url+'PTRV_HEADS/' + id).subscribe(data => {
 
     if (data.closeTrip === 0) {
       this.styleCreate='block';
@@ -176,7 +182,7 @@ recivedData: any;
      { 
  
        //console.log(this.id_head)
-       this.http.delete('http://localhost:3000/GENERAL/' + receiptno).subscribe(d => {
+       this.http.delete(this.url+'GENERAL/' + receiptno).subscribe(d => {
          Swal.fire(
            {
              icon: 'success',

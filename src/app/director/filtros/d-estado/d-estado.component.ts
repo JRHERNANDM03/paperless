@@ -5,6 +5,8 @@ import { AuthService } from '@auth0/auth0-angular';
 import { SharedDataService } from 'src/app/shared-data.service';
 import Swal from 'sweetalert2';
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface user
 {
   area_id: number;
@@ -61,6 +63,7 @@ export class DEstadoComponent implements OnInit{
   responseArray1: ptrv_head[] = [];
   authorized!: number[];
 
+  url:any;
 
   constructor(public auth: AuthService, private router: Router, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
@@ -70,18 +73,20 @@ export class DEstadoComponent implements OnInit{
       {
         this.auth.logout()
       }else if(isAuthenticate){
+        const service = new ServiceService();
+        this.url = service.url();
+        
         this.auth.user$.subscribe(infoUser => {
           this.nickname = String(infoUser?.nickname)
           this.getInfoUser(this.nickname)
         })
-
       }
     })
   }
 
   getInfoUser(nickname: string)
   {
-    this.http.get<user>('http://localhost:3000/USERS/' + nickname).subscribe(data => {
+    this.http.get<user>(this.url+'USERS/' + nickname).subscribe(data => {
       this.areaID = data.area_id
     })
   }
@@ -101,7 +106,7 @@ export class DEstadoComponent implements OnInit{
       titleList.textContent = htmlBtn;
     }
 
-    this.http.get<ptrv_head[]>('http://localhost:3000/PTRV_HEADS/filter/statusp/' + this.areaID).subscribe(data => {
+    this.http.get<ptrv_head[]>(this.url+'PTRV_HEADS/filter/statusp/' + this.areaID).subscribe(data => {
       if(data.length === 0)
       {
         this.notdata()
@@ -131,7 +136,7 @@ export class DEstadoComponent implements OnInit{
       titleList.textContent = htmlBtn;
     }
 
-    this.http.get<ptrv_head[]>('http://localhost:3000/PTRV_HEADS/filter/statusa/' + this.areaID).subscribe(data => {
+    this.http.get<ptrv_head[]>(this.url+'PTRV_HEADS/filter/statusa/' + this.areaID).subscribe(data => {
       if(data.length === 0)
       {
         this.notdata()
@@ -161,7 +166,7 @@ export class DEstadoComponent implements OnInit{
       titleList.textContent = htmlBtn;
     }
 
-    this.http.get<ptrv_head[]>('http://localhost:3000/PTRV_HEADS/filter/statusr/' + this.areaID).subscribe(data => {
+    this.http.get<ptrv_head[]>(this.url+'PTRV_HEADS/filter/statusr/' + this.areaID).subscribe(data => {
       if(data.length === 0)
       {
         this.notdata()

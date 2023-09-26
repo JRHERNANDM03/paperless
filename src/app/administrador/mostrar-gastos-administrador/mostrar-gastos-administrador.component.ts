@@ -10,6 +10,8 @@ import { Storage, ref, listAll, getDownloadURL } from '@angular/fire/storage';
 // ES6 Modules or TypeScript
 import Swal from 'sweetalert2'
 
+import { ServiceService } from 'src/app/Service/service.service';
+
 interface dataMain{
   pernr: string;
   name: string;
@@ -119,6 +121,8 @@ complete_name!: string;
 
 recivedData: any;
 
+url:any;
+
   // Propiedad para almacenar el enlace de descarga del archivo
   fileDownloadURL: string | null = null;
 
@@ -128,6 +132,9 @@ ngOnInit(): void {
     {
       this.auth.logout()
     }else if(isAuthenticate){
+      const service = new ServiceService();
+      this.url = service.url();
+
       /*this.route.queryParams.subscribe(params => {
         this.idHead = params['id'];
         this.reinrHead = params['reinr'];
@@ -164,7 +171,7 @@ ngOnInit(): void {
 
 getDataTrip_and_User(reinr: string)
 {
-  this.http.get<dataMain>('http://localhost:3000/getDataTip_User/' + reinr).subscribe(data => {
+  this.http.get<dataMain>(this.url+'getDataTip_User/' + reinr).subscribe(data => {
     this.pernr = data.pernr;
     this.reinr = data.reinr;
     this.name = data.name;
@@ -178,7 +185,7 @@ getDataTrip_and_User(reinr: string)
 
 getExpenses(reinr: string)
 {
-  this.http.get<dataExpenses[]>('http://localhost:3000/GENERAL/find/' + reinr).subscribe(data => {
+  this.http.get<dataExpenses[]>(this.url+'GENERAL/find/' + reinr).subscribe(data => {
     this.responseArray = data;
     this.authorized = data.map(item => item.auth);
 
@@ -325,10 +332,10 @@ getEstado(auth: number): string {
                 final_approval: 1
               }
   
-              this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+              this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
                 if(email_v)
                 {
-                  this.http.patch('http://localhost:3000/PTRV_HEADS/' + this.id, this.upd_ptrv_head).subscribe(ptrv_head =>{
+                  this.http.patch(this.url+'PTRV_HEADS/' + this.id, this.upd_ptrv_head).subscribe(ptrv_head =>{
                     if(ptrv_head)
                     {
                       let timerInterval = 0;
@@ -444,7 +451,7 @@ getEstado(auth: number): string {
 
   notify(receiptno: number, reinr: string, pernr: string) {
 
-    this.http.get<ptrv_head>('http://localhost:3000/PTRV_HEAD/' + reinr).subscribe(data => {
+    this.http.get<ptrv_head>(this.url+'PTRV_HEAD/' + reinr).subscribe(data => {
       if(data.auth == 1)
       {
         Swal.fire({
@@ -509,10 +516,10 @@ getEstado(auth: number): string {
       subtitle: subtitulo
     }
 
-    this.http.patch('http://localhost:3000/GENERAL/' + receiptno, this.upd_zfi_gv_paper_general).subscribe(upd_general => {
+    this.http.patch(this.url+'GENERAL/' + receiptno, this.upd_zfi_gv_paper_general).subscribe(upd_general => {
       if(upd_general)
       {
-        this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+        this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
           if(email_v)
           {
             let timerInterval = 0;
@@ -595,10 +602,10 @@ getEstado(auth: number): string {
       subtitle: subtitulo
     }
 
-    this.http.patch('http://localhost:3000/GENERAL/' + receiptno, this.upd_zfi_gv_paper_general).subscribe(upd_general => {
+    this.http.patch(this.url+'GENERAL/' + receiptno, this.upd_zfi_gv_paper_general).subscribe(upd_general => {
       if(upd_general)
       {
-        this.http.post('http://localhost:3000/EmailV', this.emailV).subscribe(email_v => {
+        this.http.post(this.url+'EmailV', this.emailV).subscribe(email_v => {
           if(email_v)
           {
             let timerInterval=0;
