@@ -53,6 +53,8 @@ recivedData: any;
 
 url:any;
 
+isLoading = true; 
+
   constructor (private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
   ngOnInit(): void {
@@ -95,7 +97,7 @@ url:any;
 
 
   getDataUser(pernr: number)
-  {
+  {this.isLoading=false;
     this.http.get<user>(this.url+'User/' + pernr).subscribe(data => {
       this.name = data.name;
       this.lastname = data.lastname;

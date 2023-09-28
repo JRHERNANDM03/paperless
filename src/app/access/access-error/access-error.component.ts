@@ -19,7 +19,13 @@ ngOnInit(): void {
       this.router.navigate(['login'])
     }else if(isAuthenticate)
     {
-      this.error_alert();
+      setTimeout(() => {
+        const secondViewElement = document.querySelector('.animation01'); // Cambia el selector según tu estructura HTML
+        if (secondViewElement) {
+          secondViewElement.scrollIntoView({ behavior: 'smooth' });
+        }  
+      }, 2500)
+      //this.error_alert();
     }
   })
 }
@@ -44,5 +50,10 @@ error_alert()
       this.auth.logout()
     }
   })
+}
+
+logout()
+{
+  this.auth.logout()
 }
 }

@@ -70,6 +70,7 @@ export class HomeAdministradorComponent implements OnInit {
   notifyDisplay='block';
 
   url:any;
+  isLoading = true; 
 
   constructor(private router:Router, public auth: AuthService, private route: ActivatedRoute, private http: HttpClient, private sharedDataService: SharedDataService){}
 
@@ -96,6 +97,7 @@ export class HomeAdministradorComponent implements OnInit {
 
   getData(nickname: String)
 {
+  this.isLoading=false;
   this.http.get<UserData>(this.url+'USERS/' + nickname).subscribe(data => {
 
     if(data.rol_id != 3){

@@ -1,4 +1,9 @@
-<div id="contenerdorCentrador">
+<div *ngIf="isLoading" class="loading-animation">
+  <div class="spinner"></div>
+</div>
+
+<div *ngIf="!isLoading">
+  <div id="contenerdorCentrador">
     <img src="../../../assets/image/liverpool.jpg" id="logo" alt="Logo Liverpool">
 </div>
 
@@ -49,7 +54,7 @@
           </div>
 
       <ul *ngIf="auth.user$ | async as user">
-      <a class="navbar-brand" style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.given_name }}</a>
+      <a id="userName" class="navbar-brand" style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.given_name }}</a>
       </ul>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
         <span class="navbar-toggler-icon" style="color: white; "></span>
@@ -149,3 +154,6 @@
 </div>
 
 </div>
+</div>
+
+

@@ -1,96 +1,104 @@
- 
-    <div id="contenerdorCentrador">
-        <img src="../../../assets/image/logo_panel.png" id="logo" alt="Logo Liverpool">
+<div *ngIf="isLoading" class="loading-animation">
+  <div class="spinner"></div>
+</div>
+
+<div *ngIf="!isLoading">
+  <div id="contenerdorCentrador">
+    <img src="../../../assets/image/logo_panel.png" id="logo" alt="Logo Liverpool">
 </div>
 
 <div class="container">
 
 <nav class="navbar navbar-dark ">
-  <div class="container-fluid" style="background-color: #73246D; padding: 1%;">
+<div class="container-fluid" style="background-color: #73246D; padding: 1%;">
 
+<ul *ngIf="auth.user$ | async as user">
+<a class="navbar-brand" style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.given_name }}</a>
+</ul>
+<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
+  <span class="navbar-toggler-icon" style="color: white; "></span>
+</button>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #73246D;">
+  <div class="offcanvas-header">
     <ul *ngIf="auth.user$ | async as user">
-    <a class="navbar-brand" style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.given_name }}</a>
+    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"  style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.name }}</h5>
     </ul>
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation" style="color: white; background-color: #F25F29;">
-      <span class="navbar-toggler-icon" style="color: white; "></span>
-    </button>
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel" style="background-color: #73246D;">
-      <div class="offcanvas-header">
-        <ul *ngIf="auth.user$ | async as user">
-        <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"  style="color: white;"><img src="{{user.picture}}" alt="{{user.given_name}}" width="40" height="40" class="rounded-circle me-1" title="{{user.name}}"> {{ user.name }}</h5>
-        </ul>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/otherUser/Home">Home</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Filtrar viaje
-            </a>
-            <ul class="dropdown-menu dropdown-menu-light">
-              <li><a (click)="filter1(pernr)" class="dropdown-item">Número de viaje</a></li>
-                <hr class="dropdown-divider">
-              <li><a (click)="filter2(pernr)" class="dropdown-item">Fecha</a></li>
-              <hr class="dropdown-divider">
-            <li><a (click)="filter3(pernr)" class="dropdown-item">Estado</a></li>
-            </ul>
-        </ul>
-      </div>
-      <div class="container" style="padding-bottom: 5%;">
-          <a href="/Viajero/Home" type="submit" class="btn btn-lg" style="background-color: #F25F29; color: white;">Regresar a la sesión actual</a>
-      </div>
-    </div>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
+  <div class="offcanvas-body">
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/otherUser/Home">Home</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Filtrar viaje
+        </a>
+        <ul class="dropdown-menu dropdown-menu-light">
+          <li><a (click)="filter1(pernr)" class="dropdown-item">Número de viaje</a></li>
+            <hr class="dropdown-divider">
+          <li><a (click)="filter2(pernr)" class="dropdown-item">Fecha</a></li>
+          <hr class="dropdown-divider">
+        <li><a (click)="filter3(pernr)" class="dropdown-item">Estado</a></li>
+        </ul>
+    </ul>
+  </div>
+  <div class="container" style="padding-bottom: 5%;">
+      <a href="/Viajero/Home" type="submit" class="btn btn-lg" style="background-color: #F25F29; color: white;">Regresar a la sesión actual</a>
+  </div>
+</div>
+</div>
 </nav>
 
 </div>  
 
 <div class="container text-center" style="margin-top: 2%; margin-bottom: 3%;">
-    <h2 class="titulo-ext">REGISTRO DE VIAJES DEL USUARIO: {{name}} - {{pernr}}</h2>        
+<h2 class="titulo-ext">REGISTRO DE VIAJES DEL USUARIO: {{name}} - {{pernr}}</h2>        
 </div>
 
 <div class="container" style="padding-bottom: 5%;">
-  <div class="row row-cols-1 row-cols-md-3 g-4">
+<div class="row row-cols-1 row-cols-md-3 g-4">
 
-    <div class="col" *ngFor="let item of responseArray; let i = index">
-      <div class="card">
-        <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
-        <div class="card-body">
-          <h5 class="card-title">{{item.zort1}}</h5>
-          <hr>
-          <div class="row">
-            <div class="col">
-              Viaje:
-              <input type="text" class="form-control card border-secondary mb-3" value="{{item.reinr}}" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              Tipo:
-              <input type="text" class="form-control card border-secondary mb-3" value="{{item.hrgio}}" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              Fecha Salida:
-              <input type="text" class="form-control card border-secondary mb-3" value="{{item.datv1}}" aria-label="First name" readonly style="border: 1;">
-            </div>
-            <div class="col">
-              Hora Salida:
-              <input type="text" class="form-control card border-secondary mb-3" value="{{item.uhrv1}}" aria-label="Last name" readonly style="border: 1;">
-            </div>
-          </div>
-          <hr>
-          <p class="card-text mb-3 text-center" [style.color]="getEstado(authorized[i]) === 'Aprobado' ? 'green' : (getEstado(authorized[i]) === 'Rechazado' ? 'red' : 'grey')">
-            Estado: {{ getEstado(authorized[i]) }}
-          </p>
-          <button (click)="tripDetail(item.id)" class="btn btn-outline-primary">Visualizar</button>
+<div class="col" *ngFor="let item of responseArray; let i = index">
+  <div class="card">
+    <img src="../../../assets/image/tijuana.jpg" class="card-img-top" alt="Tijuana" width="200px;" height="200px;">
+    <div class="card-body">
+      <h5 class="card-title">{{item.zort1}}</h5>
+      <hr>
+      <div class="row">
+        <div class="col">
+          Viaje:
+          <input type="text" class="form-control card border-secondary mb-3" value="{{item.reinr}}" aria-label="First name" readonly style="border: 1;">
+        </div>
+        <div class="col">
+          Tipo:
+          <input type="text" class="form-control card border-secondary mb-3" value="{{item.hrgio}}" aria-label="Last name" readonly style="border: 1;">
         </div>
       </div>
+
+      <div class="row">
+        <div class="col">
+          Fecha Salida:
+          <input type="text" class="form-control card border-secondary mb-3" value="{{item.datv1}}" aria-label="First name" readonly style="border: 1;">
+        </div>
+        <div class="col">
+          Hora Salida:
+          <input type="text" class="form-control card border-secondary mb-3" value="{{item.uhrv1}}" aria-label="Last name" readonly style="border: 1;">
+        </div>
+      </div>
+      <hr>
+      <p class="card-text mb-3 text-center" [style.color]="getEstado(authorized[i]) === 'Aprobado' ? 'green' : (getEstado(authorized[i]) === 'Rechazado' ? 'red' : 'grey')">
+        Estado: {{ getEstado(authorized[i]) }}
+      </p>
+      <button (click)="tripDetail(item.id)" class="btn btn-outline-primary">Visualizar</button>
     </div>
-    
   </div>
 </div>
+
+</div>
+</div>
+</div>
+
+
+
 

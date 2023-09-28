@@ -66,6 +66,8 @@ export class HomeComponent implements OnInit{
 
   url: any;
 
+  isLoading = true; 
+
   constructor(private router: Router, public auth: AuthService, private http: HttpClient, private sharedDataService: SharedDataService) {
 }
 
@@ -100,7 +102,7 @@ responseArray: PTRV_HEAD[] = [];
   authorized!: number[];
 
 getData(nickname: String)
-{
+{ this.isLoading = false;
   this.http.get<UserData>(this.url+'USERS/' + nickname).subscribe(data => {
 
     if(data.rol_id != 1)
