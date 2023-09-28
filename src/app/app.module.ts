@@ -145,8 +145,10 @@ import { AccessErrorComponent } from './access/access-error/access-error.compone
     FormsModule,
     HttpClientModule,
     AuthModule.forRoot({
-      domain: 'dev-ug5obmlr.us.auth0.com',
-      clientId: 'x2gvoq8ukR0ILorPJ7Rlp0SWWhJfwl6Z',
+      //domain: 'dev-ug5obmlr.us.auth0.com',
+      //clientId: 'x2gvoq8ukR0ILorPJ7Rlp0SWWhJfwl6Z',
+      domain: 'dev-rwtdpo16n8do3tzv.us.auth0.com',
+      clientId: 'h7buQKi1nFSA90JVKRzwY7Ta3RzDS8wL',
       authorizationParams: {
         redirect_uri: window.location.origin
       }
