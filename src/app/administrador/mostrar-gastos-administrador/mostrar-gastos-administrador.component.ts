@@ -286,10 +286,12 @@ getEstado(auth: number): string {
 
   downloadFile(uuid: string)
   {
+
+    //console.log(uuid)
     
     if(uuid === '')
     {
-      this.documentError()
+      this.documentError();
     }else{
       //console.log(fileName)
     const documentRef = ref(this.storage, 'files/');
@@ -415,7 +417,7 @@ getEstado(auth: number): string {
     {
       Swal.fire({
         icon: 'warning',
-        title: 'Este Viaje ya reálizo está acción',
+        title: 'Este Viaje ya realizó está acción',
         showConfirmButton: true,
         confirmButtonColor: 'purple'
       }).then(result => {

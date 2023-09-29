@@ -87,8 +87,8 @@ export class HomeAdministradorComponent implements OnInit {
           const nickname = String(user?.nickname);
           this.getData(nickname);     
         })
-        this.obtenerFecha();
-        this.obtenerFechaHaceUnaSemana();
+        console.log(this.obtenerFecha());
+        console.log(this.obtenerFechaHaceUnaSemana());
       }
     })
   }
@@ -241,6 +241,8 @@ getVisibility(visibility: number): number {
           console.log(fechaActual)
         }
 
+        //return fechaActual;
+
         
 
       }
@@ -257,6 +259,7 @@ getVisibility(visibility: number): number {
 
         this.fechaPasada = `${year}-${this.agregarcerosizquierda(month)}-${this.agregarcerosizquierda(day)}`;
         
+        //return fechaPasada;
       }
 
       agregarcerosizquierda(valor: number): string

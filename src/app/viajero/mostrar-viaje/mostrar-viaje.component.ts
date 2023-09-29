@@ -112,6 +112,9 @@ url: any;
         this.router.navigate(['login'])
       }else if(isAuthenticate)
       {
+
+        document.querySelector('#contenerdorCentrador')?.scrollIntoView()
+
         const service = new ServiceService();
         this.url = service.url();
 

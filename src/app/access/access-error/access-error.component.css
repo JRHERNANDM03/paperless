@@ -824,7 +824,7 @@ orange circle
     top: 50%;
     left: 20%;
     transform: translate(-50%, -50%);
-    background-color: #F25F29;
+    background-color: #fff;
     width: 2vw;
     height: 2vw;
     border-radius: 50%;
@@ -834,7 +834,7 @@ orange circle
     top: 50%;
     left: 80%;
     transform: translate(-50%, -50%);
-    background-color: #73246D;
+    background-color: #fff;
     width: 2vw;
     height: 2vw;
     border-radius: 50%;
